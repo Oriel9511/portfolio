@@ -1,0 +1,380 @@
+---
+
+---
+
+<script>
+    let bubX = 0;
+    let bubY = 0;
+    let tgX = 0;
+    let tgY = 0;
+    document.addEventListener('DOMContentLoaded',() => {
+        const interactBubble = document.querySelector<HTMLDivElement>('.interactive');
+        function move(){
+            bubX += (tgX - bubX) / 5;
+            bubY += (tgY - bubY) / 5;
+            interactBubble.style.transform = `translate(${Math.round(bubX)}px, ${Math.round(bubY)}px)`;
+
+            requestAnimationFrame(() => {
+                move();
+            });
+        }
+
+        window.addEventListener("mousemove", (event) => {
+            tgX = event.clientX;
+            tgY = event.clientY;
+        })
+
+        move();
+    })
+</script>
+
+<svg xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <filter id="goo">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"/>
+            <feColorMatrix in="blur" mode="matrix" values="
+      1 0 0 0 0
+      0 1 0 0 0
+      0 0 1 0 0
+      0 0 0 18 -8" result="goo"/>
+            <feBlend in="SourceGraphic" in2="goo"/>
+        </filter>
+    </defs>
+</svg>
+
+<div id="bg-container">
+    <div id="bg-gradient">
+        <div id="bubbles-container">
+            <div class="g1 bubble"></div>
+            <div class="g2 bubble"></div>
+            <div class="g3 bubble"></div>
+            <div class="g4 bubble"></div>
+            <div class="g5 bubble"></div>
+            <div class="g6 bubble"></div>
+            <div class="interactive"></div>
+        </div>
+    </div>
+    <div id="noise"/>
+    <div id="glass"/>
+</div>
+
+<style>
+
+    :root{
+        --color-bg1: rgb(108,0,106);
+        --color-bg2: rgb(0, 17, 82);
+        --color-bg3: rgb(42, 0, 82);
+        --color1: 29, 72, 138;
+        --color2: 122, 43, 136;
+        --color3: 75, 136, 152;
+        --color4: 143, 52, 125;
+        --color5: 100, 69, 154;
+        --color6: 57, 189, 204;
+        --color-interact: 209, 176, 255;
+        --color-test: rgb(143, 52, 125);
+        --circle-size: 70%;
+        --blending: hard-light;
+    }
+
+    svg{
+        display: none;
+        mix-blend-mode: hard-light;
+    }
+
+    #bg-container{
+        position: absolute;
+        overflow: hidden;
+        z-index: -100;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+
+    }
+
+    #bg-gradient {
+        position: absolute;
+        overflow: hidden;
+        z-index: -100;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle, var(--color-bg1), var(--color-bg2), var(--color-bg3));
+        background-size: 200% 200%;
+        animation: bgAnimation 60s ease infinite;
+    }
+
+    #noise{
+        position: absolute;
+        z-index: -90;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("../assets/bg-noise.svg");
+        //background-size: 100% 100%;
+    }
+
+    #glass{
+        position: absolute;
+        z-index: -90;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("../assets/bg-glass.svg");
+        //background-size: 100% 100%;
+    }
+
+    @keyframes bgAnimation {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    #bubbles-container{
+        width: 100%;
+        height: 100%;
+        filter: url(#goo) blur(100px) contrast(2) saturate(1);
+        //filter: blur(5px) contrast(1);
+
+    }
+
+    .bubble{
+        //filter: url(#goo) blur(100px);
+    }
+
+    .g1 {
+        position: absolute;
+        background: radial-gradient(circle at center, rgba(var(--color1), 0.8) 0, rgba(var(--color1), 0) 60%) no-repeat;
+        mix-blend-mode: var(--blending);
+        width: var(--circle-size);
+        height: var(--circle-size);
+        top: calc(50% - var(--circle-size) / 2);
+        left: calc(50% - var(--circle-size) / 2);
+        opacity: 0.7;
+
+        transform-origin: center center;
+        animation: moveVertical 30s ease infinite;
+    }
+
+    .g2 {
+        position: absolute;
+        background: radial-gradient(circle at center, rgba(var(--color2), 0.8) 0, rgba(var(--color2), 0) 60%) no-repeat;
+        mix-blend-mode: var(--blending);
+        width: var(--circle-size);
+        height: var(--circle-size);
+        top: calc(50% - var(--circle-size) / 2);
+        left: calc(50% - var(--circle-size) / 2 + 500px);
+        opacity: 0.7;
+
+        transform-origin: calc(50% - 400px);
+        animation: moveInCircle 60s reverse infinite;
+    }
+
+    .g3 {
+        position: absolute;
+        background: radial-gradient(circle at center, rgba(var(--color3), 0.8) 0, rgba(var(--color3), 0) 60%) no-repeat;
+        mix-blend-mode: var(--blending);
+        width: var(--circle-size);
+        height: var(--circle-size);
+        top: calc(50% - var(--circle-size) / 2 + 200px);
+        left: calc(50% - var(--circle-size) / 2 - 500px);
+        opacity: 0.7;
+
+        transform-origin: calc(50% + 400px);
+        animation: moveInCircle 40s linear infinite;
+    }
+
+    .g4 {
+        position: absolute;
+        background: radial-gradient(circle at center, rgba(var(--color4), 0.8) 0, rgba(var(--color4), 0) 60%) no-repeat;
+        mix-blend-mode: var(--blending);
+        width: var(--circle-size);
+        height: var(--circle-size);
+        top: calc(50% - var(--circle-size) / 2 - 500px);
+        left: calc(50% - var(--circle-size) / 2 + 200px);
+        opacity: 0.7;
+
+        transform-origin: calc(50% - 200px);
+        animation: moveHorizontal 40s ease infinite;
+    }
+
+    .g5 {
+        position: absolute;
+        background: radial-gradient(circle at center, rgba(var(--color5), 0.8) 0, rgba(var(--color5), 0) 60%) no-repeat;
+        mix-blend-mode: var(--blending);
+        width: calc(var(--circle-size));
+        height: calc(var(--circle-size));
+        top: calc(50% - var(--circle-size));
+        left: calc(50% - var(--circle-size));
+        opacity: 0.7;
+
+        transform-origin: calc(50% - 800px) calc(50% + 200px);
+        animation: moveInCircle 50s ease infinite;
+    }
+
+    .g6 {
+        position: absolute;
+        background: radial-gradient(circle at center, rgba(var(--color6), 0.8) 0, rgba(var(--color6), 0) 60%) no-repeat;
+        mix-blend-mode: var(--blending);
+        width: var(--circle-size);
+        height: var(--circle-size);
+        top: calc(50% - var(--circle-size) / 2 - 500px);
+        left: calc(50% - var(--circle-size) / 2 + 200px);
+        opacity: 0.7;
+
+        transform-origin: center center;;
+        animation: moveDiagonal 60s reverse infinite;
+    }
+
+    @keyframes moveInCircle {
+        0%{
+            transform: rotate(0deg);
+        }
+        50%{
+            transform: rotate(180deg);
+        }
+        100%{
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes moveVertical {
+        0% {
+            transform: translateY(-100%);
+
+        }
+        50%{
+            transform: translateY(50%);
+        }
+        100% {
+            transform: translateY(-100%);
+        }
+    }
+
+    @keyframes moveHorizontal {
+        0% {
+            transform: translateX(-30%);
+        }
+        50%{
+            transform: translateX(30%);
+        }
+        100% {
+            transform: translateX(-30%);
+        }
+    }
+
+    @keyframes moveDiagonal {
+        0% {
+            transform: translate(-50%, -100%);
+
+        }
+        50%{
+            transform: translate(50%, 50%);
+        }
+        100% {
+            transform: translate(-50%, -100%);
+        }
+    }
+
+
+    .interactive {
+        position: absolute;
+        background: radial-gradient(circle at center, rgba(var(--color-interact), 1) 2%, rgba(var(--color-interact), 0) 10%) no-repeat;
+        mix-blend-mode: var(--blending);
+        width: 100%;
+        height: 100%;
+        top: -50%;
+        left: -50%;
+        opacity: 1;
+    }
+
+    #cursor-container{
+        position: absolute;
+        filter: blur(5px) contrast(40) saturate(10);
+        z-index: 1000;
+    }
+
+    .custom-cursor, .custom-cursor-follower {
+        position: absolute;
+        background: rgb(156, 245, 255);
+        border-radius: 50%;
+        opacity: 1;
+        pointer-events: none;
+    }
+
+    .custom-cursor {
+        z-index: 1000;
+        width: 20px;
+        height: 20px;
+        filter: blur(1px) contrast(10);
+    }
+
+    .custom-cursor-follower {
+        z-index: 99;
+        width: 14px;
+        height: 14px;
+        transition: 0.02s ease;
+        top: 5px;
+        left: 5px;
+    }
+
+    .custom-cursor-follower:nth-child(2) {
+        width: 12px;
+        height: 12px;
+        opacity: 0.8;
+        transition: 0.04s ease;
+    }
+
+    .custom-cursor-follower:nth-child(3) {
+        width: 10px;
+        height: 10px;
+        opacity: 0.7;
+        transition: 0.05s ease;
+    }
+
+    .custom-cursor-follower:nth-child(4) {
+        width: 10px;
+        height: 10px;
+        opacity: 0.6;
+        transition: 0.06s ease;
+    }
+
+    .custom-cursor-follower:nth-child(5) {
+        width: 8px;
+        height: 8px;
+        opacity: 0.5;
+        transition: 0.07s ease;
+    }
+
+    .custom-cursor-follower:nth-child(6) {
+        width: 6px;
+        height: 6px;
+        opacity: 0.4;
+        transition: 0.08s ease;
+    }
+
+    .custom-cursor-follower:nth-child(7) {
+        width: 4px;
+        height: 4px;
+        opacity: 0.3;
+        transition: 0.09s ease;
+    }
+
+    .custom-cursor-follower:nth-child(8) {
+        width: 2px;
+        height: 2px;
+        opacity: 0.2;
+        transition: 0.1s ease;
+    }
+
+
+</style>
