@@ -1,10 +1,29 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Header from "../components/Header.astro";
+import Github from "../components/icons/Github.astro";
+import Linkedin from "../components/icons/Linkedin.astro";
 ---
 
-<Layout title="Welcome to Astro.">
+<Layout title="Oriel Arteaga">
 	<main>
-		<!--<button class="p-1 pr-2 pl-2 rounded border-2 bg-transparent hover:bg-amber-50 hover:opacity-30 cursor-none" >Click</button>-->
+		<section class="w-full mx-auto py-44">
+			<img
+				class="rounded-full"
+				src="src/assets/profile_pic.webp"
+				alt="oriel profile pic"
+				width="100px"
+				height="100px"
+			/>
+			<h1 class="text-6xl font-bold pb-10">Hey, I'm Oriel!</h1>
+			<h2 class="text-2xl opacity-80 text-pretty">
+				<span class="font-bold">+5 years of experience. </span>
+				Software Developer and Automation Engineer from Matanzas, Cuba.
+				Currently working at <a class="text-blue-500 font-bold" href="https://bizdirectconsulting.com/">Bizdirect Consulting</a>
+			</h2>
+			<Github/>
+			<Linkedin/>
+		</section>
 	</main>
 </Layout>
 
@@ -15,7 +34,6 @@ import Layout from '../layouts/Layout.astro';
 		width: 800px;
 		max-width: calc(100% - 2rem);
 		color: white;
-		font-size: 20px;
 		line-height: 1.6;
 	}
 </style>

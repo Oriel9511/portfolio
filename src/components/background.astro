@@ -9,23 +9,24 @@
     let tgY = 0;
     document.addEventListener('DOMContentLoaded',() => {
         const interactBubble = document.querySelector<HTMLDivElement>('.interactive');
+        const background = interactBubble.closest('.background') || document.body;
+
         function move(){
             bubX += (tgX - bubX) / 5;
             bubY += (tgY - bubY) / 5;
             interactBubble.style.transform = `translate(${Math.round(bubX)}px, ${Math.round(bubY)}px)`;
 
-            requestAnimationFrame(() => {
-                move();
-            });
+            requestAnimationFrame(move);
         }
 
         window.addEventListener("mousemove", (event) => {
-            tgX = event.clientX;
-            tgY = event.clientY;
-        })
+            const rect = background.getBoundingClientRect();
+            tgX = event.clientX - rect.left;
+            tgY = event.clientY - rect.top;
+        });
 
         move();
-    })
+    });
 </script>
 
 <svg xmlns="http://www.w3.org/2000/svg">
@@ -61,8 +62,8 @@
 <style>
 
     :root{
-        --color-bg1: rgb(108,0,106);
-        --color-bg2: rgb(0, 17, 82);
+        --color-bg1: rgb(81, 0, 80);
+        --color-bg2: rgb(0, 13, 53);
         --color-bg3: rgb(42, 0, 82);
         --color1: 29, 72, 138;
         --color2: 122, 43, 136;
@@ -83,6 +84,7 @@
 
     #bg-container{
         position: absolute;
+        min-height: 100vh;
         overflow: hidden;
         z-index: -100;
         top: 0;
@@ -153,7 +155,7 @@
 
     .g1 {
         position: absolute;
-        background: radial-gradient(circle at center, rgba(var(--color1), 0.8) 0, rgba(var(--color1), 0) 60%) no-repeat;
+        background: radial-gradient(circle at center, rgba(var(--color1), 0.8) 0, rgba(var(--color1), 0) 10%) no-repeat;
         mix-blend-mode: var(--blending);
         width: var(--circle-size);
         height: var(--circle-size);
@@ -162,12 +164,12 @@
         opacity: 0.7;
 
         transform-origin: center center;
-        animation: moveVertical 30s ease infinite;
+        animation: moveVertical 60s ease infinite;
     }
 
     .g2 {
         position: absolute;
-        background: radial-gradient(circle at center, rgba(var(--color2), 0.8) 0, rgba(var(--color2), 0) 60%) no-repeat;
+        background: radial-gradient(circle at center, rgba(var(--color2), 0.8) 0, rgba(var(--color2), 0) 10%) no-repeat;
         mix-blend-mode: var(--blending);
         width: var(--circle-size);
         height: var(--circle-size);
@@ -176,12 +178,12 @@
         opacity: 0.7;
 
         transform-origin: calc(50% - 400px);
-        animation: moveInCircle 60s reverse infinite;
+        animation: moveInCircle 120s reverse infinite;
     }
 
     .g3 {
         position: absolute;
-        background: radial-gradient(circle at center, rgba(var(--color3), 0.8) 0, rgba(var(--color3), 0) 60%) no-repeat;
+        background: radial-gradient(circle at center, rgba(var(--color3), 0.8) 0, rgba(var(--color3), 0) 10%) no-repeat;
         mix-blend-mode: var(--blending);
         width: var(--circle-size);
         height: var(--circle-size);
@@ -190,12 +192,12 @@
         opacity: 0.7;
 
         transform-origin: calc(50% + 400px);
-        animation: moveInCircle 40s linear infinite;
+        animation: moveInCircle 80s linear infinite;
     }
 
     .g4 {
         position: absolute;
-        background: radial-gradient(circle at center, rgba(var(--color4), 0.8) 0, rgba(var(--color4), 0) 60%) no-repeat;
+        background: radial-gradient(circle at center, rgba(var(--color4), 0.8) 0, rgba(var(--color4), 0) 10%) no-repeat;
         mix-blend-mode: var(--blending);
         width: var(--circle-size);
         height: var(--circle-size);
@@ -204,12 +206,12 @@
         opacity: 0.7;
 
         transform-origin: calc(50% - 200px);
-        animation: moveHorizontal 40s ease infinite;
+        animation: moveHorizontal 80s ease infinite;
     }
 
     .g5 {
         position: absolute;
-        background: radial-gradient(circle at center, rgba(var(--color5), 0.8) 0, rgba(var(--color5), 0) 60%) no-repeat;
+        background: radial-gradient(circle at center, rgba(var(--color5), 0.8) 0, rgba(var(--color5), 0) 10%) no-repeat;
         mix-blend-mode: var(--blending);
         width: calc(var(--circle-size));
         height: calc(var(--circle-size));
@@ -218,12 +220,12 @@
         opacity: 0.7;
 
         transform-origin: calc(50% - 800px) calc(50% + 200px);
-        animation: moveInCircle 50s ease infinite;
+        animation: moveInCircle 100s ease infinite;
     }
 
     .g6 {
         position: absolute;
-        background: radial-gradient(circle at center, rgba(var(--color6), 0.8) 0, rgba(var(--color6), 0) 60%) no-repeat;
+        background: radial-gradient(circle at center, rgba(var(--color6), 0.8) 0, rgba(var(--color6), 0) 10%) no-repeat;
         mix-blend-mode: var(--blending);
         width: var(--circle-size);
         height: var(--circle-size);
@@ -232,7 +234,7 @@
         opacity: 0.7;
 
         transform-origin: center center;;
-        animation: moveDiagonal 60s reverse infinite;
+        animation: moveDiagonal 120s reverse infinite;
     }
 
     @keyframes moveInCircle {
@@ -288,7 +290,7 @@
 
     .interactive {
         position: absolute;
-        background: radial-gradient(circle at center, rgba(var(--color-interact), 1) 2%, rgba(var(--color-interact), 0) 10%) no-repeat;
+        background: radial-gradient(circle at center, rgba(var(--color-interact), 1) 5%, rgba(var(--color-interact), 0) 2%) no-repeat;
         mix-blend-mode: var(--blending);
         width: 100%;
         height: 100%;
