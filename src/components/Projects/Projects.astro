@@ -1,0 +1,98 @@
+---
+import ProjectCard from "./ProjectCard.astro";
+const projects = [
+    {
+        title: "Lims Software for Labstat",
+        description: "Application for managing toxicology and chemical testing laboratories for Labstat. Developed with .net using WinForms and DevExpress, it utilizes web services and includes a web app developed with Asp.Net MVC where clients can manage their own product tests.",
+        tags: [
+            ".Net", "Winforms", "MVC"
+        ]
+    },
+    {
+        title: "Chinook Treaters Form OCR Web App",
+        description: "Form recognition application, serverless based on Azure Functions. It features a web app made in VueJs where users can view and manage information extracted from forms. This information is stored in a multi-tenant database.",
+        tags: [
+            "Asp.Net", "Azure Services", "Serverless", "VueJs", "TS"
+        ]
+    },
+    {
+        title: "Salon-Spa Management for Aevi",
+        description: "Odoo module for comprehensive salon management, customized to the client's specific needs. It includes service management, service categories, teams, rooms, a scheduler for appointments, and auto-planning for employee shifts. Appointments can be generated automatically or manually, with a custom point of sale. Real-time appointment synchronization and an online booking site developed in React integrated into the Odoo routing system.",
+        tags: [
+            "Odoo platform", "Owl", "Python", "JS", "React", "Mui", "Bryntum Calendar"
+        ]
+    },
+    {
+        title: "Odoo and Meevo Integration Module",
+        description: "An integration module for managing and transferring data between Meevo and Odoo.",
+        tags: [
+            "Odoo platform", "Owl", "Python", "JS"
+        ]
+    },
+    {
+        title: "Doc-Query-Chat",
+        description: "Application working with a vector database that allows loading large documents and querying them. It has conversational memory and uses the OpenAI API.",
+        tags: [
+            "NextJS", "LangChain", "OpenAI API", "TS"
+        ]
+    },
+    {
+        title: "Rest API for Data Consulting",
+        description: "Rest API developed for Data Consulting.",
+        tags: [
+            "Autogen", "FastAPI", "Python"
+        ]
+    },
+    {
+        title: "Process Mapping Integration Tool",
+        description: "Integration between Miro and Notion, later migrated to Airtable. Allows creating flow diagrams in Miro with custom properties for each shape. These data are stored in Airtable for later consultation and management.",
+        tags: [
+            "NextJS", "ExpressJS", "MSSQL Server", "TS", "Redis", "Notion"
+        ]
+    },
+    {
+        title: "Form Data Extraction",
+        description: "Custom application for extracting data from handwritten forms and templates. The extracted information can be exported to Excel or PDF format.",
+        tags: [
+            "Azure Form Recognizer", "Blazor"
+        ]
+    },
+    {
+        title: "Smart Store ERP",
+        description: "Custom app for centralized management of multiple online stores. Allows viewing general statistics of different stores, managing employees, creating general or store-specific offers, managing customer information, and overseeing products, warehouses, and purchase orders.",
+        tags: [
+            "Asp.Net", "NextJs", "Azure Functions", "MSSQL Server", "TS"
+        ]
+    },
+    {
+        title: "Quote Direct ERP",
+        description: "ERP oriented towards construction companies, it allows managing quotes, sales orders, invoices, materials, employees. It is multi-tenant and has project and service template creation functionalities.",
+        tags: [
+            "Asp.Net", "VueJs", "MSSQL Server", "TS"
+        ]
+    },
+    {
+        title: "Warehouse Management System",
+        description: "A system to manage a warehouse, handle normal warehouse movements, list materials, etc.",
+        tags: [
+            "Asp.Net", "Blazor", "MSSQL Server"
+        ]
+    },
+    {
+        title: "Make an Offer Custom Card for Hubspot",
+        description: "Private app to create a custom card for managing real estate offer processes for Los Cabos real estate companies. Uses NodeJs serverless for the backend and React for the frontend.",
+        tags: [
+            "NodeJs", "React"
+        ]
+    }
+];
+
+---
+
+<div class="w-full flex flex-col gap-4">
+        {
+                projects.map(project => (
+                        <ProjectCard {...project}/>
+                ))
+        }
+</div>

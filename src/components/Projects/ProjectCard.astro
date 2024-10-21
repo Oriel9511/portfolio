@@ -1,0 +1,12 @@
+---
+import TagProjectPill from "./TagProjectPill.astro";
+const {title, description, tags} = Astro.props;
+---
+
+<article class="flex flex-col gap-y-2 border border-white/10 rounded-lg p-4 w-full">
+    <h2 class="text-lg font-semibold">
+        {title}
+    </h2>
+    <p set:html={description} class="mb-4 text-base font-normal text-gray-400"></p>
+    <TagProjectPill tags={tags}/>
+</article>

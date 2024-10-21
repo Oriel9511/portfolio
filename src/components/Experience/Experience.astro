@@ -1,0 +1,44 @@
+---
+import ExperienceItem from "./ExperienceItem.astro";
+const experience = [
+    {
+        date: "Sept 2024 – Present...",
+        title: "Cassandra Software",
+        description: `As a full-stack developer, I work with technologies like Nodejs, React, and Odoo ERP. In this role, I have taken on the responsibility of developing custom Hubspot CRM cards and custom Odoo modules for various clients. Although the projects can be simple, their impact is significant, as each solution is designed to meet specific requirements and improve clients' operational efficiency.`,
+        link: "https://www.casandrasoft.com/",
+    },
+    {
+        date: "Aug 2024 - Sept 2024",
+        title: "Helpia",
+        description: `At Helpia, I worked as a developer consultant specializing in NodeJs and React using a microservices architecture with AWS Lambda. My main role was to provide temporary assistance and make crucial changes to the architecture of some projects. I had to learn quickly and apply my knowledge to improve the scalability and flexibility of existing solutions.`,
+        link: "https://www.helpia.com/",
+    },
+    {
+        date: "Mar 2024 - Oct 2024",
+        title: "IsuCorp",
+        description: `As a full-stack developer at IsuCorp, I worked on the .Net platform, being part of a team responsible for maintaining and improving existing software. My contribution included bug fixing, implementing new features, and enhancing software efficiency and performance. This experience allowed me to strengthen my skills in software development and maintenance in collaborative environments.`,
+        link: "https://www.isucorp.ca",
+    },
+    {
+        date: "May 2020 – Present...",
+        title: "Bizdirect Consulting Inc.",
+        description: `As a full-stack developer, working with Asp.Net, Node.js, Odoo ERP, React and VueJs. I am currently the dev leader of a small team of 4 developers, working on numerous projects for various clients and businesses.`,
+        link: "https://bizdirectconsulting.com",
+    },
+    {
+        date: "Oct 2019 - Oct 2021",
+        title: "CEDAI",
+        description: `At CEDAI, I worked as a hardware programmer, using Assembler, C, C++ and working with PLCs and Arduino. My role included programming and implementing control algorithms for industrial projects. This experience allowed me to develop automated and efficient control solutions, applying my knowledge in hardware programming and control algorithms.`,
+        link: "https://www.linkedin.com/company/cedai-empresa-de-automatizaci%C3%B3n-integral/?originalSubdomain=cu",
+    },
+];
+---
+
+<ol {...Astro.props} class={`relative border-s border-gray-200 dark:border-gray-700 ml-3 ${Astro.props.class}`}>
+    {experience.map((item) => (
+        <li class="mb-10 ms-4">
+            <ExperienceItem {...item}/>
+        </li>
+    ))}
+</ol>
+
