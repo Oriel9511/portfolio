@@ -1,13 +1,54 @@
 ---
+import DotNetIcon from "../icons/DotNetIcon.astro";
+import WinformsIcon from '../icons/WinformsIcon.astro';
+import AzureIcon from '../icons/AzureIcon.astro';
+import VueIcon from '../icons/VueIcon.astro';
+import TsIcon from '../icons/TsIcon.astro';
+import PyIcon from '../icons/PyIcon.astro';
+import ReactIcon from '../icons/ReactIcon.astro';
+import JsIcon from '../icons/JsIcon.astro';
+import NextJsIcon from '../icons/NextJsIcon.astro';
+import OpenAiIcon from '../icons/OpenAiIcon.astro';
+import FastApiIcon from '../icons/FastApiIcon.astro';
+import ExpressIcon from '../icons/ExpressIcon.astro';
+import MssqlServerIcon from '../icons/MssqlServerIcon.astro';
+import RedisIcon from '../icons/RedisIcon.astro';
+import NotionIcon from '../icons/NotionIcon.astro';
+import BlazorIcon from '../icons/BlazorIcon.astro';
+import NodeJsIcon from '../icons/NodeJsIcon.astro';
+
 const {tags} = Astro.props;
+
+const componentsMap = {
+    'dotNet': DotNetIcon,
+    'Winforms': WinformsIcon,
+    'Azure Services': AzureIcon,
+    'VueJs': VueIcon,
+    'Typescript': TsIcon,
+    'Python': PyIcon,
+    'React': ReactIcon,
+    'Javascript': JsIcon,
+    'NextJs': NextJsIcon,
+    'OpenAI API': OpenAiIcon,
+    'FastAPI': FastApiIcon,
+    'ExpressJS': ExpressIcon,
+    'MSSQL Server': MssqlServerIcon,
+    'Redis': RedisIcon,
+    'Notion': NotionIcon,
+    'Azure Form Recognizer': AzureIcon,
+    'Blazor': BlazorIcon,
+    'NodeJs': NodeJsIcon
+};
+
 ---
 <div class="flex flex-wrap gap-2">
-    { tags.map((tag) => (
-        <div
+    { tags.map((tag) => {
+        const IconComponent = componentsMap[tag];
+        return(<div
             class="w-fit rounded-md font-bold text-sm border border-white/10 flex justify-center items-center gap-x-2 py-2 px-4 bg-white/10 hover:bg-white/10 transition"
             {...Astro.props}
         >
-            {tag}
-        </div>
-    ))}
+            {IconComponent && <IconComponent/>} {tag}
+        </div>)}
+    )}
 </div>

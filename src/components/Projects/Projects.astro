@@ -1,42 +1,58 @@
 ---
 import ProjectCard from "./ProjectCard.astro";
+import DotNetIcon from "../icons/DotNetIcon.astro";
+
 const projects = [
     {
+        id: "make-an-offer",
+        title: "Make an Offer Custom Card for Hubspot",
+        description: "Private app to create a custom card for managing real estate offer processes for Los Cabos real estate companies. Uses NodeJs serverless for the backend and React for the frontend.",
+        tags: [
+            "NodeJs", "React"
+        ]
+    },
+    {
+        id: "labstat",
         title: "Lims Software for Labstat",
         description: "Application for managing toxicology and chemical testing laboratories for Labstat. Developed with .net using WinForms and DevExpress, it utilizes web services and includes a web app developed with Asp.Net MVC where clients can manage their own product tests.",
         tags: [
-            ".Net", "Winforms", "MVC"
+            "dotNet", "Winforms", "MVC"
         ]
     },
     {
+        id: "ch-forms",
         title: "Chinook Treaters Form OCR Web App",
         description: "Form recognition application, serverless based on Azure Functions. It features a web app made in VueJs where users can view and manage information extracted from forms. This information is stored in a multi-tenant database.",
         tags: [
-            "Asp.Net", "Azure Services", "Serverless", "VueJs", "TS"
+            "dotNet", "Azure Services", "Serverless", "VueJs", "Typescript"
         ]
     },
     {
+        id: "aevi-spa",
         title: "Salon-Spa Management for Aevi",
         description: "Odoo module for comprehensive salon management, customized to the client's specific needs. It includes service management, service categories, teams, rooms, a scheduler for appointments, and auto-planning for employee shifts. Appointments can be generated automatically or manually, with a custom point of sale. Real-time appointment synchronization and an online booking site developed in React integrated into the Odoo routing system.",
         tags: [
-            "Odoo platform", "Owl", "Python", "JS", "React", "Mui", "Bryntum Calendar"
+            "Odoo ERP", "Python", "Typescript", "React", "Mui", "Bryntum Calendar"
         ]
     },
     {
+        id: "meevo-integration",
         title: "Odoo and Meevo Integration Module",
         description: "An integration module for managing and transferring data between Meevo and Odoo.",
         tags: [
-            "Odoo platform", "Owl", "Python", "JS"
+            "Odoo ERP", "Owl", "Python", "Javascript"
         ]
     },
     {
+        id: "doc-query-chat",
         title: "Doc-Query-Chat",
         description: "Application working with a vector database that allows loading large documents and querying them. It has conversational memory and uses the OpenAI API.",
         tags: [
-            "NextJS", "LangChain", "OpenAI API", "TS"
+            "NextJs", "LangChain", "OpenAI API", "Typescript"
         ]
     },
     {
+        id: "api-data-consulting",
         title: "Rest API for Data Consulting",
         description: "Rest API developed for Data Consulting.",
         tags: [
@@ -44,55 +60,136 @@ const projects = [
         ]
     },
     {
+        id: "process-mapping-integration",
         title: "Process Mapping Integration Tool",
         description: "Integration between Miro and Notion, later migrated to Airtable. Allows creating flow diagrams in Miro with custom properties for each shape. These data are stored in Airtable for later consultation and management.",
         tags: [
-            "NextJS", "ExpressJS", "MSSQL Server", "TS", "Redis", "Notion"
+            "NextJs", "ExpressJS", "MSSQL Server", "Typescript", "Redis", "Notion"
         ]
     },
     {
+        id: "form-data-extraction",
         title: "Form Data Extraction",
         description: "Custom application for extracting data from handwritten forms and templates. The extracted information can be exported to Excel or PDF format.",
         tags: [
-            "Azure Form Recognizer", "Blazor"
+            "dotNet", "Azure Form Recognizer", "Blazor"
         ]
     },
     {
+        id: "smart-store",
         title: "Smart Store ERP",
         description: "Custom app for centralized management of multiple online stores. Allows viewing general statistics of different stores, managing employees, creating general or store-specific offers, managing customer information, and overseeing products, warehouses, and purchase orders.",
         tags: [
-            "Asp.Net", "NextJs", "Azure Functions", "MSSQL Server", "TS"
+            "dotNet", "NextJs", "Azure Functions", "MSSQL Server", "Typescript"
         ]
     },
     {
+        id: "quote-direct",
         title: "Quote Direct ERP",
         description: "ERP oriented towards construction companies, it allows managing quotes, sales orders, invoices, materials, employees. It is multi-tenant and has project and service template creation functionalities.",
         tags: [
-            "Asp.Net", "VueJs", "MSSQL Server", "TS"
+            "dotNet", "VueJs", "MSSQL Server", "Typescript"
         ]
     },
     {
+        id: "wms",
         title: "Warehouse Management System",
-        description: "A system to manage a warehouse, handle normal warehouse movements, list materials, etc.",
+        description: "The Warehouse Management System (WMS) is designed to handle all aspects of warehouse operations. It manages routine warehouse movements, maintains detailed lists of materials, and ensures efficient handling of inventory from reception to dispatch. This system optimizes storage space, supports real-time inventory tracking, and improves overall efficiency by guiding workers through their tasks using mobile devices and barcode scanners. It's the backbone of streamlined warehouse management, ensuring everything runs smoothly and efficiently.",
         tags: [
-            "Asp.Net", "Blazor", "MSSQL Server"
+            "dotNet", "Blazor", "MSSQL Server"
         ]
     },
-    {
-        title: "Make an Offer Custom Card for Hubspot",
-        description: "Private app to create a custom card for managing real estate offer processes for Los Cabos real estate companies. Uses NodeJs serverless for the backend and React for the frontend.",
-        tags: [
-            "NodeJs", "React"
-        ]
-    }
 ];
 
 ---
 
 <div class="w-full flex flex-col gap-4">
         {
-                projects.map(project => (
-                        <ProjectCard {...project}/>
-                ))
+            projects.map(project => (
+                    <ProjectCard id={project.id} {...project}/>
+            ))
         }
 </div>
+
+<!--<style>-->
+<!--    #wms {-->
+<!--        animation: revealing;-->
+<!--        animation-timeline: view(block);-->
+<!--        animation-range: cover 0% cover 25%;-->
+<!--        margin: 0px;-->
+<!--    }-->
+<!--    #quote-direct {-->
+<!--        animation: revealing;-->
+<!--        animation-timeline: view(block);-->
+<!--        animation-range: cover 0% cover 50%;-->
+<!--        margin: 0px;-->
+<!--    }-->
+<!--    #smart-store {-->
+<!--        animation: revealing;-->
+<!--        animation-timeline: view(block);-->
+<!--        animation-range: cover 0% cover 50%;-->
+<!--        margin: 0px;-->
+<!--    }-->
+<!--    #form-data-extraction {-->
+<!--        animation: revealing;-->
+<!--        animation-timeline: view(block);-->
+<!--        animation-range: cover 0% cover 50%;-->
+<!--        margin: 0px;-->
+<!--    }-->
+<!--    #process-mapping-integration {-->
+<!--        animation: revealing;-->
+<!--        animation-timeline: view(block);-->
+<!--        animation-range: cover 0% cover 50%;-->
+<!--        margin: 0px;-->
+<!--    }-->
+<!--    #api-data-consulting {-->
+<!--        animation: revealing;-->
+<!--        animation-timeline: view(block);-->
+<!--        animation-range: cover 0% cover 50%;-->
+<!--        margin: 0px;-->
+<!--    }-->
+<!--    #doc-query-chat {-->
+<!--        animation: revealing;-->
+<!--        animation-timeline: view(block);-->
+<!--        animation-range: cover 0% cover 50%;-->
+<!--        margin: 0px;-->
+<!--    }-->
+<!--    #meevo-integration {-->
+<!--        animation: revealing;-->
+<!--        animation-timeline: view(block);-->
+<!--        animation-range: cover 0% cover 50%;-->
+<!--        margin: 0px;-->
+<!--    }-->
+<!--    #aevi-spa {-->
+<!--        animation: revealing;-->
+<!--        animation-timeline: view(block);-->
+<!--        animation-range: cover 0% cover 50%;-->
+<!--        margin: 0px;-->
+<!--    }-->
+<!--    #ch-forms {-->
+<!--        animation: revealing;-->
+<!--        animation-timeline: view(block);-->
+<!--        animation-range: cover 0% cover 50%;-->
+<!--        margin: 0px;-->
+<!--    }-->
+<!--    #labstat {-->
+<!--        animation: revealing;-->
+<!--        animation-timeline: view(block);-->
+<!--        animation-range: cover 0% cover 50%;-->
+<!--        margin: 0px;-->
+<!--    }-->
+<!--    #make-an-offer {-->
+<!--        animation: revealing;-->
+<!--        animation-timeline: view(block);-->
+<!--        animation-range: cover 0% cover 50%;-->
+<!--        margin: 0px;-->
+<!--    }-->
+<!--    @keyframes revealing {-->
+<!--        from {-->
+<!--            margin-left: 100vw;-->
+<!--        }-->
+<!--        to {-->
+<!--            margin: 0px;-->
+<!--        }-->
+<!--    }-->
+<!--</style>-->
