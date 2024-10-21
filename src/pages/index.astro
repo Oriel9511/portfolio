@@ -9,11 +9,19 @@ import Container from "../components/Container.astro";
 import Work from "../components/icons/Work.astro";
 import Projects from "../components/Projects/Projects.astro";
 import Code from "../components/icons/Code.astro";
+import UserIcon from "../components/icons/UserIcon.astro";
+import CoreStrenth from "../components/Skills/CoreStrenth.astro";
+import TechnicalSkills from "../components/Skills/TechnicalSkills.astro";
+import ToolsIcon from "../components/icons/ToolsIcon.astro";
+import AboutMe from "../components/About/AboutMe.astro";
+import CoreIcon from "../components/icons/CoreIcon.astro";
+import TelegramIcon from "../components/icons/TelegramIcon.astro";
+import WhatsappIcon from "../components/icons/WhatsappIcon.astro";
 ---
 
 <Layout title="Oriel Arteaga. Portfolio">
 	<main>
-		<Container id="home" class="pt-44 pb-24">
+		<Container id="home" class="pt-56">
 			<img
 				class="rounded-full"
 				src="public/profile_pic.webp"
@@ -28,30 +36,57 @@ import Code from "../components/icons/Code.astro";
 				Currently working at <a class="text-blue-500 font-bold" href="https://bizdirectconsulting.com/">Bizdirect Consulting</a>
 			</h2>
 			<section aria-label="Social links" class="flex gap-x-4 pt-10">
-				<Pills href="https://github.com/Oriel9511">
+				<Pills href="https://github.com/Oriel9511" class="hover:bg-gray-800 hover:bg-opacity-70 hover:text-white">
 					<Github/> Github
 				</Pills>
-				<Pills href="https://www.linkedin.com/in/oriel-arteaga-jiménez-2b5768180">
+				<Pills href="https://www.linkedin.com/in/oriel-arteaga-jiménez-2b5768180" class="hover:bg-blue-600 hover:bg-opacity-70 hover:text-white">
 					<Linkedin/> Linkedin
 				</Pills>
-				<Pills href="mailto:orielarteagaj@gmail.com">
+				<Pills href="mailto:orielarteagaj@gmail.com" class="hover:bg-red-600 hover:bg-opacity-70 hover:text-white">
 					<Mail/> Email
+				</Pills>
+				<Pills href="https://t.me/ORIEL95" class="hover:bg-blue-500 hover:bg-opacity-70 hover:text-white">
+					<TelegramIcon/> Telegram
+				</Pills>
+				<Pills href="https://wa.me/5353361122" class="hover:bg-green-700 hover:bg-opacity-70 hover:text-white">
+					<WhatsappIcon/> Whatsapp
 				</Pills>
 			</section>
 		</Container>
-		<Container id="experience">
+		<Container id="core" class="pt-24">
+			<h2 class="text-2xl font-bold pb-10 flex items-center gap-x-3">
+				<CoreIcon/>
+				Core Strengths
+			</h2>
+			<CoreStrenth/>
+		</Container>
+		<Container id="skills" class="pt-24">
+			<h2 class="text-2xl font-bold pb-10 flex items-center gap-x-3">
+				<ToolsIcon/>
+				Technical Skills
+			</h2>
+			<TechnicalSkills/>
+		</Container>
+		<Container id="experience" class="pt-24">
 			<h2 class="text-2xl font-bold pb-10 flex items-center gap-x-3">
 				<Work/>
 				Work Experience
 			</h2>
 			<Experience/>
 		</Container>
-		<Container id="projects">
+		<Container id="projects" class="pt-24">
 			<h2 class="text-2xl font-bold pb-10 flex items-center gap-x-3">
 				<Code/>
 				Major Projects
 			</h2>
 			<Projects/>
+		</Container>
+		<Container id="about" class="pt-24">
+			<h2 class="text-2xl font-bold pb-10 flex items-center gap-x-3">
+				<UserIcon/>
+				About Me
+			</h2>
+			<AboutMe/>
 		</Container>
 	</main>
 </Layout>

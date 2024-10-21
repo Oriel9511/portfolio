@@ -1,15 +1,20 @@
 ---
-
+const links = [
+    { href: "#top", text: "Home" },
+    { href: "#experience", text: "Experience" },
+    { href: "#projects", text: "Projects" },
+    { href: "#core", text: "Core Strength" },
+    { href: "#skills", text: "Technical Skills" },
+    { href: "#about", text: "About" },
+];
 ---
 
-<header class="flex justify-center items-center w-[1250px] opacity-80 p-2">
-    <nav class="flex gap-x-10 text-2xl">
-        <a href="#top">Home</a>
-        <a href="#experience">Experience</a>
-        <a href="#projects">Projects</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
-    </nav>
+<header class="flex justify-center items-center p-3 fixed z-10 backdrop-blur-xl top-0 left-0 w-full">
+      <nav class="flex gap-x-10 text-2xl">
+          {links.map((link) => (
+              <a class="hover:text-blue-400" href={link.href}>{link.text}</a>
+          ))}
+      </nav>
 </header>
 
 <style>

@@ -1,0 +1,68 @@
+---
+import TeamIcon from "../icons/TeamIcon.astro";
+import BusinessIcon from "../icons/BusinessIcon.astro";
+import ExclamationIcon from "../icons/ExclamationIcon.astro";
+import BookIcon from "../icons/BookIcon.astro";
+import TalkIcon from "../icons/TalkIcon.astro";
+import BulbIcon from "../icons/BulbIcon.astro";
+import FLuentIcon from "../icons/FLuentIcon.astro"
+
+// Array de fortalezas
+const strengths = [
+    {
+        title: 'Teamwork',
+        description: 'Collaborative spirit and ability to work effectively with others to achieve common goals.',
+        icon: TeamIcon,
+        class: ''
+    },
+    {
+        title: 'Sense of Commitment',
+        description: 'Dedication and reliability in completing tasks and honoring commitments.',
+        icon: BusinessIcon,
+        class: 'text-sky-400'
+    },
+    {
+        title: 'Personal Initiative',
+        description: 'Proactively seeking opportunities and taking action without waiting for direction.',
+        icon: ExclamationIcon,
+        class: ''
+    },
+    {
+        title: 'Quick Learning',
+        description: 'Ability to rapidly grasp new concepts and adapt to new environments.',
+        icon: BookIcon,
+        class: ''
+    },
+    {
+        title: 'Communication in English and Spanish',
+        description: 'Proficient in expressing ideas and information clearly in both languages.',
+        icon: TalkIcon,
+        class: 'text-red-400'
+    },
+    {
+        title: 'Problem-Solving',
+        description: 'Skilled at identifying issues and developing effective solutions.',
+        icon: BulbIcon,
+        class: 'text-yellow-400'
+    },
+    {
+        title: 'Adaptability',
+        description: 'Flexible and open to change, able to adjust to new challenges and circumstances.',
+        icon: FLuentIcon,
+        class: 'text-purple-400'
+    }
+];
+---
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+    {strengths.map(strength => (
+            <article class="border border-white/10 rounded-lg p-4 w-full">
+                <h2 class="text-xl font-semibold flex items-center gap-x-2">
+                    {strength.icon && <strength.icon class={strength.class}/>} {strength.title}
+                </h2>
+                <p class="mb-4 text-base font-normal text-lg text-gray-400">
+                    {strength.description}
+                </p>
+            </article>
+    ))}
+</div>
