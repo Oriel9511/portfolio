@@ -1,22 +1,24 @@
 ---
 const technicalSkills = [
-    { skill: 'Asp.Net', class: 'bg-blue-100 bg-opacity-60 text-blue-700' },
-    { skill: 'NodeJS', class: 'bg-green-100 bg-opacity-60 text-green-700' },
-    { skill: 'API REST', class: 'bg-gray-100 bg-opacity-60 text-gray-700' },
-    { skill: 'Vue', class: 'bg-green-100 bg-opacity-60 text-green-700' },
-    { skill: 'NextJS', class: 'bg-gray-100 bg-opacity-60 text-gray-700' },
-    { skill: 'Blazor', class: 'bg-blue-100 bg-opacity-60 text-blue-700' },
-    { skill: 'C# TS, Python, SQL', class: 'bg-yellow-100 bg-opacity-60 text-yellow-700' },
-    { skill: 'Microsoft Visual Studio', class: 'bg-purple-100 bg-opacity-60 text-purple-700' },
-    { skill: 'JetBrains IDEs', class: 'bg-orange-100 bg-opacity-60 text-orange-700' },
-    { skill: 'Azure Platform', class: 'bg-blue-100 bg-opacity-60 text-blue-700' }
+    { skill: 'Asp.Net', style: 'background-color: rgba(219, 234, 254, 0.6); color: rgb(29, 78, 216);' },
+    { skill: 'NodeJS', style: 'background-color: rgba(220, 252, 231, 0.6); color: rgb(21, 128, 61);' },
+    { skill: 'API REST', style: 'background-color: rgba(243, 244, 246, 0.6); color: rgb(55, 65, 81);' },
+    { skill: 'Vue', style: 'background-color: rgba(220, 252, 231, 0.6); color: rgb(21, 128, 61);' },
+    { skill: 'NextJS', style: 'background-color: rgba(243, 244, 246, 0.6); color: rgb(55, 65, 81);' },
+    { skill: 'Blazor', style: 'background-color: rgba(219, 234, 254, 0.6); color: rgb(29, 78, 216);' },
+    { skill: 'C# TS, Python, SQL', style: 'background-color: rgba(254, 249, 195, 0.6); color: rgb(161, 98, 7);' },
+    { skill: 'Microsoft Visual Studio', style: 'background-color: rgba(243, 232, 255, 0.6); color: rgb(126, 34, 206);' },
+    { skill: 'JetBrains IDEs', style: 'background-color: rgba(255, 237, 213, 0.6); color: rgb(194, 65, 12);' },
+    { skill: 'Azure Platform', style: 'background-color: rgba(219, 234, 254, 0.6); color: rgb(29, 78, 216);' }
 ];
 ---
 
 <div class="flex flex-wrap gap-6 p-4">
     {technicalSkills.map(skill => (
-            <span class={`px-4 py-2 rounded-full font-medium whitespace-nowrap ${skill.class}`}>
-      {skill.skill}
-    </span>
+        <span
+            class="px-6 py-4 md:px-4 md:py-2 text-4xl md:text-2xl text-center rounded-full font-medium whitespace-nowrap"
+            style={skill.style}>
+            {skill.skill}
+        </span>
     ))}
 </div>

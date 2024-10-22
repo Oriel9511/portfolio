@@ -21,7 +21,7 @@ import WhatsappIcon from "../components/icons/WhatsappIcon.astro";
 
 <Layout title="Oriel Arteaga. Portfolio">
 	<main>
-		<Container id="home" class="pt-56">
+		<Container id="home" class="pt-56 flex flex-col items-center md:items-start gap-y-1">
 			<img
 				class="rounded-full"
 				src="/portfolio/profile_pic.webp"
@@ -30,12 +30,12 @@ import WhatsappIcon from "../components/icons/WhatsappIcon.astro";
 				height="100px"
 			/>
 			<h1 class="text-6xl font-bold pb-10">Hey, I'm Oriel!</h1>
-			<h2 class="text-2xl opacity-80 text-pretty">
+			<h2 class="md:text-2xl text-center md:text-start text-3xl opacity-80 text-pretty">
 				<span class="font-bold">+5 years of experience. </span>
 				<span class="text-sky-400">Software Developer and Automation Engineer</span> from Matanzas, Cuba.
 				Currently working at <a class="text-blue-500 font-bold" href="https://bizdirectconsulting.com/">Bizdirect Consulting</a>
 			</h2>
-			<section aria-label="Social links" class="flex gap-x-4 pt-10">
+			<section aria-label="Social links" class="flex flex-wrap md:flex-row gap-4 pt-10">
 				<Pills href="https://github.com/Oriel9511" class="github-pill">
 					<Github/> Github
 				</Pills>
@@ -54,35 +54,35 @@ import WhatsappIcon from "../components/icons/WhatsappIcon.astro";
 			</section>
 		</Container>
 		<Container id="core" class="pt-24">
-			<h2 class="text-2xl font-bold pb-10 flex items-center gap-x-3">
+			<h2 class="text-4xl md:text-2xl font-bold pb-10 flex items-center gap-x-3">
 				<CoreIcon/>
 				Core Strengths
 			</h2>
 			<CoreStrenth/>
 		</Container>
 		<Container id="skills" class="pt-24">
-			<h2 class="text-2xl font-bold pb-10 flex items-center gap-x-3">
+			<h2 class="text-4xl md:text-2xl font-bold pb-10 flex items-center gap-x-3">
 				<ToolsIcon/>
 				Technical Skills
 			</h2>
 			<TechnicalSkills/>
 		</Container>
 		<Container id="experience" class="pt-24">
-			<h2 class="text-2xl font-bold pb-10 flex items-center gap-x-3">
+			<h2 class="text-4xl md:text-2xl font-bold pb-10 flex items-center gap-x-3">
 				<Work/>
 				Work Experience
 			</h2>
 			<Experience/>
 		</Container>
 		<Container id="projects" class="pt-24">
-			<h2 class="text-2xl font-bold pb-10 flex items-center gap-x-3">
+			<h2 class="text-4xl md:text-2xl font-bold pb-10 flex items-center gap-x-3">
 				<Code/>
 				Major Projects
 			</h2>
 			<Projects/>
 		</Container>
 		<Container id="about" class="pt-24">
-			<h2 class="text-2xl font-bold pb-10 flex items-center gap-x-3">
+			<h2 class="text-4xl md:text-2xl font-bold pb-10 flex items-center gap-x-3">
 				<UserIcon/>
 				About Me
 			</h2>

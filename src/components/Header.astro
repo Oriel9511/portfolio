@@ -10,13 +10,64 @@ const links = [
 ---
 
 <header class="flex justify-center px-6 items-center text-center p-3 fixed z-10 backdrop-blur-xl top-0 left-0 w-full">
-      <nav class="flex gap-x-10 text-2xl">
-          {links.map((link) => (
-              <a class="hover:text-blue-400" href={link.href}>{link.text}</a>
-          ))}
-      </nav>
+    <nav class="hidden md:flex gap-x-10 text-2xl">
+        {links.map((link) => (
+            <a class="hover:text-blue-400" href={link.href}>{link.text}</a>
+        ))}
+    </nav>
+    <div class="md:hidden">
+        <button id="menu-toggle" class="text-4xl">☰</button>
+    </div>
 </header>
 
-<style>
+<div id="mobile-menu" class="fixed inset-0 backdrop-blur-lg bg-opacity-10 bg-white z-20 hidden flex-col items-center justify-center opacity-0 transition-opacity duration-300 ease-in-out">
+    <button id="close-menu" class="absolute top-4 right-4 text-5xl">✕</button>
+    <nav class="flex flex-col gap-y-10 text-4xl text-center">
+        {links.map((link) => (
+            <a class="hover:text-blue-400 bg-white/10 backdrop-blur-sm px-8 py-4 rounded-lg transition-all duration-300 hover:bg-white/20" href={link.href}>{link.text}</a>
+        ))}
+    </nav>
+</div>
 
+<style>
+    .mobile-menu-open {
+        overflow: hidden;
+    }
 </style>
+
+<script>
+    const menuToggle = document.getElementById('menu-toggle');
+    const closeMenu = document.getElementById('close-menu');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    menuToggle.addEventListener('click', () => {
+        mobileMenu.classList.remove('hidden');
+        mobileMenu.classList.add('flex');
+        document.body.classList.add('mobile-menu-open');
+        setTimeout(() => {
+            mobileMenu.classList.add('opacity-100');
+        }, 10);
+    });
+
+    closeMenu.addEventListener('click', () => {
+        mobileMenu.classList.remove('opacity-100');
+        setTimeout(() => {
+            mobileMenu.classList.add('hidden');
+            mobileMenu.classList.remove('flex');
+            document.body.classList.remove('mobile-menu-open');
+        }, 300);
+    });
+
+    // Close menu when clicking on a link
+    const mobileLinks = mobileMenu.querySelectorAll('a');
+    mobileLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.remove('opacity-100');
+            setTimeout(() => {
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('flex');
+                document.body.classList.remove('mobile-menu-open');
+            }, 300);
+        });
+    });
+</script>
