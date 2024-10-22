@@ -21,21 +21,21 @@ import WhatsappIcon from "../components/icons/WhatsappIcon.astro";
 
 <Layout title="Oriel Arteaga. Portfolio">
 	<main>
-		<Container id="home" class="pt-56 flex flex-col items-center md:items-start gap-y-1">
+		<Container id="home" class="pt-56 flex flex-col items-center md:items-start gap-y-1 animate-fade-in">
 			<img
-				class="rounded-full"
+				class="rounded-full animate-fade-in-up"
 				src="/portfolio/profile_pic.webp"
 				alt="oriel profile pic"
 				width="100px"
 				height="100px"
 			/>
-			<h1 class="text-6xl font-bold pb-10">Hey, I'm Oriel!</h1>
-			<h2 class="md:text-2xl text-center md:text-start text-3xl opacity-80 text-pretty">
+			<h1 class="text-6xl font-bold pb-10 animate-fade-in-up">Hey, I'm Oriel!</h1>
+			<h2 class="md:text-2xl text-center md:text-start text-3xl opacity-80 text-pretty animate-fade-in-up">
 				<span class="font-bold">+5 years of experience. </span>
 				<span class="text-sky-400">Software Developer and Automation Engineer</span> from Matanzas, Cuba.
 				Currently working at <a class="text-blue-500 font-bold" href="https://bizdirectconsulting.com/">Bizdirect Consulting</a>
 			</h2>
-			<section aria-label="Social links" class="flex flex-wrap md:flex-row gap-4 pt-10 ">
+			<section aria-label="Social links" class="flex flex-wrap md:flex-row gap-4 pt-10 animate-fade-in-up">
 				<Pills href="https://github.com/Oriel9511" class="github-pill">
 					<Github/> Github
 				</Pills>
@@ -53,35 +53,35 @@ import WhatsappIcon from "../components/icons/WhatsappIcon.astro";
 				</Pills>
 			</section>
 		</Container>
-		<Container id="core" class="pt-24">
+		<Container id="core" class="pt-24 animate-on-scroll">
 			<h2 class="text-4xl md:text-2xl font-bold pb-10 flex items-center gap-x-3">
 				<CoreIcon/>
 				Core Strengths
 			</h2>
 			<CoreStrenth/>
 		</Container>
-		<Container id="skills" class="pt-24">
+		<Container id="skills" class="pt-24 animate-on-scroll">
 			<h2 class="text-4xl md:text-2xl font-bold pb-10 flex items-center gap-x-3">
 				<ToolsIcon/>
 				Technical Skills
 			</h2>
 			<TechnicalSkills/>
 		</Container>
-		<Container id="experience" class="pt-24">
+		<Container id="experience" class="pt-24 animate-on-scroll">
 			<h2 class="text-4xl md:text-2xl font-bold pb-10 flex items-center gap-x-3">
 				<Work/>
 				Work Experience
 			</h2>
 			<Experience/>
 		</Container>
-		<Container id="projects" class="pt-24">
+		<Container id="projects" class="pt-24 animate-on-scroll">
 			<h2 class="text-4xl md:text-2xl font-bold pb-10 flex items-center gap-x-3">
 				<Code/>
 				Major Projects
 			</h2>
 			<Projects/>
 		</Container>
-		<Container id="about" class="pt-24">
+		<Container id="about" class="pt-24 animate-on-scroll">
 			<h2 class="text-4xl md:text-2xl font-bold pb-10 flex items-center gap-x-3">
 				<UserIcon/>
 				About Me
@@ -130,4 +130,55 @@ import WhatsappIcon from "../components/icons/WhatsappIcon.astro";
 		background-color: rgba(21, 128, 61, 0.7);
 		color: white;
 	}
+	@keyframes fadeIn {
+		from { opacity: 0; }
+		to { opacity: 1; }
+	}
+	@keyframes fadeInUp {
+		from {
+			opacity: 0;
+			transform: translateY(20px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+	.animate-fade-in {
+		animation: fadeIn 1s ease-out;
+	}
+	.animate-fade-in-up {
+		animation: fadeInUp 1s ease-out;
+	}
+	.animate-on-scroll {
+		opacity: 0;
+		transform: translateY(20px);
+		transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+	}
+	.animate-on-scroll.visible {
+		opacity: 1;
+		transform: translateY(0);
+	}
 </style>
+
+<script>
+	function handleIntersection(entries, observer) {
+		entries.forEach(entry => {
+			if (entry.isIntersecting) {
+				entry.target.classList.add('visible');
+				observer.unobserve(entry.target);
+			}
+		});
+	}
+
+	const observer = new IntersectionObserver(handleIntersection, {
+		root: null,
+		rootMargin: '0px',
+		threshold: 0.1
+	});
+
+	document.addEventListener('DOMContentLoaded', () => {
+		const elements = document.querySelectorAll('.animate-on-scroll');
+		elements.forEach(el => observer.observe(el));
+	});
+</script>
