@@ -84,15 +84,32 @@
 
     #bg-container{
         position: absolute;
-        min-height: 100vh;
-        min-width: 100vw;
+        min-height: 100dvh;
+        min-width: 100dvw;
         overflow: hidden;
         z-index: -100;
         top: 0;
         left: 0;
+        height: 100%;
+        width: 100%;
+
+    }
+
+    @media (max-width: 767px) {
+        #bg-container {
+            position: fixed;
+        }
+    }
+
+    .interactive {
+        position: absolute;
+        background: radial-gradient(circle at center, rgba(var(--color-interact), 1) 1%, rgba(var(--color-interact), 0) 2%) no-repeat;
+        mix-blend-mode: var(--blending);
         width: 100%;
         height: 100%;
-
+        top: -50%;
+        left: -50%;
+        opacity: 1;
     }
 
     #bg-gradient {
@@ -288,17 +305,6 @@
         }
     }
 
-
-    .interactive {
-        position: absolute;
-        background: radial-gradient(circle at center, rgba(var(--color-interact), 0.3) 3%, rgba(var(--color-interact), 0) 2%) no-repeat;
-        mix-blend-mode: var(--blending);
-        width: 100%;
-        height: 100%;
-        top: -50%;
-        left: -50%;
-        opacity: 1;
-    }
 
     #cursor-container{
         position: absolute;

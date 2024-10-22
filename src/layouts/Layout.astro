@@ -24,10 +24,8 @@ const { title } = Astro.props;
 	<body>
 		<Background/>
 		<Header/>
-		<div id="content">
-			<slot />
-		</div>
-		<Footer/>
+		<slot />
+		<Footer id="footer"/>
 	</body>
 </html>
 <style is:global>
@@ -45,7 +43,7 @@ const { title } = Astro.props;
 	}
 	body{
 		position: relative;
-		width: fit-content;
+		width: 100vw;
 		margin: 0;
 		padding: 0;
 		display: flex;
@@ -53,6 +51,12 @@ const { title } = Astro.props;
 		justify-content: center;
 		align-items: center;
 		overflow-x: hidden;
+	}
+	#content{
+		width: 100%;
+	}
+	#footer{
+		width: 100%;
 	}
 	@media (prefers-reduced-motion: no-preference) {
         html {

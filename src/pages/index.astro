@@ -36,19 +36,19 @@ import WhatsappIcon from "../components/icons/WhatsappIcon.astro";
 				Currently working at <a class="text-blue-500 font-bold" href="https://bizdirectconsulting.com/">Bizdirect Consulting</a>
 			</h2>
 			<section aria-label="Social links" class="flex gap-x-4 pt-10">
-				<Pills href="https://github.com/Oriel9511" class="hover:bg-gray-700 hover:bg-opacity-70 hover:text-white">
+				<Pills href="https://github.com/Oriel9511" class="github-pill">
 					<Github/> Github
 				</Pills>
-				<Pills href="https://www.linkedin.com/in/oriel-arteaga-jiménez-2b5768180" class="hover:bg-blue-700 hover:bg-opacity-70 hover:text-white">
+				<Pills href="https://www.linkedin.com/in/oriel-arteaga-jiménez-2b5768180" class="linkedin-pill">
 					<Linkedin/> Linkedin
 				</Pills>
-				<Pills href="mailto:orielarteagaj@gmail.com" class="hover:bg-red-700 hover:bg-opacity-70 hover:text-white">
+				<Pills href="mailto:orielarteagaj@gmail.com" class="email-pill">
 					<Mail/> Email
 				</Pills>
-				<Pills href="https://t.me/ORIEL95" class="hover:bg-sky-700 hover:bg-opacity-70 hover:text-white">
+				<Pills href="https://t.me/ORIEL95" class="telegram-pill">
 					<TelegramIcon/> Telegram
 				</Pills>
-				<Pills href="https://wa.me/5353361122" class="hover:bg-green-600 hover:bg-opacity-70 hover:text-white">
+				<Pills href="https://wa.me/5353361122" class="whatsapp-pill">
 					<WhatsappIcon/> Whatsapp
 				</Pills>
 			</section>
@@ -95,40 +95,39 @@ import WhatsappIcon from "../components/icons/WhatsappIcon.astro";
 	main {
 		margin: auto;
 		padding: 1rem;
-		width: 800px;
-		max-width: calc(100% - 2rem);
+		width: 50%;
 		color: white;
 		line-height: 1.6;
 	}
-	.sec2,
-	.sec1 {
-		width: 100%;
-		height: 100vh;
-		background-color: white;
-		color: black;
-		text-align: center;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-family: poppins;
-	}
-	.sec2 {
-		animation: revealing;
-		animation-timeline: view(block);
-		animation-range: cover 0% cover 50%;
-		margin: 0px;
-	}
-	@keyframes revealing {
-		from {
-			color: gray;
-			margin-left: 100vw;
-			filter: blur(50px);
-			opacity: 0.5;
+	@media (max-width: 768px) {
+		main {
+			width: 800px;
 		}
-		to {
-			margin: 0px;
-			filter: blur(0px);
-			opacity: 1;
+		#home{
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
 		}
+	}
+	.github-pill:hover {
+		background-color: rgba(55, 65, 81, 0.7);
+		color: white;
+	}
+	.linkedin-pill:hover {
+		background-color: rgba(29, 78, 216, 0.7);
+		color: white;
+	}
+	.email-pill:hover {
+		background-color: rgba(185, 28, 28, 0.7);
+		color: white;
+	}
+	.telegram-pill:hover {
+		background-color: rgba(3, 105, 161, 0.7);
+		color: white;
+	}
+	.whatsapp-pill:hover {
+		background-color: rgba(21, 128, 61, 0.7);
+		color: white;
 	}
 </style>
