@@ -1,10 +1,10 @@
 ---
 const links = [
     { href: "#top", text: "Home" },
-    { href: "#experience", text: "Experience" },
-    { href: "#projects", text: "Projects" },
     { href: "#core", text: "Core Strength" },
     { href: "#skills", text: "Technical Skills" },
+    { href: "#experience", text: "Experience" },
+    { href: "#projects", text: "Projects" },
     { href: "#about", text: "About" },
 ];
 ---
@@ -20,11 +20,11 @@ const links = [
     </div>
 </header>
 
-<div id="mobile-menu" class="fixed inset-0 backdrop-blur-lg bg-opacity-10 bg-white z-20 hidden flex-col items-center justify-center opacity-0 transition-opacity duration-300 ease-in-out">
-    <button id="close-menu" class="absolute top-4 right-4 text-5xl">✕</button>
-    <nav class="flex flex-col gap-y-10 text-4xl text-center">
+<div id="mobile-menu" class="fixed inset-0 backdrop-blur-2xl bg-opacity-10 bg-white z-20 hidden flex-col items-center justify-center opacity-0 transition-opacity duration-300 ease-in-out">
+    <button id="close-menu" class="absolute top-4 right-4 text-6xl">✕</button>
+    <nav class="flex flex-col gap-y-20 text-6xl text-center">
         {links.map((link) => (
-            <a class="hover:text-blue-400 bg-white/10 backdrop-blur-sm px-8 py-4 rounded-lg transition-all duration-300 hover:bg-white/20" href={link.href}>{link.text}</a>
+            <a class="hover:text-blue-400 bg-white/10 backdrop-blur-sm px-8 py-6 rounded-lg transition-all duration-300 hover:bg-white/20" href={link.href}>{link.text}</a>
         ))}
     </nav>
 </div>
