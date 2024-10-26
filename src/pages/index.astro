@@ -17,17 +17,19 @@ import AboutMe from "../components/About/AboutMe.astro";
 import CoreIcon from "../components/icons/CoreIcon.astro";
 import TelegramIcon from "../components/icons/TelegramIcon.astro";
 import WhatsappIcon from "../components/icons/WhatsappIcon.astro";
+import profilePic from "../assets/profile_pic.webp";
+import {Image} from "astro:assets";
 ---
 
 <Layout title="Oriel Arteaga. Portfolio">
 	<main>
 		<Container id="home" class="pt-56 flex flex-col items-center md:items-start gap-y-1 animate-fade-in">
-			<img
+			<Image
 				class="rounded-full animate-fade-in-up"
-				src="/portfolio/profile_pic.webp"
-				alt="oriel profile pic"
-				width="100px"
-				height="100px"
+				src={profilePic}
+				alt="Oriel Arteaga Developer"
+				width={100}
+				height={100}
 			/>
 			<h1 class="text-6xl font-bold pb-10 animate-fade-in-up">Hey, I'm Oriel!</h1>
 			<h2 class="md:text-2xl text-center md:text-start text-3xl opacity-80 text-pretty animate-fade-in-up">
