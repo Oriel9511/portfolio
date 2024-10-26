@@ -1,10 +1,7 @@
 ---
 import Background from "../components/background.astro";
-import "@fontsource/dongle"; // Defaults to weight 400
-import "@fontsource/dongle/400.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-// import Cursor from "../components/cursor.astro"; // Specify weight
 interface Props {
 	title: string;
 }
@@ -67,7 +64,6 @@ const { title } = Astro.props;
 	html {
 		font-family: system-ui, sans-serif;
 		text-shadow: 1px 1px rgba(0,0,0,0.1);
-		//cursor: none;
 		color: white;
 		font-weight: inherit;
 		-webkit-font-smoothing: subpixel-antialiased;
