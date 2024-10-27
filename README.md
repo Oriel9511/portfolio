@@ -2,7 +2,7 @@
 
 <div align="center">
     <a href="https://porfolio.dev/">
-        <img alt="Project preview" src="./public/Project Preview.png">
+        <img alt="Project preview" src="./public/project_preview.webp">
     </a>
     <p></p>
 </div>
