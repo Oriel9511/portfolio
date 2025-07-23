@@ -23,147 +23,309 @@ import TranslatedText from "../components/TranslatedText.astro";
 ---
 
 <Layout title="Oriel Arteaga Jiménez - Full Stack Developer Portfolio">
-	<main>
-		<Container id="home" class="pt-56 flex flex-col items-center md:items-start gap-y-1 animate-fade-in">
-			<Image
-				class="rounded-full animate-fade-in-up"
-				src={profilePic}
-				alt="Oriel Arteaga Developer"
-				width={100}
-				height={100}
-			/>
-			<TranslatedText textKey="hero.greeting" tag="h1" class="text-6xl font-bold pb-10 animate-fade-in-up hero-greeting">Hey, I'm Oriel!</TranslatedText>
-			<h2 class="md:text-2xl text-center md:text-start text-3xl opacity-80 text-pretty animate-fade-in-up hero-description">
-				<TranslatedText textKey="hero.yearsExperience" class="font-bold hero-experience">+3 years of experience.</TranslatedText>
-				<TranslatedText textKey="hero.role" class="text-sky-400 hero-role">Full Stack Developer</TranslatedText>
-				<TranslatedText textKey="hero.description" class="hero-desc-detail">Web developer using technologies such as ASP.NET, Node.js, React, Vue, and Odoo. Passionate about continuous learning and teamwork.</TranslatedText>
-				<TranslatedText textKey="hero.location" class="hero-location">from Montevideo, Uruguay.</TranslatedText>
-				<TranslatedText textKey="hero.currentlyWorking" class="hero-current">Currently working at</TranslatedText>
-				<a class="text-blue-500 font-bold" href="https://www.alsacia.cl/">Alsacia</a>
-			</h2>
-			<section aria-label="Social links" class="flex flex-wrap md:flex-row gap-4 pt-10 animate-fade-in-up">
-				<Pills href="https://github.com/Oriel9511" class="github-pill">
+	<main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+		<!-- Hero Section -->
+		<section id="home" class="min-h-screen flex flex-col justify-center items-center text-center space-y-8 py-20">
+			<div class="animate-in">
+				<Image
+					class="w-32 h-32 rounded-full border-4 border-white/10 shadow-xl float-animation"
+					src={profilePic}
+					alt="Oriel Arteaga Developer"
+					width={128}
+					height={128}
+				/>
+			</div>
+			
+			<div class="space-y-6 animate-in-delay-1">
+				<TranslatedText 
+					textKey="hero.greeting" 
+					tag="h1" 
+					class="text-5xl sm:text-6xl lg:text-7xl font-bold text-gradient"
+				>
+					Hey, I'm Oriel!
+				</TranslatedText>
+				
+				<div class="space-y-4 max-w-4xl">
+					<div class="flex flex-wrap justify-center items-center gap-2 text-xl sm:text-2xl">
+						<TranslatedText textKey="hero.yearsExperience" class="font-semibold text-white/90">
+							+3 years of experience.
+						</TranslatedText>
+						<TranslatedText 
+							textKey="hero.role" 
+							class="font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent"
+						>
+							Full Stack Developer
+						</TranslatedText>
+					</div>
+					
+					<p class="text-lg sm:text-xl text-white/80 leading-relaxed max-w-3xl mx-auto">
+						<TranslatedText textKey="hero.description">
+							Web developer using technologies such as ASP.NET, Node.js, React, Vue, and Odoo. Passionate about continuous learning and teamwork.
+						</TranslatedText>
+						<br />
+						<TranslatedText textKey="hero.location" class="text-white/60">from Montevideo, Uruguay.</TranslatedText>
+					</p>
+					
+					<div class="flex flex-wrap justify-center items-center gap-2 text-lg">
+						<TranslatedText textKey="hero.currentlyWorking" class="text-white/70">Currently working at</TranslatedText>
+						<a 
+							class="font-semibold text-blue-400 hover:text-blue-300 transition-colors duration-200 underline decoration-blue-400/30 hover:decoration-blue-300"
+							href="https://www.alsacia.cl/"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							Alsacia
+						</a>
+					</div>
+				</div>
+			</div>
+			
+			<div class="flex flex-wrap justify-center gap-4 animate-in-delay-2">
+				<Pills href="https://github.com/Oriel9511" class="social-pill github-pill">
 					<Github/> Github
 				</Pills>
-				<Pills href="https://www.linkedin.com/in/oriel-arteaga-jiménez-2b5768180" class="linkedin-pill">
+				<Pills href="https://www.linkedin.com/in/oriel-arteaga-jiménez-2b5768180" class="social-pill linkedin-pill">
 					<Linkedin/> Linkedin
 				</Pills>
-				<Pills href="mailto:orielarteagaj@gmail.com" class="email-pill">
+				<Pills href="mailto:orielarteagaj@gmail.com" class="social-pill email-pill">
 					<Mail/> Email
 				</Pills>
-				<Pills href="https://t.me/ORIEL95" class="telegram-pill">
+				<Pills href="https://t.me/ORIEL95" class="social-pill telegram-pill">
 					<TelegramIcon/> Telegram
 				</Pills>
-				<Pills href="https://wa.me/59896902450" class="whatsapp-pill">
+				<Pills href="https://wa.me/59896902450" class="social-pill whatsapp-pill">
 					<WhatsappIcon/> Whatsapp
 				</Pills>
-			</section>
-		</Container>
-		<Container id="core" class="pt-24 animate-on-scroll">
-			<h2 class="text-4xl md:text-2xl font-bold pb-10 flex items-center gap-x-3">
-				<CoreIcon/>
-				<TranslatedText textKey="coreStrengths.title" class="section-title">Core Strengths</TranslatedText>
-			</h2>
+			</div>
+		</section>
+		<!-- Core Strengths Section -->
+		<section id="core" class="py-20 animate-on-scroll">
+			<div class="text-center mb-16">
+				<div class="inline-flex items-center gap-3 mb-4">
+					<div class="p-3 rounded-xl bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30">
+						<CoreIcon/>
+					</div>
+					<TranslatedText 
+						textKey="coreStrengths.title" 
+						tag="h2" 
+						class="text-3xl sm:text-4xl font-bold text-white"
+					>
+						Core Strengths
+					</TranslatedText>
+				</div>
+				<div class="w-24 h-1 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto rounded-full"></div>
+			</div>
 			<CoreStrenth/>
-		</Container>
-		<Container id="skills" class="pt-24 animate-on-scroll">
-			<h2 class="text-4xl md:text-2xl font-bold pb-10 flex items-center gap-x-3">
-				<ToolsIcon/>
-				<TranslatedText textKey="technicalSkills.title" class="section-title">Technical Skills</TranslatedText>
-			</h2>
+		</section>
+
+		<!-- Technical Skills Section -->
+		<section id="skills" class="py-20 animate-on-scroll">
+			<div class="text-center mb-16">
+				<div class="inline-flex items-center gap-3 mb-4">
+					<div class="p-3 rounded-xl bg-gradient-to-r from-blue-500/20 to-cyan-500/20 border border-blue-500/30">
+						<ToolsIcon/>
+					</div>
+					<TranslatedText 
+						textKey="technicalSkills.title" 
+						tag="h2" 
+						class="text-3xl sm:text-4xl font-bold text-white"
+					>
+						Technical Skills
+					</TranslatedText>
+				</div>
+				<div class="w-24 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 mx-auto rounded-full"></div>
+			</div>
 			<TechnicalSkills/>
-		</Container>
-		<Container id="experience" class="pt-24 animate-on-scroll">
-			<h2 class="text-4xl md:text-2xl font-bold pb-10 flex items-center gap-x-3">
-				<Work/>
-				<TranslatedText textKey="experience.title" class="section-title">Work Experience</TranslatedText>
-			</h2>
+		</section>
+
+		<!-- Experience Section -->
+		<section id="experience" class="py-20 animate-on-scroll">
+			<div class="text-center mb-16">
+				<div class="inline-flex items-center gap-3 mb-4">
+					<div class="p-3 rounded-xl bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/30">
+						<Work/>
+					</div>
+					<TranslatedText 
+						textKey="experience.title" 
+						tag="h2" 
+						class="text-3xl sm:text-4xl font-bold text-white"
+					>
+						Work Experience
+					</TranslatedText>
+				</div>
+				<div class="w-24 h-1 bg-gradient-to-r from-green-500 to-emerald-500 mx-auto rounded-full"></div>
+			</div>
 			<Experience/>
-		</Container>
-		<Container id="projects" class="pt-24 animate-on-scroll">
-			<h2 class="text-4xl md:text-2xl font-bold pb-10 flex items-center gap-x-3">
-				<Code/>
-				<TranslatedText textKey="projects.title" class="section-title">Major Projects</TranslatedText>
-			</h2>
+		</section>
+
+		<!-- Projects Section -->
+		<section id="projects" class="py-20 animate-on-scroll">
+			<div class="text-center mb-16">
+				<div class="inline-flex items-center gap-3 mb-4">
+					<div class="p-3 rounded-xl bg-gradient-to-r from-orange-500/20 to-red-500/20 border border-orange-500/30">
+						<Code/>
+					</div>
+					<TranslatedText 
+						textKey="projects.title" 
+						tag="h2" 
+						class="text-3xl sm:text-4xl font-bold text-white"
+					>
+						Major Projects
+					</TranslatedText>
+				</div>
+				<div class="w-24 h-1 bg-gradient-to-r from-orange-500 to-red-500 mx-auto rounded-full"></div>
+			</div>
 			<Projects/>
-		</Container>
-		<Container id="about" class="pt-24 animate-on-scroll">
-			<h2 class="text-4xl md:text-2xl font-bold pb-10 flex items-center gap-x-3">
-				<UserIcon/>
-				<TranslatedText textKey="about.title" class="section-title">About Me</TranslatedText>
-			</h2>
+		</section>
+
+		<!-- About Section -->
+		<section id="about" class="py-20 animate-on-scroll">
+			<div class="text-center mb-16">
+				<div class="inline-flex items-center gap-3 mb-4">
+					<div class="p-3 rounded-xl bg-gradient-to-r from-indigo-500/20 to-purple-500/20 border border-indigo-500/30">
+						<UserIcon/>
+					</div>
+					<TranslatedText 
+						textKey="about.title" 
+						tag="h2" 
+						class="text-3xl sm:text-4xl font-bold text-white"
+					>
+						About Me
+					</TranslatedText>
+				</div>
+				<div class="w-24 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 mx-auto rounded-full"></div>
+			</div>
 			<AboutMe/>
-		</Container>
+		</section>
 	</main>
 </Layout>
 
 <style>
-	main {
-		margin: auto;
-		padding: 1rem;
-		width: 50%;
-		color: white;
-		line-height: 1.6;
+	/* Modern Social Pills */
+	.social-pill {
+		background: rgba(255, 255, 255, 0.05);
+		backdrop-filter: blur(12px);
+		-webkit-backdrop-filter: blur(12px);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		padding: 0.75rem 1.5rem;
+		border-radius: 0.75rem;
+		font-weight: 500;
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		position: relative;
+		overflow: hidden;
 	}
-	@media (max-width: 768px) {
-		main {
-			width: 800px;
-		}
-		#home{
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-		}
+	
+	.social-pill::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+		transition: left 0.5s;
 	}
+	
+	.social-pill:hover::before {
+		left: 100%;
+	}
+	
+	.social-pill:hover {
+		transform: translateY(-2px) scale(1.05);
+		box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+	}
+	
 	.github-pill:hover {
-		background-color: rgba(55, 65, 81, 0.7);
-		color: white;
+		background: linear-gradient(135deg, rgba(33, 31, 31, 0.8), rgba(55, 65, 81, 0.8));
+		border-color: rgba(55, 65, 81, 0.5);
 	}
+	
 	.linkedin-pill:hover {
-		background-color: rgba(29, 78, 216, 0.7);
-		color: white;
+		background: linear-gradient(135deg, rgba(10, 102, 194, 0.8), rgba(29, 78, 216, 0.8));
+		border-color: rgba(29, 78, 216, 0.5);
 	}
+	
 	.email-pill:hover {
-		background-color: rgba(185, 28, 28, 0.7);
-		color: white;
+		background: linear-gradient(135deg, rgba(185, 28, 28, 0.8), rgba(220, 38, 38, 0.8));
+		border-color: rgba(185, 28, 28, 0.5);
 	}
+	
 	.telegram-pill:hover {
-		background-color: rgba(3, 105, 161, 0.7);
-		color: white;
+		background: linear-gradient(135deg, rgba(3, 105, 161, 0.8), rgba(14, 165, 233, 0.8));
+		border-color: rgba(3, 105, 161, 0.5);
 	}
+	
 	.whatsapp-pill:hover {
-		background-color: rgba(21, 128, 61, 0.7);
-		color: white;
+		background: linear-gradient(135deg, rgba(21, 128, 61, 0.8), rgba(34, 197, 94, 0.8));
+		border-color: rgba(21, 128, 61, 0.5);
 	}
-	@keyframes fadeIn {
-		from { opacity: 0; }
-		to { opacity: 1; }
-	}
-	@keyframes fadeInUp {
-		from {
-			opacity: 0;
-			transform: translateY(20px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
-	.animate-fade-in {
-		animation: fadeIn 1s ease-out;
-	}
-	.animate-fade-in-up {
-		animation: fadeInUp 1s ease-out;
-	}
+	
+	/* Enhanced Scroll Animations */
 	.animate-on-scroll {
 		opacity: 0;
-		transform: translateY(20px);
-		transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+		transform: translateY(40px);
+		transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 	}
+	
 	.animate-on-scroll.visible {
 		opacity: 1;
 		transform: translateY(0);
+	}
+	
+	/* Section Spacing */
+	section {
+		position: relative;
+	}
+	
+	section::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 1px;
+		height: 100px;
+		background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.1), transparent);
+		pointer-events: none;
+	}
+	
+	section:first-child::before {
+		display: none;
+	}
+	
+	/* Improved Typography */
+	h1, h2, h3 {
+		letter-spacing: -0.025em;
+	}
+	
+	/* Better Button Focus States */
+	.social-pill:focus-visible {
+		outline: 2px solid rgb(59, 130, 246);
+		outline-offset: 2px;
+	}
+	
+	/* Responsive Text */
+	@media (max-width: 640px) {
+		.text-5xl {
+			font-size: 2.5rem;
+		}
+		
+		.text-6xl {
+			font-size: 3rem;
+		}
+		
+		.text-7xl {
+			font-size: 3.5rem;
+		}
+	}
+	
+	/* Loading Performance */
+	.float-animation {
+		will-change: transform;
+	}
+	
+	.social-pill {
+		will-change: transform, box-shadow;
 	}
 </style>
 
