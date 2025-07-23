@@ -3,28 +3,34 @@ import TranslatedText from "./TranslatedText.astro";
 ---
 
 <footer class="text-white py-8 w-full max-w-5xl mx-auto">
-    <section class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
-        <div class="flex flex-col items-center gap-y-2 border border-white/10 rounded-lg p-4 backdrop-blur-md">
-            <TranslatedText textKey="footer.aboutProject" tag="h2" class="md:text-xl text-3xl font-semibold">About This Project</TranslatedText>
-            <p class="md:text-lg text-2xl font-normal text-white/80">
-                <TranslatedText textKey="footer.projectDescription">This portfolio is built with Astro, a modern static site generator. It's inspired by the portfolio project developed by</TranslatedText>
-                <a href="https://github.com/midudev/porfolio.dev" class="cursor-pointer text-sky-300 hover:text-sky-500 font-bold">midudev</a>
-                <TranslatedText textKey="footer.projectDescriptionEnd">and the community, showcasing the power of Astro for creating fast and efficient web applications.</TranslatedText>
-            </p>
+    <section class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
+        <div class="group relative glass rounded-xl p-6 animate-in">
+            <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-cyan-500/5 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+            <div class="relative z-10 flex flex-col items-center gap-y-4">
+                <TranslatedText textKey="footer.aboutProject" tag="h3" class="text-lg md:text-xl font-semibold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">About This Project</TranslatedText>
+                <p class="text-sm md:text-base text-center leading-relaxed text-white/80">
+                    <TranslatedText textKey="footer.projectDescription">Built with Astro static site generator. Inspired by</TranslatedText>
+                    <a href="https://github.com/midudev/porfolio.dev" class="cursor-pointer text-sky-300 hover:text-sky-400 font-medium transition-colors mx-1">midudev</a>
+                    <TranslatedText textKey="footer.projectDescriptionEnd">showcasing modern web development with optimal performance.</TranslatedText>
+                </p>
+            </div>
         </div>
-        <div class="flex flex-col items-center gap-y-2 border border-white/10 rounded-lg p-4 backdrop-blur-md">
-            <TranslatedText textKey="footer.getInTouch" tag="h2" class="md:text-xl text-3xl font-semibold">Get in Touch</TranslatedText>
-            <a href="mailto:orielarteagaj@gmail.com" class="mb-4 md:text-lg text-2xl font-normal text-white/80 hover:text-white">orielarteagaj@gmail.com</a>
-            <div class="flex gap-x-2">
-                <a href="https://linkedin.com/in/oriel-arteaga-jiménez-2b5768180" target="_blank" class="mb-4 md:text-lg text-2xl font-normal text-white/80 hover:text-[#0A66C2]">LinkedIn</a>
-                <a href="https://github.com/Oriel9511" target="_blank" class="mb-4 md:text-lg text-2xl font-normal text-white/80 hover:text-gray-500">GitHub</a>
-                <a href="https://wa.me/59896902450" target="_blank" class="mb-4 md:text-lg text-2xl font-normal text-white/80 hover:text-[#25D366]">WhatsApp</a>
-                <a href="https://t.me/ORIEL95" target="_blank" class="mb-4 md:text-lg text-2xl font-normal text-white/80 hover:text-[#26A5E4]">Telegram</a>
+        <div class="group relative glass rounded-xl p-6 animate-in">
+            <div class="absolute inset-0 bg-gradient-to-br from-green-500/5 via-blue-500/5 to-purple-500/5 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+            <div class="relative z-10 flex flex-col items-center gap-y-4">
+                <TranslatedText textKey="footer.getInTouch" tag="h3" class="text-lg md:text-xl font-semibold bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">Get in Touch</TranslatedText>
+                <a href="mailto:orielarteagaj@gmail.com" class="text-sm md:text-base text-white/80 hover:text-white transition-colors">orielarteagaj@gmail.com</a>
+                <div class="flex flex-wrap gap-3 justify-center">
+                    <a href="https://linkedin.com/in/oriel-arteaga-jiménez-2b5768180" target="_blank" class="px-3 py-1 text-sm bg-white/10 rounded-full text-white/80 hover:text-[#0A66C2] hover:bg-white/20 transition-all">LinkedIn</a>
+                    <a href="https://github.com/Oriel9511" target="_blank" class="px-3 py-1 text-sm bg-white/10 rounded-full text-white/80 hover:text-gray-300 hover:bg-white/20 transition-all">GitHub</a>
+                    <a href="https://wa.me/59896902450" target="_blank" class="px-3 py-1 text-sm bg-white/10 rounded-full text-white/80 hover:text-[#25D366] hover:bg-white/20 transition-all">WhatsApp</a>
+                    <a href="https://t.me/ORIEL95" target="_blank" class="px-3 py-1 text-sm bg-white/10 rounded-full text-white/80 hover:text-[#26A5E4] hover:bg-white/20 transition-all">Telegram</a>
+                </div>
             </div>
         </div>
     </section>
-    <section class="text-center text-white/80 mt-4">
-        <TranslatedText textKey="footer.copyright">© 2025 Oriel Arteaga. Software Developer.</TranslatedText>
+    <section class="text-center text-white/60 mt-6 pt-6 border-t border-white/10">
+        <TranslatedText textKey="footer.copyright" class="text-sm">© 2025 Oriel Arteaga. Software Developer.</TranslatedText>
     </section>
 </footer>
 <style>

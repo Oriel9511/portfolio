@@ -99,9 +99,8 @@ export const translations = {
     about: {
       title: "About Me",
       content: {
-        p1: "Software Developer with over 3 years of experience in web development using ASP.NET, Node.js, React, Vue, and Odoo. I bring a strong background of 4 years as an Automation Engineer, which provides a unique perspective on industrial control systems.",
-        p2: "I am passionate about continuous learning and teamwork, with a strong personal initiative to deliver results quickly. My journey in technology has been marked by the transition from hardware programming to full-stack web development, allowing me to bring a comprehensive understanding of systems from the ground up.",
-        p3: "Beyond programming, my greatest passion lies in learning and teaching what I have learned. I consider myself a strong team player, effectively interacting with coworkers. Guided by personal initiative, I am a quick learner and consistently provide results."
+        p1: "Full Stack Developer with 3+ years of experience in ASP.NET, Node.js, React, Vue, and Odoo. Background in Automation Engineering brings unique industrial systems perspective.",
+        p2: "Passionate about continuous learning and delivering results quickly. Transitioned from hardware programming to full-stack development, providing comprehensive system understanding."
       }
     },
 
@@ -110,8 +109,8 @@ export const translations = {
       madeWith: "Made with",
       by: "by",
       aboutProject: "About This Project",
-      projectDescription: "This portfolio is built with Astro, a modern static site generator. It's inspired by the portfolio project developed by",
-      projectDescriptionEnd: "and the community, showcasing the power of Astro for creating fast and efficient web applications.",
+      projectDescription: "Built with Astro static site generator. Inspired by",
+      projectDescriptionEnd: "showcasing modern web development with optimal performance.",
       getInTouch: "Get in Touch",
       copyright: "© 2025 Oriel Arteaga. Software Developer."
     }
@@ -214,11 +213,10 @@ export const translations = {
 
     // About
     about: {
-      title: "Un poco sobre Mí",
+      title: "Sobre Mí",
       content: {
-        p1: "Desarrollador de Software con más de 3 años de experiencia en desarrollo web usando ASP.NET, Node.js, React, Vue y Odoo. Aporto una sólida experiencia de 4 años como Ingeniero en Automatización, lo que proporciona una perspectiva única sobre los sistemas de control industrial.",
-        p2: "Soy apasionado por el aprendizaje continuo y el trabajo en equipo, con una fuerte iniciativa personal para entregar resultados rápidamente. Mi trayectoria en tecnología ha estado marcada por la transición de la programación de hardware al desarrollo web full-stack, lo que me permite aportar una comprensión integral de los sistemas desde cero.",
-        p3: "Más allá de la programación, mi mayor pasión radica en aprender y enseñar lo que he aprendido. Me considero un jugador de equipo sólido, interactuando efectivamente con compañeros de trabajo. Guiado por la iniciativa personal, soy un aprendiz rápido y consistentemente proporciono resultados."
+        p1: "Desarrollador Full Stack con 3+ años de experiencia en ASP.NET, Node.js, React, Vue y Odoo. Experiencia en Ingeniería en Automatización aporta perspectiva única en sistemas industriales.",
+        p2: "Apasionado por el aprendizaje continuo y entrega de resultados rápidos. Transición de programación de hardware a desarrollo full-stack proporciona comprensión integral de sistemas."
       }
     },
 
@@ -226,9 +224,9 @@ export const translations = {
     footer: {
       madeWith: "Hecho con",
       by: "por",
-      aboutProject: "Acerca de Este Proyecto",
-      projectDescription: "Este portafolio está construido con Astro, un generador de sitios estáticos moderno. Está inspirado en el proyecto de portafolio desarrollado por",
-      projectDescriptionEnd: "y la comunidad, mostrando el poder de Astro para crear aplicaciones web rápidas y eficientes.",
+      aboutProject: "Sobre Este Proyecto",
+      projectDescription: "Construido con generador estático Astro. Inspirado por",
+      projectDescriptionEnd: "mostrando desarrollo web moderno con rendimiento óptimo.",
       getInTouch: "Contáctame",
       copyright: "© 2025 Oriel Arteaga. Desarrollador de Software."
     }
