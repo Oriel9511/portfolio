@@ -1,0 +1,46 @@
+---
+export interface Props {
+  textKey: string;
+  class?: string;
+  tag?: string;
+}
+
+const { textKey, class: className = '', tag = 'span' } = Astro.props;
+const Tag = tag as any;
+---
+
+<Tag class={`translated-text ${className}`} data-key={textKey}>
+  <slot />
+</Tag>
+
+<script>
+  import { currentLanguage } from '../i18n/languageStore';
+  import { translations } from '../i18n/translations';
+  
+  function updateTranslations() {
+    const lang = currentLanguage.get();
+    const elements = document.querySelectorAll('.translated-text');
+    
+    elements.forEach(element => {
+      const key = element.getAttribute('data-key');
+      if (key) {
+        const keys = key.split('.');
+        let translation = translations[lang];
+        
+        for (const k of keys) {
+          translation = translation?.[k];
+        }
+        
+        if (translation && typeof translation === 'string') {
+          element.textContent = translation;
+        }
+      }
+    });
+  }
+  
+  // Update on language change
+  currentLanguage.subscribe(updateTranslations);
+  
+  // Initial update
+  document.addEventListener('DOMContentLoaded', updateTranslations);
+</script>

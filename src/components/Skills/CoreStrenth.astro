@@ -10,59 +10,123 @@ import FLuentIcon from "../icons/FLuentIcon.astro"
 // Array de fortalezas
 const strengths = [
     {
-        title: 'Teamwork',
-        description: 'Collaborative spirit and ability to work effectively with others to achieve common goals.',
+        id: 'teamwork',
+        title: { en: 'Teamwork', es: 'Trabajo en Equipo' },
+        description: { 
+            en: 'Collaborative spirit and ability to work effectively with others to achieve common goals.',
+            es: 'Espíritu colaborativo y capacidad para trabajar eficazmente con otros para lograr objetivos comunes.'
+        },
         icon: TeamIcon,
         class: ''
     },
     {
-        title: 'Sense of Commitment',
-        description: 'Dedication and reliability in completing tasks and honoring commitments.',
+        id: 'commitment',
+        title: { en: 'Commitment', es: 'Compromiso' },
+        description: { 
+            en: 'Dedication and reliability in completing tasks and honoring commitments.',
+            es: 'Dedicación y confiabilidad para completar tareas y cumplir compromisos.'
+        },
         icon: BusinessIcon,
         class: 'text-sky-400'
     },
     {
-        title: 'Personal Initiative',
-        description: 'Proactively seeking opportunities and taking action without waiting for direction.',
+        id: 'initiative',
+        title: { en: 'Proactiveness', es: 'Proactividad' },
+        description: { 
+            en: 'Proactively seeking opportunities and taking action without waiting for direction.',
+            es: 'Búsqueda proactiva de oportunidades y toma de acción sin esperar dirección.'
+        },
         icon: ExclamationIcon,
         class: ''
     },
     {
-        title: 'Quick Learning',
-        description: 'Ability to rapidly grasp new concepts and adapt to new environments.',
+        id: 'learning',
+        title: { en: 'Fast Learner', es: 'Aprendizaje Rápido' },
+        description: { 
+            en: 'Ability to rapidly grasp new concepts and adapt to new environments.',
+            es: 'Capacidad para comprender rápidamente nuevos conceptos y adaptarse a nuevos entornos.'
+        },
         icon: BookIcon,
         class: ''
     },
     {
-        title: 'Communication in English and Spanish',
-        description: 'Proficient in expressing ideas and information clearly in both languages.',
+        id: 'communication',
+        title: { en: 'Effective Communication (English and Spanish)', es: 'Comunicación Efectiva (Inglés y Español)' },
+        description: { 
+            en: 'Proficient in expressing ideas and information clearly in both languages.',
+            es: 'Competente en expresar ideas e información claramente en ambos idiomas.'
+        },
         icon: TalkIcon,
         class: 'text-red-400'
     },
     {
-        title: 'Problem Solving',
-        description: 'Skilled at identifying issues and developing effective solutions.',
+        id: 'problemSolving',
+        title: { en: 'Problem-Solving', es: 'Resolución de Problemas' },
+        description: { 
+            en: 'Skilled at identifying issues and developing effective solutions.',
+            es: 'Hábil en identificar problemas y desarrollar soluciones efectivas.'
+        },
         icon: BulbIcon,
         class: 'text-yellow-400'
     },
     {
-        title: 'Adaptability',
-        description: 'Flexible and open to change, able to adjust to new challenges and circumstances.',
+        id: 'adaptability',
+        title: { en: 'Adaptability', es: 'Adaptabilidad' },
+        description: { 
+            en: 'Flexible and open to change, able to adjust to new challenges and circumstances.',
+            es: 'Flexible y abierto al cambio, capaz de ajustarse a nuevos desafíos y circunstancias.'
+        },
         icon: FLuentIcon,
         class: 'text-purple-400'
     }
 ];
 ---
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4" id="core-strengths-grid">
     {strengths.map(strength => (
-            <article class="border border-white/10 rounded-lg p-4 w-full flex flex-col gap-y-3 backdrop-blur-sm">
+            <article class="border border-white/10 rounded-lg p-4 w-full flex flex-col gap-y-3 backdrop-blur-sm strength-item"
+                data-title-en={strength.title.en}
+                data-title-es={strength.title.es}
+                data-description-en={strength.description.en}
+                data-description-es={strength.description.es}
+            >
                 <h2 class="md:text-xl text-3xl font-semibold flex items-center gap-x-2">
-                    {strength.icon && <strength.icon class={strength.class}/>} {strength.title}
+                    {strength.icon && <strength.icon class={strength.class}/>} 
+                    <span class="strength-title">{strength.title.en}</span>
                 </h2>
-                <p class="mb-4 font-normal md:text-lg text-2xl text-gray-400">
-                    {strength.description}
+                <p class="mb-4 font-normal md:text-lg text-2xl text-gray-400 strength-description">
+                    {strength.description.en}
                 </p>
             </article>
     ))}
 </div>
+
+<script>
+    import { currentLanguage } from '../../i18n/languageStore';
+    
+    function updateStrengthsContent() {
+        const lang = currentLanguage.get();
+        const strengthItems = document.querySelectorAll('.strength-item');
+        
+        strengthItems.forEach(item => {
+            const titleEl = item.querySelector('.strength-title');
+            const descEl = item.querySelector('.strength-description');
+            
+            if (titleEl) {
+                const title = item.getAttribute(`data-title-${lang}`);
+                if (title) titleEl.textContent = title;
+            }
+            
+            if (descEl) {
+                const desc = item.getAttribute(`data-description-${lang}`);
+                if (desc) descEl.textContent = desc;
+            }
+        });
+    }
+    
+    // Update on language change
+    currentLanguage.subscribe(updateStrengthsContent);
+    
+    // Initial update
+    document.addEventListener('DOMContentLoaded', updateStrengthsContent);
+</script>

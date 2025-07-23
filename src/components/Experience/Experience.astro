@@ -1,38 +1,94 @@
 ---
 import ExperienceItem from "./ExperienceItem.astro";
-const experience = [
+
+const experienceItems = [
     {
-        date: "Jan 2022 – Present...",
-        title: "Bizdirect Consulting Inc.",
-        description: `As a full-stack developer, working with Asp.Net, Node.js, Odoo ERP, React and VueJs. I am currently the dev leader of a small team of 4 developers, working on numerous projects for various clients and businesses.`,
+        id: 'alsacia',
+        date: { en: "April 2025 – Present", es: "Abril 2025 – Presente" },
+        title: { en: "Backend Developer | Alsacia | On-site | Full-time", es: "Desarrollador Backend | Alsacia | Presencial | Tiempo completo" },
+        description: {
+            en: "",
+            es: ""
+        },
+        link: "https://www.linkedin.com/company/alsacia",
+    },
+    {
+        id: 'bizdirect',
+        date: { en: "2022 – April 2025", es: "2022 – Abril 2025" },
+        title: { en: "Full Stack Software Developer | Bizdirect Consulting Inc. | Remote | Full-time", es: "Desarrollador de Software Full Stack | Bizdirect Consulting Inc. | Remoto | Tiempo completo" },
+        description: {
+            en: "",
+            es: ""
+        },
         link: "https://bizdirectconsulting.com",
     },
     {
-        date: "May 2024 - Sept 2024",
-        title: "IsuCorp",
-        description: `As a full-stack developer at IsuCorp, I worked on the .Net platform, being part of a team responsible for maintaining and improving existing software. My contribution included bug fixing, implementing new features, and enhancing software efficiency and performance. This experience allowed me to strengthen my skills in software development and maintenance in collaborative environments.`,
+        id: 'isucorp',
+        date: { en: "May 2024 – September 2024", es: "Mayo 2024 – Septiembre 2024" },
+        title: { en: "Full Stack Software Developer | IsuCorp | Remote | Part-time", es: "Desarrollador de Software Full Stack | IsuCorp | Remoto | Medio tiempo" },
+        description: {
+            en: "",
+            es: ""
+        },
         link: "https://www.isucorp.ca",
-    },
-    {
-        date: "Oct 2019 - Oct 2023",
-        title: "CEDAI",
-        description: `At CEDAI, I worked as a hardware programmer, and working with PLCs and Arduino and embedded electronic systems. My role included programming and implementing control algorithms for industrial projects. This experience allowed me to develop automated and efficient control solutions, applying my knowledge in hardware programming and control algorithms.`,
-        link: "https://www.linkedin.com/company/cedai-empresa-de-automatizaci%C3%B3n-integral/?originalSubdomain=cu",
-    },
-    {
-        date: "Sept 2019 - Sept 2021",
-        title: "Thermoelectric Plant of Matanzas",
-        description: `As an automation specialist, I participated in various solutions to problems that arose at the thermoelectric plant, which enabled the continuous operation of the plant and the optimization of the electric power generation processes.`,
-        link: null
     },
 ];
 ---
 
-<ol {...Astro.props} class={`relative border-s border-gray-200 dark:border-gray-700 ml-3 ${Astro.props.class}`}>
-    {experience.map((item) => (
+<ol {...Astro.props} class={`relative border-s border-gray-200 dark:border-gray-700 ml-3 ${Astro.props.class}`} id="experience-list">
+    {experienceItems.map((item) => (
         <li class="mb-10 ms-4">
-            <ExperienceItem {...item}/>
+            <ExperienceItem
+                date={item.date.en}
+                title={item.title.en}
+                description={item.description.en}
+                link={item.link}
+                data-date-en={item.date.en}
+                data-date-es={item.date.es}
+                data-title-en={item.title.en}
+                data-title-es={item.title.es}
+                data-description-en={item.description.en}
+                data-description-es={item.description.es}
+            />
         </li>
     ))}
 </ol>
+
+<script>
+    import { currentLanguage } from '../../i18n/languageStore';
+
+    function updateExperienceContent() {
+        const lang = currentLanguage.get();
+        const experienceList = document.getElementById('experience-list');
+        if (!experienceList) return;
+
+        const items = experienceList.querySelectorAll('li');
+        items.forEach((item, index) => {
+            const dateEl = item.querySelector('.experience-date');
+            const titleEl = item.querySelector('.experience-title');
+            const descEl = item.querySelector('.experience-description');
+
+            if (dateEl) {
+                const date = item.querySelector('.experience-item')?.getAttribute(`data-date-${lang}`);
+                if (date) dateEl.textContent = date;
+            }
+
+            if (titleEl) {
+                const title = item.querySelector('.experience-item')?.getAttribute(`data-title-${lang}`);
+                if (title) titleEl.textContent = title;
+            }
+
+            if (descEl) {
+                const desc = item.querySelector('.experience-item')?.getAttribute(`data-description-${lang}`);
+                if (desc) descEl.innerHTML = desc.replace(/\n/g, '<br>');
+            }
+        });
+    }
+
+    // Update on language change
+    currentLanguage.subscribe(updateExperienceContent);
+
+    // Initial update
+    document.addEventListener('DOMContentLoaded', updateExperienceContent);
+</script>
 

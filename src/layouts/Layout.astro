@@ -10,7 +10,7 @@ const { title } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" id="html-root">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="description" content="Oriel Arteaga - Full Stack Developer Portfolio" />
@@ -26,6 +26,27 @@ const { title } = Astro.props;
 		<Header/>
 		<slot />
 		<Footer id="footer"/>
+		<script>
+			import { currentLanguage, initializeLanguage } from '../i18n/languageStore';
+			
+			// Initialize language on page load
+			initializeLanguage();
+			
+			// Update HTML lang attribute
+			function updateHtmlLang() {
+				const lang = currentLanguage.get();
+				const htmlElement = document.getElementById('html-root');
+				if (htmlElement) {
+					htmlElement.setAttribute('lang', lang);
+				}
+			}
+			
+			// Update on language change
+			currentLanguage.subscribe(updateHtmlLang);
+			
+			// Initial update
+			updateHtmlLang();
+		</script>
 	</body>
 </html>
 <style is:global>

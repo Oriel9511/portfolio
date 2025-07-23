@@ -1,0 +1,88 @@
+---
+// Language switcher component
+---
+
+<div class="language-switcher">
+  <button id="lang-toggle" class="lang-button" aria-label="Switch language">
+    <span class="current-lang">EN</span>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="2" y1="12" x2="22" y2="12"></line>
+      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+    </svg>
+  </button>
+</div>
+
+<style>
+  .language-switcher {
+    display: flex;
+    align-items: center;
+  }
+
+  .lang-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .lang-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .current-lang {
+    font-weight: bold;
+  }
+
+  @media (max-width: 768px) {
+    .lang-button {
+      padding: 6px 12px;
+      font-size: 14px;
+    }
+    
+    .lang-button svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+</style>
+
+<script>
+  import { currentLanguage, switchLanguage, initializeLanguage } from '../i18n/languageStore';
+  
+  // Initialize language on page load
+  initializeLanguage();
+  
+  const langButton = document.getElementById('lang-toggle');
+  const currentLangSpan = langButton?.querySelector('.current-lang');
+  
+  // Update button text based on current language
+  function updateButtonText() {
+    if (currentLangSpan) {
+      currentLangSpan.textContent = currentLanguage.get().toUpperCase();
+    }
+  }
+  
+  // Initial update
+  updateButtonText();
+  
+  // Subscribe to language changes
+  currentLanguage.subscribe(updateButtonText);
+  
+  // Handle language toggle
+  langButton?.addEventListener('click', () => {
+    const currentLang = currentLanguage.get();
+    const newLang = currentLang === 'en' ? 'es' : 'en';
+    switchLanguage(newLang);
+  });
+</script>

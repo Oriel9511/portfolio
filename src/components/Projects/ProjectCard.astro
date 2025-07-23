@@ -1,10 +1,55 @@
 ---
 import TagProjectPill from "./TagProjectPill.astro";
 const {title, description, tags} = Astro.props;
+
+// Handle both string and object formats for title and description
+const getTitle = (title) => {
+  if (typeof title === 'string') return title;
+  return title?.en || ''; // Default to English if object format
+};
+
+const getDescription = (description) => {
+  if (typeof description === 'string') return description;
+  return description?.en || ''; // Default to English if object format
+};
 ---
 
-<article {...Astro.props} class="flex flex-col gap-y-2 border border-white/10 rounded-lg p-4 w-full backdrop-blur-sm">
-    <h2 set:html={title} class="md:text-xl text-3xl font-semibold"></h2>
-    <p set:html={description} class="mb-4 md:text-lg text-2xl font-normal text-gray-400"></p>
+<article {...Astro.props} class="flex flex-col gap-y-2 border border-white/10 rounded-lg p-4 w-full backdrop-blur-sm project-card">
+    <h2 set:html={getTitle(title)} class="md:text-xl text-3xl font-semibold project-title" 
+        data-title-en={typeof title === 'object' ? title?.en : title}
+        data-title-es={typeof title === 'object' ? title?.es : title}></h2>
+    <p set:html={getDescription(description)} class="mb-4 md:text-lg text-2xl font-normal text-gray-400 project-description"
+       data-desc-en={typeof description === 'object' ? description?.en : description}
+       data-desc-es={typeof description === 'object' ? description?.es : description}></p>
     <TagProjectPill tags={tags}/>
 </article>
+
+<script>
+    import { currentLanguage } from '../../i18n/languageStore';
+    
+    function updateProjectsText() {
+        const lang = currentLanguage.get();
+        const projectCards = document.querySelectorAll('.project-card');
+        
+        projectCards.forEach(card => {
+            const title = card.querySelector('.project-title');
+            const description = card.querySelector('.project-description');
+            
+            if (title) {
+                const titleText = title.getAttribute(`data-title-${lang}`);
+                if (titleText) title.innerHTML = titleText;
+            }
+            
+            if (description) {
+                const descText = description.getAttribute(`data-desc-${lang}`);
+                if (descText) description.innerHTML = descText;
+            }
+        });
+    }
+    
+    // Update on language change
+    currentLanguage.subscribe(updateProjectsText);
+    
+    // Initial update
+    document.addEventListener('DOMContentLoaded', updateProjectsText);
+</script>

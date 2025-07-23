@@ -3,20 +3,94 @@ import ProjectCard from "./ProjectCard.astro";
 
 const projects = [
     {
+        id: "peopleflow",
+        title: {
+            en: "PeopleFlow (SaaS)",
+            es: "PeopleFlow (SaaS)"
+        },
+        description: {
+            en: "An HR platform currently under development, designed to optimize personnel management and hiring through artificial intelligence, streamlining business workflows. This comprehensive solution aims to revolutionize how companies handle their human resources processes.",
+            es: "Una plataforma de RRHH actualmente en desarrollo, diseñada para optimizar la gestión de personal y contratación a través de inteligencia artificial, agilizando los flujos de trabajo empresariales. Esta solución integral busca revolucionar cómo las empresas manejan sus procesos de recursos humanos."
+        },
+        tags: [
+            "dotNet", "NextJs"
+        ],
+        company: "Alsacia"
+    },
+    {
+        id: "flowuy",
+        title: {
+            en: "Flowuy - Business Assistant",
+            es: "Flowuy - Asistente Empresarial"
+        },
+        description: {
+            en: "A personal assistant software for business owners and corporate managers, enabling instant access to company databases, real-time information extraction, report generation, and email sending, significantly facilitating decision-making. This tool transforms how executives interact with their business data.",
+            es: "Un software asistente personal para dueños de negocios y gerentes corporativos, que permite acceso instantáneo a bases de datos de la empresa, extracción de información en tiempo real, generación de informes y envío de correos, facilitando significativamente la toma de decisiones. Esta herramienta transforma cómo los ejecutivos interactúan con sus datos empresariales."
+        },
+        tags: [
+            "dotNet", "n8n", "Flutter"
+        ],
+        company: "Alsacia"
+    },
+    {
+        id: "biopass",
+        title: {
+            en: "BioPass - Access Management",
+            es: "BioPass - Gestión de Acceso"
+        },
+        description: {
+            en: "Access management software for personnel, initially developed for ENAP (Chile), with the aim of becoming a comprehensive solution for various companies. It provides secure and efficient control over facility access, time tracking, and personnel management.",
+            es: "Software de gestión de acceso para personal, desarrollado inicialmente para ENAP (Chile), con el objetivo de convertirse en una solución integral para diversas empresas. Proporciona control seguro y eficiente sobre el acceso a instalaciones, seguimiento de tiempo y gestión de personal."
+        },
+        tags: [
+            "dotNet", "React"
+        ],
+        company: "Alsacia"
+    },
+    {
+        id: "biomatch",
+        title: {
+            en: "BioMatch - Identity Verification",
+            es: "BioMatch - Verificación de Identidad"
+        },
+        description: {
+            en: "An independent service within the BioPass ecosystem, focused on identity verification through an enrollment system that validates identity documents from different countries. This cutting-edge solution ensures secure and reliable identity authentication across multiple jurisdictions.",
+            es: "Un servicio independiente dentro del ecosistema BioPass, enfocado en la verificación de identidad a través de un sistema de enrolamiento que valida documentos de identidad de diferentes países. Esta solución de vanguardia garantiza autenticación de identidad segura y confiable en múltiples jurisdicciones."
+        },
+        tags: [
+            "dotNet", "Python", "Google Cloud", "NextJs"
+        ],
+        company: "Alsacia"
+    },
+    {
         id: "hubspot-crm",
-        title: "Custom Cards in Hubspot CRM",
-        description: "Private app to create a custom cards for managing real estate offer processes for Los Cabos real estate companies. Uses NodeJs serverless for the backend and React for the frontend.",
+        title: {
+            en: "Custom Cards in Hubspot CRM",
+            es: "Tarjetas Personalizadas en Hubspot CRM"
+        },
+        description: {
+            en: "Private app to create custom cards for managing real estate offer processes for Los Cabos real estate companies. Uses NodeJs serverless for the backend and React for the frontend.",
+            es: "Aplicación privada para crear tarjetas personalizadas para gestionar procesos de ofertas inmobiliarias para empresas de bienes raíces de Los Cabos. Utiliza NodeJs serverless para el backend y React para el frontend."
+        },
         tags: [
             "NodeJs", "React"
-        ]
+        ],
+        company: "Bizdirect Consulting"
     },
     {
         id: "labstat",
-        title: `Lims Software for <a href="https://labstat.com" class="text-sky-300 hover:text-sky-500 cursor-pointer decoration-1">Labstat</a>`,
-        description: "Application for managing toxicology and chemical testing laboratories for Labstat. Developed with .net using WinForms and DevExpress, it utilizes web services and includes a web app developed with Asp.Net MVC where clients can manage their own product tests.",
+        title: {
+            en: `Lims Software for <a href="https://labstat.com" class="text-sky-300 hover:text-sky-500 cursor-pointer decoration-1">Labstat</a>`,
+            es: `Software Lims para <a href="https://labstat.com" class="text-sky-300 hover:text-sky-500 cursor-pointer decoration-1">Labstat</a>`
+        },
+        description: {
+            en: "Application for managing toxicology and chemical testing laboratories for Labstat. Developed with .net using WinForms and DevExpress, it utilizes web services and includes a web app developed with Asp.Net MVC where clients can manage their own product tests.",
+            es: "Aplicación para gestionar laboratorios de pruebas toxicológicas y químicas para Labstat. Desarrollada con .net usando WinForms y DevExpress, utiliza servicios web e incluye una aplicación web desarrollada con Asp.Net MVC donde los clientes pueden gestionar sus propias pruebas de productos."
+        },
         tags: [
             "dotNet", "Winforms", "MVC"
-        ]
+        ],
+        company: "IsuCorp"
     },
     {
         id: "ch-forms",

@@ -19,6 +19,7 @@ import TelegramIcon from "../components/icons/TelegramIcon.astro";
 import WhatsappIcon from "../components/icons/WhatsappIcon.astro";
 import profilePic from "../assets/profile_pic.webp";
 import {Image} from "astro:assets";
+import TranslatedText from "../components/TranslatedText.astro";
 ---
 
 <Layout title="Oriel Arteaga Jiménez - Full Stack Developer Portfolio">
@@ -31,11 +32,14 @@ import {Image} from "astro:assets";
 				width={100}
 				height={100}
 			/>
-			<h1 class="text-6xl font-bold pb-10 animate-fade-in-up">Hey, I'm Oriel!</h1>
-			<h2 class="md:text-2xl text-center md:text-start text-3xl opacity-80 text-pretty animate-fade-in-up">
-				<span class="font-bold">+5 years of experience. </span>
-				<span class="text-sky-400">Software Developer and Automation Engineer</span> from Montevideo, Uruguay.
-				Currently working at <a class="text-blue-500 font-bold" href="https://bizdirectconsulting.com/">Bizdirect Consulting</a>
+			<TranslatedText textKey="hero.greeting" tag="h1" class="text-6xl font-bold pb-10 animate-fade-in-up hero-greeting">Hey, I'm Oriel!</TranslatedText>
+			<h2 class="md:text-2xl text-center md:text-start text-3xl opacity-80 text-pretty animate-fade-in-up hero-description">
+				<TranslatedText textKey="hero.yearsExperience" class="font-bold hero-experience">+3 years of experience.</TranslatedText>
+				<TranslatedText textKey="hero.role" class="text-sky-400 hero-role">Full Stack Developer</TranslatedText>
+				<TranslatedText textKey="hero.description" class="hero-desc-detail">Web developer using technologies such as ASP.NET, Node.js, React, Vue, and Odoo. Passionate about continuous learning and teamwork.</TranslatedText>
+				<TranslatedText textKey="hero.location" class="hero-location">from Montevideo, Uruguay.</TranslatedText>
+				<TranslatedText textKey="hero.currentlyWorking" class="hero-current">Currently working at</TranslatedText>
+				<a class="text-blue-500 font-bold" href="https://www.alsacia.cl/">Alsacia</a>
 			</h2>
 			<section aria-label="Social links" class="flex flex-wrap md:flex-row gap-4 pt-10 animate-fade-in-up">
 				<Pills href="https://github.com/Oriel9511" class="github-pill">
@@ -58,35 +62,35 @@ import {Image} from "astro:assets";
 		<Container id="core" class="pt-24 animate-on-scroll">
 			<h2 class="text-4xl md:text-2xl font-bold pb-10 flex items-center gap-x-3">
 				<CoreIcon/>
-				Core Strengths
+				<TranslatedText textKey="coreStrengths.title" class="section-title">Core Strengths</TranslatedText>
 			</h2>
 			<CoreStrenth/>
 		</Container>
 		<Container id="skills" class="pt-24 animate-on-scroll">
 			<h2 class="text-4xl md:text-2xl font-bold pb-10 flex items-center gap-x-3">
 				<ToolsIcon/>
-				Technical Skills
+				<TranslatedText textKey="technicalSkills.title" class="section-title">Technical Skills</TranslatedText>
 			</h2>
 			<TechnicalSkills/>
 		</Container>
 		<Container id="experience" class="pt-24 animate-on-scroll">
 			<h2 class="text-4xl md:text-2xl font-bold pb-10 flex items-center gap-x-3">
 				<Work/>
-				Work Experience
+				<TranslatedText textKey="experience.title" class="section-title">Work Experience</TranslatedText>
 			</h2>
 			<Experience/>
 		</Container>
 		<Container id="projects" class="pt-24 animate-on-scroll">
 			<h2 class="text-4xl md:text-2xl font-bold pb-10 flex items-center gap-x-3">
 				<Code/>
-				Major Projects
+				<TranslatedText textKey="projects.title" class="section-title">Major Projects</TranslatedText>
 			</h2>
 			<Projects/>
 		</Container>
 		<Container id="about" class="pt-24 animate-on-scroll">
 			<h2 class="text-4xl md:text-2xl font-bold pb-10 flex items-center gap-x-3">
 				<UserIcon/>
-				About Me
+				<TranslatedText textKey="about.title" class="section-title">About Me</TranslatedText>
 			</h2>
 			<AboutMe/>
 		</Container>
@@ -183,4 +187,8 @@ import {Image} from "astro:assets";
 		const elements = document.querySelectorAll('.animate-on-scroll');
 		elements.forEach(el => observer.observe(el));
 	});
+
+	// Initialize language store
+	import { initializeLanguage } from '../i18n/languageStore';
+	initializeLanguage();
 </script>
