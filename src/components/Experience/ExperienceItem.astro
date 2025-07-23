@@ -7,18 +7,18 @@ const { title, description, link, date, ...attrs } = Astro.props;
         class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -start-1.5 border border-white dark:border-gray-900 dark:bg-gray-700">
     </div>
     <time
-        class="mb-1 text-xl md:text-md font-normal leading-none text-sky-200 dark:text-gray-500 experience-date"
+        class="mb-1 text-sm sm:text-base font-normal leading-none text-sky-200 dark:text-gray-500 experience-date"
     >
         {date}
     </time>
-    <h3 class="md:text-xl text-3xl font-semibold mt-2 experience-title">
+    <h3 class="text-lg sm:text-xl lg:text-2xl font-semibold mt-2 experience-title">
         {title}
     </h3>
-    <p set:html={description.replace(/\n/g, '<br>')} class="mb-4 text-2xl md:text-lg font-normal text-gray-400 mt-2 experience-description"></p>
+    <p set:html={description.replace(/\n/g, '<br>')} class="mb-4 text-sm sm:text-base lg:text-lg font-normal text-gray-400 mt-2 experience-description"></p>
     {link && <a
             href={link}
             title={title}
-            class="inline-flex items-center px-4 py-2 text-2xl md:text-lg font-medium border border-gray-200 rounded-lg hover:bg-gray-100 hover:bg-opacity-20 hover:text-sky-300 focus:z-10 focus:ring-4 focus:outline-none focus:ring-gray-100 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-gray-700 experience-link"
+            class="inline-flex items-center px-3 py-2 text-sm sm:text-base font-medium border border-gray-200 rounded-lg hover:bg-gray-100 hover:bg-opacity-20 hover:text-sky-300 focus:z-10 focus:ring-4 focus:outline-none focus:ring-gray-100 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-gray-700 experience-link"
     ><span class="link-text" data-text-en="Learn more" data-text-es="Ver más">Learn more</span>
         <svg class="w-3 h-3 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>

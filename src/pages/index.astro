@@ -35,29 +35,29 @@ import TranslatedText from "../components/TranslatedText.astro";
 					height={128}
 				/>
 			</div>
-			
+
 			<div class="space-y-6 animate-in-delay-1">
-				<TranslatedText 
-					textKey="hero.greeting" 
-					tag="h1" 
+				<TranslatedText
+					textKey="hero.greeting"
+					tag="h1"
 					class="text-5xl sm:text-6xl lg:text-7xl font-bold text-gradient"
 				>
 					Hey, I'm Oriel!
 				</TranslatedText>
-				
+
 				<div class="space-y-4 max-w-4xl px-4">
 					<div class="flex flex-wrap justify-center items-center gap-2 text-lg sm:text-xl lg:text-2xl">
 						<TranslatedText textKey="hero.yearsExperience" class="font-semibold text-white/90">
 							+3 years of experience.
 						</TranslatedText>
-						<TranslatedText 
-							textKey="hero.role" 
+						<TranslatedText
+							textKey="hero.role"
 							class="font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent"
 						>
 							Full Stack Developer
 						</TranslatedText>
 					</div>
-					
+
 					<p class="text-base sm:text-lg lg:text-xl text-white/80 leading-relaxed max-w-3xl mx-auto">
 						<TranslatedText textKey="hero.description">
 							Web developer using technologies such as ASP.NET, Node.js, React, Vue, and Odoo. Passionate about continuous learning and teamwork.
@@ -67,12 +67,12 @@ import TranslatedText from "../components/TranslatedText.astro";
 							<TranslatedText textKey="hero.location" class="text-white/60">from Montevideo, Uruguay.</TranslatedText>
 						</span>
 					</p>
-					
+
 					<div class="flex flex-wrap justify-center items-center gap-2 text-base sm:text-lg">
 						<TranslatedText textKey="hero.currentlyWorking" class="text-white/70">Currently working at</TranslatedText>
-						<a 
+						<a
 							class="font-semibold text-blue-400 hover:text-blue-300 transition-colors duration-200 underline decoration-blue-400/30 hover:decoration-blue-300"
-							href="https://www.alsacia.cl/"
+							href="https://www.linkedin.com/company/alsacia"
 							target="_blank"
 							rel="noopener noreferrer"
 						>
@@ -81,7 +81,7 @@ import TranslatedText from "../components/TranslatedText.astro";
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="flex flex-wrap justify-center gap-3 sm:gap-4 animate-in-delay-2 px-4">
 				<Pills href="https://github.com/Oriel9511" class="social-pill github-pill">
 					<Github/> Github
@@ -102,100 +102,100 @@ import TranslatedText from "../components/TranslatedText.astro";
 		</section>
 		<!-- Core Strengths Section -->
 		<section id="core" class="py-20 animate-on-scroll">
-			<div class="text-center mb-16">
-				<div class="inline-flex items-center gap-3 mb-4">
-					<div class="p-3 rounded-xl bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30">
-						<CoreIcon/>
+			<div class="text-center mb-12 sm:mb-16">
+				<div class="inline-flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+					<div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30">
+						<CoreIcon class="w-5 h-5 sm:w-6 sm:h-6"/>
 					</div>
-					<TranslatedText 
-						textKey="coreStrengths.title" 
-						tag="h2" 
-						class="text-3xl sm:text-4xl font-bold text-white"
+					<TranslatedText
+						textKey="coreStrengths.title"
+						tag="h2"
+						class="text-xl sm:text-3xl lg:text-4xl font-bold text-white"
 					>
 						Core Strengths
 					</TranslatedText>
 				</div>
-				<div class="w-24 h-1 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto rounded-full"></div>
+				<div class="w-16 sm:w-24 h-0.5 sm:h-1 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto rounded-full"></div>
 			</div>
 			<CoreStrenth/>
 		</section>
 
 		<!-- Technical Skills Section -->
 		<section id="skills" class="py-20 animate-on-scroll">
-			<div class="text-center mb-16">
-				<div class="inline-flex items-center gap-3 mb-4">
-					<div class="p-3 rounded-xl bg-gradient-to-r from-blue-500/20 to-cyan-500/20 border border-blue-500/30">
-						<ToolsIcon/>
+			<div class="text-center mb-12 sm:mb-16">
+				<div class="inline-flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+					<div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-gradient-to-r from-blue-500/20 to-cyan-500/20 border border-blue-500/30">
+						<ToolsIcon class="w-5 h-5 sm:w-6 sm:h-6"/>
 					</div>
-					<TranslatedText 
-						textKey="technicalSkills.title" 
-						tag="h2" 
-						class="text-3xl sm:text-4xl font-bold text-white"
+					<TranslatedText
+						textKey="technicalSkills.title"
+						tag="h2"
+						class="text-xl sm:text-3xl lg:text-4xl font-bold text-white"
 					>
 						Technical Skills
 					</TranslatedText>
 				</div>
-				<div class="w-24 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 mx-auto rounded-full"></div>
+				<div class="w-16 sm:w-24 h-0.5 sm:h-1 bg-gradient-to-r from-blue-500 to-cyan-500 mx-auto rounded-full"></div>
 			</div>
 			<TechnicalSkills/>
 		</section>
 
 		<!-- Experience Section -->
 		<section id="experience" class="py-20 animate-on-scroll">
-			<div class="text-center mb-16">
-				<div class="inline-flex items-center gap-3 mb-4">
-					<div class="p-3 rounded-xl bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/30">
-						<Work/>
+			<div class="text-center mb-12 sm:mb-16">
+				<div class="inline-flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+					<div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/30">
+						<Work class="w-5 h-5 sm:w-6 sm:h-6"/>
 					</div>
-					<TranslatedText 
-						textKey="experience.title" 
-						tag="h2" 
-						class="text-3xl sm:text-4xl font-bold text-white"
+					<TranslatedText
+						textKey="experience.title"
+						tag="h2"
+						class="text-xl sm:text-3xl lg:text-4xl font-bold text-white"
 					>
 						Work Experience
 					</TranslatedText>
 				</div>
-				<div class="w-24 h-1 bg-gradient-to-r from-green-500 to-emerald-500 mx-auto rounded-full"></div>
+				<div class="w-16 sm:w-24 h-0.5 sm:h-1 bg-gradient-to-r from-green-500 to-emerald-500 mx-auto rounded-full"></div>
 			</div>
 			<Experience/>
 		</section>
 
 		<!-- Projects Section -->
 		<section id="projects" class="py-20 animate-on-scroll">
-			<div class="text-center mb-16">
-				<div class="inline-flex items-center gap-3 mb-4">
-					<div class="p-3 rounded-xl bg-gradient-to-r from-orange-500/20 to-red-500/20 border border-orange-500/30">
-						<Code/>
+			<div class="text-center mb-12 sm:mb-16">
+				<div class="inline-flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+					<div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-gradient-to-r from-orange-500/20 to-red-500/20 border border-orange-500/30">
+						<Code class="w-5 h-5 sm:w-6 sm:h-6"/>
 					</div>
-					<TranslatedText 
-						textKey="projects.title" 
-						tag="h2" 
-						class="text-3xl sm:text-4xl font-bold text-white"
+					<TranslatedText
+						textKey="projects.title"
+						tag="h2"
+						class="text-xl sm:text-3xl lg:text-4xl font-bold text-white"
 					>
 						Major Projects
 					</TranslatedText>
 				</div>
-				<div class="w-24 h-1 bg-gradient-to-r from-orange-500 to-red-500 mx-auto rounded-full"></div>
+				<div class="w-16 sm:w-24 h-0.5 sm:h-1 bg-gradient-to-r from-orange-500 to-red-500 mx-auto rounded-full"></div>
 			</div>
 			<Projects/>
 		</section>
 
 		<!-- About Section -->
 		<section id="about" class="py-20 animate-on-scroll">
-			<div class="text-center mb-16">
-				<div class="inline-flex items-center gap-3 mb-4">
-					<div class="p-3 rounded-xl bg-gradient-to-r from-indigo-500/20 to-purple-500/20 border border-indigo-500/30">
-						<UserIcon/>
+			<div class="text-center mb-12 sm:mb-16">
+				<div class="inline-flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+					<div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-gradient-to-r from-indigo-500/20 to-purple-500/20 border border-indigo-500/30">
+						<UserIcon class="w-5 h-5 sm:w-6 sm:h-6"/>
 					</div>
-					<TranslatedText 
-						textKey="about.title" 
-						tag="h2" 
-						class="text-3xl sm:text-4xl font-bold text-white"
+					<TranslatedText
+						textKey="about.title"
+						tag="h2"
+						class="text-xl sm:text-3xl lg:text-4xl font-bold text-white"
 					>
 						About Me
 					</TranslatedText>
 				</div>
-				<div class="w-24 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 mx-auto rounded-full"></div>
+				<div class="w-16 sm:w-24 h-0.5 sm:h-1 bg-gradient-to-r from-indigo-500 to-purple-500 mx-auto rounded-full"></div>
 			</div>
 			<AboutMe/>
 		</section>
@@ -216,7 +216,7 @@ import TranslatedText from "../components/TranslatedText.astro";
 		position: relative;
 		overflow: hidden;
 	}
-	
+
 	.social-pill::before {
 		content: '';
 		position: absolute;
@@ -227,58 +227,58 @@ import TranslatedText from "../components/TranslatedText.astro";
 		background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
 		transition: left 0.5s;
 	}
-	
+
 	.social-pill:hover::before {
 		left: 100%;
 	}
-	
+
 	.social-pill:hover {
 		transform: translateY(-2px) scale(1.05);
 		box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 	}
-	
+
 	.github-pill:hover {
 		background: linear-gradient(135deg, rgba(33, 31, 31, 0.8), rgba(55, 65, 81, 0.8));
 		border-color: rgba(55, 65, 81, 0.5);
 	}
-	
+
 	.linkedin-pill:hover {
 		background: linear-gradient(135deg, rgba(10, 102, 194, 0.8), rgba(29, 78, 216, 0.8));
 		border-color: rgba(29, 78, 216, 0.5);
 	}
-	
+
 	.email-pill:hover {
 		background: linear-gradient(135deg, rgba(185, 28, 28, 0.8), rgba(220, 38, 38, 0.8));
 		border-color: rgba(185, 28, 28, 0.5);
 	}
-	
+
 	.telegram-pill:hover {
 		background: linear-gradient(135deg, rgba(3, 105, 161, 0.8), rgba(14, 165, 233, 0.8));
 		border-color: rgba(3, 105, 161, 0.5);
 	}
-	
+
 	.whatsapp-pill:hover {
 		background: linear-gradient(135deg, rgba(21, 128, 61, 0.8), rgba(34, 197, 94, 0.8));
 		border-color: rgba(21, 128, 61, 0.5);
 	}
-	
+
 	/* Enhanced Scroll Animations */
 	.animate-on-scroll {
 		opacity: 0;
 		transform: translateY(40px);
 		transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 	}
-	
+
 	.animate-on-scroll.visible {
 		opacity: 1;
 		transform: translateY(0);
 	}
-	
+
 	/* Section Spacing */
 	section {
 		position: relative;
 	}
-	
+
 	section::before {
 		content: '';
 		position: absolute;
@@ -290,22 +290,22 @@ import TranslatedText from "../components/TranslatedText.astro";
 		background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.1), transparent);
 		pointer-events: none;
 	}
-	
+
 	section:first-child::before {
 		display: none;
 	}
-	
+
 	/* Improved Typography */
 	h1, h2, h3 {
 		letter-spacing: -0.025em;
 	}
-	
+
 	/* Better Button Focus States */
 	.social-pill:focus-visible {
 		outline: 2px solid rgb(59, 130, 246);
 		outline-offset: 2px;
 	}
-	
+
 	/* Mobile Layout Fix */
 	@media (max-width: 768px) {
 		main {
@@ -314,62 +314,62 @@ import TranslatedText from "../components/TranslatedText.astro";
 			margin: 0;
 			padding: 0 1rem;
 		}
-		
+
 		section {
 			width: 100%;
 			max-width: 100%;
 		}
 	}
-	
+
 	/* Responsive Design */
 	@media (max-width: 640px) {
 		.text-5xl {
 			font-size: 2.5rem;
 			line-height: 1.1;
 		}
-		
+
 		.text-6xl {
 			font-size: 3rem;
 			line-height: 1.1;
 		}
-		
+
 		.text-7xl {
 			font-size: 3.5rem;
 			line-height: 1.1;
 		}
-		
+
 		/* Mobile spacing adjustments */
 		section {
-			padding-top: 4rem !important;
-			padding-bottom: 4rem !important;
+			padding-top: 3rem;
+			padding-bottom: 3rem;
 		}
-		
+
 		#home {
-			padding-top: 6rem !important;
+			padding-top: 5rem;
 			min-height: 100vh;
 		}
-		
+
 		.space-y-6 > * + * {
 			margin-top: 1.5rem;
 		}
-		
+
 		.space-y-4 > * + * {
 			margin-top: 1rem;
 		}
-		
+
 		/* Mobile social pills */
 		.social-pill {
 			padding: 0.5rem 1rem;
 			font-size: 0.875rem;
 			border-radius: 0.5rem;
 		}
-		
+
 		.social-pill svg {
 			width: 16px;
 			height: 16px;
 		}
 	}
-	
+
 	/* Tablet adjustments */
 	@media (max-width: 768px) and (min-width: 641px) {
 		section {
@@ -377,12 +377,12 @@ import TranslatedText from "../components/TranslatedText.astro";
 			padding-bottom: 5rem;
 		}
 	}
-	
+
 	/* Loading Performance */
 	.float-animation {
 		will-change: transform;
 	}
-	
+
 	.social-pill {
 		will-change: transform, box-shadow;
 	}

@@ -90,11 +90,11 @@ const strengths = [
                 data-description-en={strength.description.en}
                 data-description-es={strength.description.es}
             >
-                <h2 class="md:text-xl text-3xl font-semibold flex items-center gap-x-2">
-                    {strength.icon && <strength.icon class={strength.class}/>} 
+                <h3 class="text-lg sm:text-xl lg:text-2xl font-semibold flex items-center gap-x-2">
+                    {strength.icon && <strength.icon class={`${strength.class} w-5 h-5 sm:w-6 sm:h-6`}/>} 
                     <span class="strength-title">{strength.title.en}</span>
-                </h2>
-                <p class="mb-4 font-normal md:text-lg text-2xl text-gray-400 strength-description">
+                </h3>
+                <p class="mb-4 font-normal text-sm sm:text-base lg:text-lg text-gray-400 strength-description">
                     {strength.description.en}
                 </p>
             </article>
