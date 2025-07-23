@@ -23,12 +23,12 @@ import TranslatedText from "../components/TranslatedText.astro";
 ---
 
 <Layout title="Oriel Arteaga Jiménez - Full Stack Developer Portfolio">
-	<main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+	<main class="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 		<!-- Hero Section -->
-		<section id="home" class="min-h-screen flex flex-col justify-center items-center text-center space-y-8 py-20">
+		<section id="home" class="min-h-screen flex flex-col justify-center items-center text-center space-y-6 sm:space-y-8 py-20 pt-24">
 			<div class="animate-in">
 				<Image
-					class="w-32 h-32 rounded-full border-4 border-white/10 shadow-xl float-animation"
+					class="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 border-white/10 shadow-xl float-animation"
 					src={profilePic}
 					alt="Oriel Arteaga Developer"
 					width={128}
@@ -45,8 +45,8 @@ import TranslatedText from "../components/TranslatedText.astro";
 					Hey, I'm Oriel!
 				</TranslatedText>
 				
-				<div class="space-y-4 max-w-4xl">
-					<div class="flex flex-wrap justify-center items-center gap-2 text-xl sm:text-2xl">
+				<div class="space-y-4 max-w-4xl px-4">
+					<div class="flex flex-wrap justify-center items-center gap-2 text-lg sm:text-xl lg:text-2xl">
 						<TranslatedText textKey="hero.yearsExperience" class="font-semibold text-white/90">
 							+3 years of experience.
 						</TranslatedText>
@@ -58,15 +58,17 @@ import TranslatedText from "../components/TranslatedText.astro";
 						</TranslatedText>
 					</div>
 					
-					<p class="text-lg sm:text-xl text-white/80 leading-relaxed max-w-3xl mx-auto">
+					<p class="text-base sm:text-lg lg:text-xl text-white/80 leading-relaxed max-w-3xl mx-auto">
 						<TranslatedText textKey="hero.description">
 							Web developer using technologies such as ASP.NET, Node.js, React, Vue, and Odoo. Passionate about continuous learning and teamwork.
 						</TranslatedText>
-						<br />
-						<TranslatedText textKey="hero.location" class="text-white/60">from Montevideo, Uruguay.</TranslatedText>
+						<br class="hidden sm:block" />
+						<span class="block sm:inline mt-2 sm:mt-0">
+							<TranslatedText textKey="hero.location" class="text-white/60">from Montevideo, Uruguay.</TranslatedText>
+						</span>
 					</p>
 					
-					<div class="flex flex-wrap justify-center items-center gap-2 text-lg">
+					<div class="flex flex-wrap justify-center items-center gap-2 text-base sm:text-lg">
 						<TranslatedText textKey="hero.currentlyWorking" class="text-white/70">Currently working at</TranslatedText>
 						<a 
 							class="font-semibold text-blue-400 hover:text-blue-300 transition-colors duration-200 underline decoration-blue-400/30 hover:decoration-blue-300"
@@ -80,7 +82,7 @@ import TranslatedText from "../components/TranslatedText.astro";
 				</div>
 			</div>
 			
-			<div class="flex flex-wrap justify-center gap-4 animate-in-delay-2">
+			<div class="flex flex-wrap justify-center gap-3 sm:gap-4 animate-in-delay-2 px-4">
 				<Pills href="https://github.com/Oriel9511" class="social-pill github-pill">
 					<Github/> Github
 				</Pills>
@@ -304,18 +306,75 @@ import TranslatedText from "../components/TranslatedText.astro";
 		outline-offset: 2px;
 	}
 	
-	/* Responsive Text */
+	/* Mobile Layout Fix */
+	@media (max-width: 768px) {
+		main {
+			width: 100%;
+			max-width: 100vw;
+			margin: 0;
+			padding: 0 1rem;
+		}
+		
+		section {
+			width: 100%;
+			max-width: 100%;
+		}
+	}
+	
+	/* Responsive Design */
 	@media (max-width: 640px) {
 		.text-5xl {
 			font-size: 2.5rem;
+			line-height: 1.1;
 		}
 		
 		.text-6xl {
 			font-size: 3rem;
+			line-height: 1.1;
 		}
 		
 		.text-7xl {
 			font-size: 3.5rem;
+			line-height: 1.1;
+		}
+		
+		/* Mobile spacing adjustments */
+		section {
+			padding-top: 4rem !important;
+			padding-bottom: 4rem !important;
+		}
+		
+		#home {
+			padding-top: 6rem !important;
+			min-height: 100vh;
+		}
+		
+		.space-y-6 > * + * {
+			margin-top: 1.5rem;
+		}
+		
+		.space-y-4 > * + * {
+			margin-top: 1rem;
+		}
+		
+		/* Mobile social pills */
+		.social-pill {
+			padding: 0.5rem 1rem;
+			font-size: 0.875rem;
+			border-radius: 0.5rem;
+		}
+		
+		.social-pill svg {
+			width: 16px;
+			height: 16px;
+		}
+	}
+	
+	/* Tablet adjustments */
+	@media (max-width: 768px) and (min-width: 641px) {
+		section {
+			padding-top: 5rem;
+			padding-bottom: 5rem;
 		}
 	}
 	
