@@ -3,7 +3,7 @@
 ---
 
 <div class="language-switcher">
-  <button id="lang-toggle" class="lang-button" aria-label="Switch language">
+  <button class="lang-button lang-toggle" aria-label="Switch language">
     <span class="current-lang">EN</span>
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <circle cx="12" cy="12" r="10"></circle>
@@ -64,30 +64,40 @@
 
 <script>
   import { currentLanguage, switchLanguage, initializeLanguage } from '../i18n/languageStore';
-  
-  // Initialize language on page load
-  initializeLanguage();
-  
-  const langButton = document.getElementById('lang-toggle');
-  const currentLangSpan = langButton?.querySelector('.current-lang');
-  
-  // Update button text based on current language
-  function updateButtonText() {
-    if (currentLangSpan) {
-      currentLangSpan.textContent = currentLanguage.get().toUpperCase();
+
+  function initializeLanguageSwitcher() {
+    // Initialize language on page load
+    initializeLanguage();
+
+    const langButtons = document.querySelectorAll('.lang-toggle');
+
+    // Update button text based on current language
+    function updateButtonText() {
+      const lang = currentLanguage.get().toUpperCase();
+      langButtons.forEach(button => {
+        const currentLangSpan = button.querySelector('.current-lang');
+        if (currentLangSpan) {
+          currentLangSpan.textContent = lang;
+        }
+      });
     }
+
+    // Initial update
+    updateButtonText();
+
+    // Subscribe to language changes
+    currentLanguage.subscribe(updateButtonText);
+
+    // Handle language toggle for each button
+    langButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const currentLang = currentLanguage.get();
+        const newLang = currentLang === 'en' ? 'es' : 'en';
+        switchLanguage(newLang);
+      });
+    });
   }
-  
-  // Initial update
-  updateButtonText();
-  
-  // Subscribe to language changes
-  currentLanguage.subscribe(updateButtonText);
-  
-  // Handle language toggle
-  langButton?.addEventListener('click', () => {
-    const currentLang = currentLanguage.get();
-    const newLang = currentLang === 'en' ? 'es' : 'en';
-    switchLanguage(newLang);
-  });
+
+  // Run the script after the DOM is fully loaded
+  document.addEventListener('DOMContentLoaded', initializeLanguageSwitcher);
 </script>

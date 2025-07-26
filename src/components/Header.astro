@@ -15,15 +15,18 @@ const links = [
 <header class="fixed top-0 left-0 right-0 z-50 bg-slate-900/80 backdrop-blur-xl border-b border-white/10">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16 md:h-16">
-            <!-- Desktop Navigation -->
-            <nav class="hidden md:flex items-center space-x-8 flex-1 justify-center">
-                {links.map((link) => (
-                    <a class="nav-link text-sm font-medium text-white/80 hover:text-white transition-all duration-200 relative group" href={link.href}>
-                        <TranslatedText textKey={link.textKey} />
-                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-200 group-hover:w-full"></span>
-                    </a>
-                ))}
-            </nav>
+            <!-- Desktop Navigation and Language Switcher -->
+            <div class="hidden md:flex items-center justify-between w-full">
+                <nav class="flex items-center space-x-8">
+                    {links.map((link) => (
+                        <a class="nav-link text-sm font-medium text-white/80 hover:text-white transition-all duration-200 relative group" href={link.href}>
+                            <TranslatedText textKey={link.textKey} />
+                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-200 group-hover:w-full"></span>
+                        </a>
+                    ))}
+                </nav>
+                <LanguageSwitcher />
+            </div>
             
             <!-- Mobile Layout -->
             <div class="md:hidden flex items-center justify-between w-full">
@@ -35,11 +38,6 @@ const links = [
                 </button>
                 
                 <!-- Mobile Language Switcher -->
-                <LanguageSwitcher />
-            </div>
-            
-            <!-- Desktop Language Switcher -->
-            <div class="hidden md:flex items-center">
                 <LanguageSwitcher />
             </div>
         </div>
@@ -81,36 +79,38 @@ const links = [
     const closeMenu = document.getElementById('close-menu');
     const mobileMenu = document.getElementById('mobile-menu');
 
-    menuToggle.addEventListener('click', () => {
+    const openMenu = () => {
         mobileMenu.classList.remove('hidden');
         mobileMenu.classList.add('flex');
         document.body.classList.add('mobile-menu-open');
         setTimeout(() => {
             mobileMenu.classList.add('opacity-100');
         }, 10);
-    });
+    };
 
-    closeMenu.addEventListener('click', () => {
+    const closeMenuAction = () => {
         mobileMenu.classList.remove('opacity-100');
         setTimeout(() => {
             mobileMenu.classList.add('hidden');
             mobileMenu.classList.remove('flex');
             document.body.classList.remove('mobile-menu-open');
         }, 300);
+    };
+
+    menuToggle.addEventListener('click', () => {
+        const isMenuOpen = !mobileMenu.classList.contains('hidden');
+        if (isMenuOpen) {
+            closeMenuAction();
+        } else {
+            openMenu();
+        }
     });
+
+    closeMenu.addEventListener('click', closeMenuAction);
 
     // Close menu when clicking on a link
     const mobileLinks = mobileMenu.querySelectorAll('a');
     mobileLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            mobileMenu.classList.remove('opacity-100');
-            setTimeout(() => {
-                mobileMenu.classList.add('hidden');
-                mobileMenu.classList.remove('flex');
-                document.body.classList.remove('mobile-menu-open');
-            }, 300);
-        });
+        link.addEventListener('click', closeMenuAction);
     });
-
-
 </script>
