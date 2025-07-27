@@ -2,23 +2,38 @@
 import TranslatedText from "../TranslatedText.astro";
 ---
 
-<div class="group relative glass rounded-xl p-6 md:p-8 animate-in" id="about-content">
-    <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/5 to-cyan-500/10 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
-    <div class="relative z-10 space-y-6">
-        <TranslatedText 
-            textKey="about.content.p1" 
-            class="text-base md:text-lg leading-relaxed text-white/90 hover:text-white transition-colors duration-300"
-        >
-            Full Stack Developer with 3+ years of experience in ASP.NET, Node.js, React, Vue, and Odoo. Background in Automation Engineering brings unique industrial systems perspective.
-        </TranslatedText>
+<article class="card card-glass card-interactive group animate-in" id="about-content">
+    <div class="card-content p-6 md:p-8 flex flex-col gap-y-4">
+        <!--<h3 class="text-lg sm:text-xl lg:text-2xl font-semibold flex items-center gap-x-3 group-hover:text-gradient transition-all duration-300">-->
+        <!--    <span class="icon-wrapper flex-shrink-0 p-2 rounded-lg bg-gradient-to-br from-blue-500/20 to-purple-500/10 group-hover:scale-110 transition-transform duration-300">-->
+        <!--        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-blue-400 group-hover:brightness-125 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">-->
+        <!--            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>-->
+        <!--        </svg>-->
+        <!--    </span>-->
+        <!--    <span class="about-title">-->
+        <!--        <TranslatedText textKey="about.title">About Me</TranslatedText>-->
+        <!--    </span>-->
+        <!--</h3>-->
 
-        <TranslatedText 
-            textKey="about.content.p2" 
-            class="text-base md:text-lg leading-relaxed text-white/90 hover:text-white transition-colors duration-300"
-        >
-            Passionate about continuous learning and delivering results quickly. Transitioned from hardware programming to full-stack development, providing comprehensive system understanding.
-        </TranslatedText>
+        <div class="space-y-4">
+            <TranslatedText
+                textKey="about.content.p1"
+                class="font-normal text-sm sm:text-base lg:text-lg text-gray-400 group-hover:text-gray-300 transition-colors duration-300 leading-relaxed"
+            >
+                Full Stack Developer with 3+ years of experience in ASP.NET, Node.js, React, Vue, and Odoo. Background in Automation Engineering brings unique industrial systems perspective.
+            </TranslatedText>
+
+            <TranslatedText
+                textKey="about.content.p2"
+                class="font-normal text-sm sm:text-base lg:text-lg text-gray-400 group-hover:text-gray-300 transition-colors duration-300 leading-relaxed"
+            >
+                Passionate about continuous learning and delivering results quickly. Transitioned from hardware programming to full-stack development, providing comprehensive system understanding.
+            </TranslatedText>
+        </div>
     </div>
-</div>
+
+    <!-- Subtle glow effect on hover -->
+    <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg pointer-events-none"></div>
+</article>
 
 

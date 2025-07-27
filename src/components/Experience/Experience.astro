@@ -5,7 +5,10 @@ const experienceItems = [
     {
         id: 'alsacia',
         date: { en: "April 2025 – Present", es: "Abril 2025 – Presente" },
-        title: { en: "Backend Developer | Alsacia | On-site | Full-time", es: "Desarrollador Backend | Alsacia | Presencial | Tiempo completo" },
+        role: { en: "Backend Developer", es: "Desarrollador Backend" },
+        company: "Alsacia",
+        location: { en: "On-site", es: "Presencial" },
+        mode: { en: "Full-time", es: "Tiempo completo" },
         description: {
             en: "",
             es: ""
@@ -15,7 +18,10 @@ const experienceItems = [
     {
         id: 'bizdirect',
         date: { en: "2022 – April 2025", es: "2022 – Abril 2025" },
-        title: { en: "Full Stack Software Developer | Bizdirect Consulting Inc. | Remote | Full-time", es: "Desarrollador de Software Full Stack | Bizdirect Consulting Inc. | Remoto | Tiempo completo" },
+        role: { en: "Full Stack Software Developer", es: "Desarrollador de Software Full Stack" },
+        company: "Bizdirect Consulting Inc.",
+        location: { en: "Remote", es: "Remoto" },
+        mode: { en: "Full-time", es: "Tiempo completo" },
         description: {
             en: "",
             es: ""
@@ -25,7 +31,10 @@ const experienceItems = [
     {
         id: 'isucorp',
         date: { en: "May 2024 – September 2024", es: "Mayo 2024 – Septiembre 2024" },
-        title: { en: "Full Stack Software Developer | IsuCorp | Remote | Part-time", es: "Desarrollador de Software Full Stack | IsuCorp | Remoto | Medio tiempo" },
+        role: { en: "Full Stack Software Developer", es: "Desarrollador de Software Full Stack" },
+        company: "IsuCorp",
+        location: { en: "Remote", es: "Remoto" },
+        mode: { en: "Part-time", es: "Medio tiempo" },
         description: {
             en: "",
             es: ""
@@ -35,18 +44,25 @@ const experienceItems = [
 ];
 ---
 
-<ol {...Astro.props} class={`relative border-s border-gray-200 dark:border-gray-700 ml-3 ${Astro.props.class}`} id="experience-list">
+<ol class="relative border-s border-gray-200/20 dark:border-gray-700/50" id="experience-list">
     {experienceItems.map((item) => (
-        <li class="mb-10 ms-4">
+        <li class="mb-10 ms-8 timeline-item">
             <ExperienceItem
                 date={item.date.en}
-                title={item.title.en}
+                role={item.role.en}
+                company={item.company}
+                location={item.location.en}
+                mode={item.mode.en}
                 description={item.description.en}
                 link={item.link}
                 data-date-en={item.date.en}
                 data-date-es={item.date.es}
-                data-title-en={item.title.en}
-                data-title-es={item.title.es}
+                data-role-en={item.role.en}
+                data-role-es={item.role.es}
+                data-location-en={item.location.en}
+                data-location-es={item.location.es}
+                data-mode-en={item.mode.en}
+                data-mode-es={item.mode.es}
                 data-description-en={item.description.en}
                 data-description-es={item.description.es}
             />
@@ -62,33 +78,59 @@ const experienceItems = [
         const experienceList = document.getElementById('experience-list');
         if (!experienceList) return;
 
-        const items = experienceList.querySelectorAll('li');
-        items.forEach((item, index) => {
+        const items = experienceList.querySelectorAll('.experience-item');
+        items.forEach((item) => {
             const dateEl = item.querySelector('.experience-date');
-            const titleEl = item.querySelector('.experience-title');
+            const roleEl = item.querySelector('.experience-role');
+            const locationEl = item.querySelector('.experience-location');
+            const modeEl = item.querySelector('.experience-mode');
             const descEl = item.querySelector('.experience-description');
 
-            if (dateEl) {
-                const date = item.querySelector('.experience-item')?.getAttribute(`data-date-${lang}`);
-                if (date) dateEl.textContent = date;
-            }
-
-            if (titleEl) {
-                const title = item.querySelector('.experience-item')?.getAttribute(`data-title-${lang}`);
-                if (title) titleEl.textContent = title;
-            }
-
+            if (dateEl) dateEl.textContent = item.getAttribute(`data-date-${lang}`) || dateEl.textContent;
+            if (roleEl) roleEl.textContent = item.getAttribute(`data-role-${lang}`) || roleEl.textContent;
+            if (locationEl) locationEl.textContent = item.getAttribute(`data-location-${lang}`) || locationEl.textContent;
+            if (modeEl) modeEl.textContent = item.getAttribute(`data-mode-${lang}`) || modeEl.textContent;
             if (descEl) {
-                const desc = item.querySelector('.experience-item')?.getAttribute(`data-description-${lang}`);
+                const desc = item.getAttribute(`data-description-${lang}`);
                 if (desc) descEl.innerHTML = desc.replace(/\n/g, '<br>');
             }
         });
     }
 
-    // Update on language change
     currentLanguage.subscribe(updateExperienceContent);
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        updateExperienceContent();
 
-    // Initial update
-    document.addEventListener('DOMContentLoaded', updateExperienceContent);
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.timeline-item').forEach((item, index) => {
+            item.style.setProperty('--animation-delay', `${index * 150}ms`);
+            observer.observe(item);
+        });
+    });
 </script>
+
+<style>
+    .timeline-item {
+        opacity: 0;
+        transform: translateX(20px);
+        animation: slide-in 0.5s ease-out forwards;
+        animation-delay: var(--animation-delay, 0ms);
+    }
+
+    @keyframes slide-in {
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+</style>
 

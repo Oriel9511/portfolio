@@ -1,27 +1,82 @@
 ---
-const { title, description, link, date, ...attrs } = Astro.props;
+import BusinessIcon from "../icons/BusinessIcon.astro";
+import WorkIcon from "../icons/Work.astro";
+
+const { role, company, location, mode, description, link, date, ...attrs } = Astro.props;
 ---
 
-<div class="experience-item" {...attrs}>
-    <div
-        class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -start-1.5 border border-white dark:border-gray-900 dark:bg-gray-700">
-    </div>
-    <time
-        class="mb-1 text-sm sm:text-base font-normal leading-none text-sky-200 dark:text-gray-500 experience-date"
-    >
-        {date}
-    </time>
-    <h3 class="text-lg sm:text-xl lg:text-2xl font-semibold mt-2 experience-title">
-        {title}
-    </h3>
-    <p set:html={description.replace(/\n/g, '<br>')} class="mb-4 text-sm sm:text-base lg:text-lg font-normal text-gray-400 mt-2 experience-description"></p>
-    {link && <a
-            href={link}
-            title={title}
-            class="inline-flex items-center px-3 py-2 text-sm sm:text-base font-medium border border-gray-200 rounded-lg hover:bg-gray-100 hover:bg-opacity-20 hover:text-sky-300 focus:z-10 focus:ring-4 focus:outline-none focus:ring-gray-100 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-gray-700 experience-link"
-    ><span class="link-text" data-text-en="Learn more" data-text-es="Ver más">Learn more</span>
-        <svg class="w-3 h-3 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-        </svg>
-    </a>}
+<div class="experience-item group" {...attrs}>
+    <!-- Timeline Dot -->
+    <div class="absolute w-3 h-3 bg-gray-400 rounded-full mt-[5rem] -left-[2.4rem] border border-white dark:border-gray-900 dark:bg-gray-700"></div>
+
+    <article class="card card-glass card-interactive">
+        <div class="card-content p-4 sm:p-6 flex flex-col gap-y-3 sm:gap-y-4">
+            <div class="flex items-center justify-between gap-3">
+                <h3 class="text-xl sm:text-2xl font-bold text-white group-hover:text-gradient transition-all duration-300 experience-role flex-1">
+                    {role}
+                </h3>
+                <time class="text-xs sm:text-sm font-medium text-sky-300 bg-sky-500/20 px-3 py-1 rounded-full border border-sky-500/30 whitespace-nowrap experience-date">
+                    {date}
+                </time>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm sm:text-base text-gray-400">
+                <div class="flex items-center gap-2">
+                    <WorkIcon class="w-4 h-4" />
+                    <span>{company}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="experience-location">{location}</span>
+                    <span class="text-gray-500">/</span>
+                    <span class="experience-mode">{mode}</span>
+                </div>
+            </div>
+
+            <p class="font-normal text-sm sm:text-base lg:text-lg text-gray-400 experience-description group-hover:text-gray-300 transition-colors duration-300 leading-relaxed pt-2"
+               set:html={description.replace(/\n/g, '<br>')}></p>
+
+            {link && (
+                <div class="pt-2">
+                    <a href={link} title={`${role} at ${company}`} class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-sky-300 bg-sky-500/10 border border-sky-500/30 rounded-lg hover:bg-sky-500/20 hover:text-sky-200 hover:border-sky-400/50 transition-all duration-200 group/link experience-link">
+                        <span class="link-text" data-text-en="Learn more" data-text-es="Ver más">Learn more</span>
+                        <svg class="w-4 h-4 transition-transform duration-200 group-hover/link:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                        </svg>
+                    </a>
+                </div>
+            )}
+        </div>
+
+        <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg pointer-events-none"></div>
+    </article>
 </div>
+
+<script>
+    import { currentLanguage } from '../../i18n/languageStore';
+
+    function updateExperienceText() {
+        const lang = currentLanguage.get();
+        const linkTexts = document.querySelectorAll('.link-text');
+
+        linkTexts.forEach(linkText => {
+            const text = linkText.getAttribute(`data-text-${lang}`);
+            if (text) linkText.textContent = text;
+        });
+    }
+
+    currentLanguage.subscribe(updateExperienceText);
+    document.addEventListener('DOMContentLoaded', updateExperienceText);
+</script>
+
+<style>
+    .card-interactive {
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card-interactive:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 0 15px rgba(102, 217, 239, 0.2);
+    }
+</style>

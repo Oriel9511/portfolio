@@ -82,21 +82,30 @@ const strengths = [
 ];
 ---
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4" id="core-strengths-grid">
-    {strengths.map(strength => (
-            <article class="border border-white/10 rounded-lg p-4 w-full flex flex-col gap-y-3 backdrop-blur-sm strength-item"
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 p-4" id="core-strengths-grid">
+    {strengths.map((strength, index) => (
+            <article class="card card-glass card-interactive strength-item group animate-in-delay-{Math.floor(index / 2) + 1}"
                 data-title-en={strength.title.en}
                 data-title-es={strength.title.es}
                 data-description-en={strength.description.en}
                 data-description-es={strength.description.es}
             >
-                <h3 class="text-lg sm:text-xl lg:text-2xl font-semibold flex items-center gap-x-2">
-                    {strength.icon && <strength.icon class={`${strength.class} w-5 h-5 sm:w-6 sm:h-6`}/>} 
-                    <span class="strength-title">{strength.title.en}</span>
-                </h3>
-                <p class="mb-4 font-normal text-sm sm:text-base lg:text-lg text-gray-400 strength-description">
-                    {strength.description.en}
-                </p>
+                <div class="card-content p-4 sm:p-6 flex flex-col gap-y-3 sm:gap-y-4">
+                    <h3 class="text-lg sm:text-xl lg:text-2xl font-semibold flex items-center gap-x-3 group-hover:text-gradient transition-all duration-300">
+                        {strength.icon && (
+                            <span class="icon-wrapper flex-shrink-0 p-2 rounded-lg bg-gradient-to-br from-white/10 to-white/5 group-hover:scale-110 transition-transform duration-300">
+                                <strength.icon class={`${strength.class} w-5 h-5 sm:w-6 sm:h-6 group-hover:brightness-125 transition-all duration-300`}/>
+                            </span>
+                        )} 
+                        <span class="strength-title">{strength.title.en}</span>
+                    </h3>
+                    <p class="font-normal text-sm sm:text-base lg:text-lg text-gray-400 strength-description group-hover:text-gray-300 transition-colors duration-300 leading-relaxed">
+                        {strength.description.en}
+                    </p>
+                </div>
+                
+                <!-- Subtle glow effect on hover -->
+                <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg pointer-events-none"></div>
             </article>
     ))}
 </div>

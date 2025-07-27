@@ -54,20 +54,25 @@ const { title } = Astro.props;
 </html>
 <style is:global>
 	:root {
-		/* Color System */
+		/* Enhanced Color System */
 		--primary: 99, 102, 241;
 		--primary-dark: 79, 70, 229;
 		--primary-light: 165, 180, 252;
 		--secondary: 14, 165, 233;
 		--accent: 59, 130, 246;
+		--accent-bright: 34, 197, 94;
+		--accent-warm: 245, 101, 101;
+		--accent-purple: 168, 85, 247;
 		--surface: 15, 23, 42;
 		--surface-light: 30, 41, 59;
 		--surface-lighter: 51, 65, 85;
+		--surface-elevated: 71, 85, 105;
 		--text-primary: 248, 250, 252;
 		--text-secondary: 203, 213, 225;
 		--text-muted: 148, 163, 184;
 		--border: 51, 65, 85;
 		--border-light: 71, 85, 105;
+		--border-bright: 99, 102, 241;
 		
 		/* Shadows */
 		--shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
@@ -76,9 +81,14 @@ const { title } = Astro.props;
 		--shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 		--shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 		
-		/* Gradients */
+		/* Enhanced Gradients */
 		--gradient-primary: linear-gradient(135deg, rgb(var(--primary)) 0%, rgb(var(--secondary)) 100%);
+		--gradient-secondary: linear-gradient(135deg, rgb(var(--accent)) 0%, rgb(var(--accent-bright)) 100%);
+		--gradient-warm: linear-gradient(135deg, rgb(var(--accent-warm)) 0%, rgb(var(--accent-purple)) 100%);
 		--gradient-surface: linear-gradient(135deg, rgb(var(--surface)) 0%, rgb(var(--surface-light)) 100%);
+		--gradient-surface-elevated: linear-gradient(135deg, rgb(var(--surface-light)) 0%, rgb(var(--surface-lighter)) 100%);
+		--gradient-border: linear-gradient(135deg, rgba(var(--primary), 0.3) 0%, rgba(var(--secondary), 0.3) 100%);
+		--gradient-glow: radial-gradient(circle at center, rgba(var(--primary), 0.3) 0%, rgba(var(--primary), 0.1) 50%, transparent 100%);
 		
 		/* Typography Scale */
 		--text-xs: 0.75rem;
@@ -213,53 +223,184 @@ const { title } = Astro.props;
 		border-color: rgb(var(--border-light));
 	}
 	
-	/* Card Styles */
+	/* Enhanced Card Styles */
 	.card {
 		background: var(--gradient-surface);
 		border: 1px solid rgb(var(--border));
 		border-radius: var(--radius-lg);
 		box-shadow: var(--shadow);
-		transition: all var(--transition);
+		transition: all var(--transition-slow);
 		position: relative;
 		overflow: hidden;
+		backdrop-filter: blur(16px);
+		-webkit-backdrop-filter: blur(16px);
+	}
+	
+	.card::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: linear-gradient(135deg, 
+			rgba(255, 255, 255, 0.1) 0%, 
+			rgba(255, 255, 255, 0.05) 50%, 
+			rgba(255, 255, 255, 0.02) 100%);
+		opacity: 0;
+		transition: opacity var(--transition-slow);
+		pointer-events: none;
+		z-index: 1;
 	}
 	
 	.card:hover {
-		transform: translateY(-4px);
-		box-shadow: var(--shadow-xl);
-		border-color: rgb(var(--border-light));
+		transform: translateY(-8px) scale(1.02);
+		box-shadow: 
+			var(--shadow-xl),
+			0 0 40px rgba(var(--primary), 0.15),
+			inset 0 1px 0 rgba(255, 255, 255, 0.1);
+		border-color: rgba(var(--primary), 0.4);
 	}
 	
-	/* Animation Utilities */
+	.card:hover::before {
+		opacity: 1;
+	}
+	
+	.card-content {
+		position: relative;
+		z-index: 2;
+	}
+	
+	/* Card Variants */
+	.card-glass {
+		background: rgba(255, 255, 255, 0.08);
+		backdrop-filter: blur(20px);
+		-webkit-backdrop-filter: blur(20px);
+		border: 1px solid rgba(255, 255, 255, 0.15);
+	}
+	
+	.card-gradient {
+		background: linear-gradient(145deg, 
+			rgba(var(--surface), 0.9) 0%, 
+			rgba(var(--surface-light), 0.8) 100%);
+		border: 1px solid rgba(var(--primary), 0.2);
+	}
+	
+	.card-interactive {
+		cursor: pointer;
+		user-select: none;
+	}
+	
+	.card-interactive:active {
+		transform: translateY(-4px) scale(1.01);
+		transition-duration: 100ms;
+	}
+	
+	/* Enhanced Animation Utilities */
 	@media (prefers-reduced-motion: no-preference) {
 		.animate-in {
-			animation: slideInUp 0.6s ease-out forwards;
+			animation: slideInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 		}
 		
 		.animate-in-delay-1 {
-			animation: slideInUp 0.6s ease-out 0.1s forwards;
+			animation: slideInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
 			opacity: 0;
 		}
 		
 		.animate-in-delay-2 {
-			animation: slideInUp 0.6s ease-out 0.2s forwards;
+			animation: slideInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
 			opacity: 0;
 		}
 		
 		.animate-in-delay-3 {
-			animation: slideInUp 0.6s ease-out 0.3s forwards;
+			animation: slideInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
 			opacity: 0;
+		}
+		
+		.animate-in-delay-4 {
+			animation: slideInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+			opacity: 0;
+		}
+		
+		.animate-in-delay-5 {
+			animation: slideInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+			opacity: 0;
+		}
+		
+		.animate-scale-in {
+			animation: scaleIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+		}
+		
+		.animate-fade-in {
+			animation: fadeIn 1s ease-out forwards;
+		}
+		
+		.animate-slide-right {
+			animation: slideInRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+		}
+		
+		.animate-bounce-in {
+			animation: bounceIn 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
 		}
 	}
 	
 	@keyframes slideInUp {
 		from {
 			opacity: 0;
-			transform: translateY(30px);
+			transform: translateY(40px) scale(0.95);
 		}
 		to {
 			opacity: 1;
-			transform: translateY(0);
+			transform: translateY(0) scale(1);
+		}
+	}
+	
+	@keyframes scaleIn {
+		from {
+			opacity: 0;
+			transform: scale(0.8);
+		}
+		to {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+	
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+	
+	@keyframes slideInRight {
+		from {
+			opacity: 0;
+			transform: translateX(-30px);
+		}
+		to {
+			opacity: 1;
+			transform: translateX(0);
+		}
+	}
+	
+	@keyframes bounceIn {
+		from {
+			opacity: 0;
+			transform: scale(0.3);
+		}
+		50% {
+			opacity: 1;
+			transform: scale(1.05);
+		}
+		70% {
+			transform: scale(0.9);
+		}
+		to {
+			opacity: 1;
+			transform: scale(1);
 		}
 	}
 	
@@ -272,8 +413,39 @@ const { title } = Astro.props;
 		}
 	}
 	
+	@keyframes pulse {
+		0%, 100% {
+			opacity: 1;
+		}
+		50% {
+			opacity: 0.5;
+		}
+	}
+	
+	@keyframes shimmer {
+		0% {
+			background-position: -468px 0;
+		}
+		100% {
+			background-position: 468px 0;
+		}
+	}
+	
 	.float-animation {
 		animation: float 6s ease-in-out infinite;
+	}
+	
+	.pulse-animation {
+		animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+	}
+	
+	.shimmer-animation {
+		background: linear-gradient(to right, 
+			rgba(255, 255, 255, 0.0) 0%, 
+			rgba(255, 255, 255, 0.1) 50%, 
+			rgba(255, 255, 255, 0.0) 100%);
+		background-size: 468px 100%;
+		animation: shimmer 2s ease-in-out infinite;
 	}
 	
 	/* Scrollbar Styling */
