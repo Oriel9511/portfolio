@@ -53,20 +53,33 @@ const getDescription = (description) => {
             const description = card.querySelector('.project-description');
             
             if (title) {
-                const titleText = title.getAttribute(`data-title-${lang}`);
+                const titleText = card.getAttribute(`data-title-${lang}`);
                 if (titleText) title.innerHTML = titleText;
             }
             
             if (description) {
-                const descText = description.getAttribute(`data-desc-${lang}`);
+                const descText = card.getAttribute(`data-desc-${lang}`);
                 if (descText) description.innerHTML = descText;
             }
         });
     }
     
-    // Update on language change
-    currentLanguage.subscribe(updateProjectsText);
+    function initProjectCards() {
+        // Initial update
+        updateProjectsText();
+        
+        // Update on language change
+        currentLanguage.subscribe(updateProjectsText);
+    }
     
-    // Initial update
-    document.addEventListener('DOMContentLoaded', updateProjectsText);
+    // Wait for DOM and then initialize
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initProjectCards);
+    } else {
+        // DOM is already loaded
+        initProjectCards();
+    }
+    
+    // Also listen for a custom event in case language is initialized later
+    document.addEventListener('languageInitialized', updateProjectsText);
 </script>
