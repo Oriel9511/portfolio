@@ -12,15 +12,16 @@ const links = [
 ];
 ---
 
-<header class="fixed top-0 left-0 right-0 z-50 border-b border-white/5">
+<header class="fixed top-0 left-0 right-0 z-50 bg-slate-900/90 backdrop-blur-lg border-b border-white/10">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16 md:h-16">
             <!-- Desktop Navigation and Language Switcher -->
             <div class="hidden md:flex items-center justify-between w-full">
-                <nav class="flex items-center space-x-6">
+                <nav class="flex items-center space-x-8">
                     {links.map((link) => (
-                        <a class="nav-link text-sm font-medium text-white/70 hover:text-white transition-colors duration-300" href={link.href}>
+                        <a class="nav-link text-sm font-medium text-white/80 hover:text-white transition-all duration-200 relative group" href={link.href}>
                             <TranslatedText textKey={link.textKey} />
+                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-200 group-hover:w-full"></span>
                         </a>
                     ))}
                 </nav>
