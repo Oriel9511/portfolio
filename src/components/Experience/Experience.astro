@@ -44,9 +44,9 @@ const experienceItems = [
 ];
 ---
 
-<ol class="relative border-s border-gray-200/20 dark:border-gray-700/50" id="experience-list">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto" id="experience-list">
     {experienceItems.map((item) => (
-        <li class="mb-10 ms-8 timeline-item">
+        <div class="experience-card h-full">
             <ExperienceItem
                 date={item.date.en}
                 role={item.role.en}
@@ -66,9 +66,9 @@ const experienceItems = [
                 data-description-en={item.description.en}
                 data-description-es={item.description.es}
             />
-        </li>
+        </div>
     ))}
-</ol>
+</div>
 
 <script>
     import { currentLanguage } from '../../i18n/languageStore';
@@ -101,36 +101,6 @@ const experienceItems = [
     
     document.addEventListener('DOMContentLoaded', () => {
         updateExperienceContent();
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate-in');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.timeline-item').forEach((item, index) => {
-            item.style.setProperty('--animation-delay', `${index * 150}ms`);
-            observer.observe(item);
-        });
     });
 </script>
-
-<style>
-    .timeline-item {
-        opacity: 0;
-        transform: translateX(20px);
-        animation: slide-in 0.5s ease-out forwards;
-        animation-delay: var(--animation-delay, 0ms);
-    }
-
-    @keyframes slide-in {
-        to {
-            opacity: 1;
-            transform: translateX(0);
-        }
-    }
-</style>
 

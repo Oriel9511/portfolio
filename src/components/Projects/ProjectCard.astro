@@ -15,7 +15,6 @@ const getDescription = (description) => {
 ---
 
 <article class="card card-glass card-interactive project-card group animate-in"
-    data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-perspective="1000"
     data-title-en={typeof title === 'object' ? title?.en : title}
     data-title-es={typeof title === 'object' ? title?.es : title}
     data-desc-en={typeof description === 'object' ? description?.en : description}
@@ -83,16 +82,4 @@ const getDescription = (description) => {
     
     // Also listen for a custom event in case language is initialized later
     document.addEventListener('languageInitialized', updateProjectsText);
-</script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        if (typeof VanillaTilt !== 'undefined') {
-            VanillaTilt.init(document.querySelectorAll(".project-card"), {
-                max: 15,
-                speed: 400,
-                perspective: 1000
-            });
-        }
-    });
 </script>

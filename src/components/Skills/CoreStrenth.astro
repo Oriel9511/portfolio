@@ -82,7 +82,7 @@ const strengths = [
 ];
 ---
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 p-4" id="core-strengths-grid">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 p-4 max-w-6xl mx-auto" id="core-strengths-grid">
     {strengths.map((strength, index) => (
             <article class="card card-glass card-interactive strength-item group animate-in-delay-{Math.floor(index / 2) + 1}"
                 data-title-en={strength.title.en}

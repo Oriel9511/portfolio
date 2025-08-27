@@ -44,7 +44,7 @@ const skillCategories = [
 ];
 ---
 
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 p-4">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 p-4 max-w-7xl mx-auto">
     {skillCategories.map((category, index) => (
         <article class="card card-glass card-interactive group animate-in-delay-{index + 1}"
             data-name-en={category.name.en}
