@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion as Motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
+import MagneticButton from './MagneticButton';
 
 const NAVBAR_SAMPLE_Y = 64;
 const NAVBAR_SAMPLE_BAND = 2;
-
 
 const Navbar = () => {
     const [isDarkBg, setIsDarkBg] = useState(true);
@@ -53,7 +53,6 @@ const Navbar = () => {
             isIntersecting: false,
         }));
 
-        // Populate WeakMap for O(1) lookup in observer callback
         const nextMap = new WeakMap();
         sectionMetaRef.current.forEach(meta => nextMap.set(meta.element, meta));
         metaMapRef.current = nextMap;
@@ -79,13 +78,11 @@ const Navbar = () => {
         seedVisibleSections();
     }, [applyActiveTheme, seedVisibleSections]);
 
-    // ── Scroll handler: navbar show/hide + theme detection ──────────────────
     const handleScroll = useCallback(() => {
         if (rafId.current) return;
         rafId.current = requestAnimationFrame(() => {
             const currentScrollY = window.scrollY;
 
-            // Navbar visibility
             if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
                 setIsVisible(false);
             } else {
@@ -111,11 +108,9 @@ const Navbar = () => {
         };
     }, [handleScroll, rebuildThemeObserver]);
 
-    // ── MutationObserver: rebuild when DOM sections change ──────────────────
     useEffect(() => {
         let rebuildFrame = null;
         const mo = new MutationObserver(() => {
-            // Debounce via rAF to avoid thrashing on fast DOM changes
             if (rebuildFrame !== null) cancelAnimationFrame(rebuildFrame);
             rebuildFrame = requestAnimationFrame(() => {
                 rebuildFrame = null;
@@ -137,7 +132,6 @@ const Navbar = () => {
         const element = document.getElementById(id);
         if (!element) return;
 
-        // Batch layout reads/writes inside a single rAF to avoid thrashing
         requestAnimationFrame(() => {
             const sections = document.querySelectorAll('[data-theme]');
             const originals = [];
@@ -188,10 +182,13 @@ const Navbar = () => {
 
                 <div className={`hidden md:flex gap-2 text-xs font-mono uppercase tracking-[0.2em] font-bold pointer-events-auto transition-colors duration-300 ${textColor}`}>
                     {['work', 'opensource', 'about', 'contact'].map((section) => (
-                        <Motion.button
+                        <MagneticButton
                             key={section}
+                            as={Motion.button}
                             whileHover="hover"
                             initial="initial"
+                            strength={0.2}
+                            scale={1.06}
                             onClick={() => scrollTo(section)}
                             className={`relative px-6 py-4 hover:opacity-80 transition-opacity ${section === 'contact' ? 'text-zinc-400' : ''}`}
                             data-cursor="hover"
@@ -213,7 +210,7 @@ const Navbar = () => {
                                     transition={{ duration: 0.4, ease: "easeInOut" }}
                                 />
                             </svg>
-                        </Motion.button>
+                        </MagneticButton>
                     ))}
                 </div>
 

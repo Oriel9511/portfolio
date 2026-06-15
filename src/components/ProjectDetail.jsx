@@ -1,6 +1,7 @@
-import React, { memo, useCallback, useEffect, useMemo } from 'react';
+import React, { memo, useEffect, useMemo } from 'react';
 import { motion as Motion } from 'framer-motion';
 import { ArrowLeft, Github, ExternalLink, X } from 'lucide-react';
+import SplitText from './SplitText';
 
 // ── Slide variants — enters from the right, exits to the right ────────────────
 const slideVariants = {
@@ -79,15 +80,12 @@ const ProjectDetailBody = memo(function ProjectDetailBody({ project }) {
           <span className="font-mono text-xs uppercase tracking-[0.25em] text-zinc-500">{project.tech}</span>
         </Motion.div>
 
-        <Motion.h2
-          custom={1}
-          variants={itemVariants}
-          initial="hidden"
-          animate="visible"
+        <SplitText
+          text={project.name}
+          as="h2"
           className="text-5xl md:text-7xl lg:text-8xl font-serif leading-none mb-16 tracking-tighter text-black"
-        >
-          {project.name}
-        </Motion.h2>
+          mode="mount"
+        />
 
         <div className="h-px w-full bg-black/10 mb-16" />
 

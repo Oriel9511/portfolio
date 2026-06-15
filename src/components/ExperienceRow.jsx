@@ -1,6 +1,7 @@
 import React, { memo, useRef } from 'react';
 import { motion as Motion, useInView } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
+import MagneticWrap from './MagneticWrap';
 
 const ExperienceRow = ({ job, index }) => {
     const ref = useRef(null);
@@ -18,7 +19,9 @@ const ExperienceRow = ({ job, index }) => {
             <div className="container mx-auto px-4 md:px-6 grid md:grid-cols-12 gap-8 items-start">
                 <div className="md:col-span-3">
                     <span className="text-xs font-mono text-zinc-500 uppercase tracking-widest">{job.year}</span>
-                    <h3 className="text-2xl font-serif text-white mt-2 group-hover:italic transition-all duration-300">{job.company}</h3>
+                    <MagneticWrap strength={0.12}>
+                        <h3 className="text-2xl font-serif text-white mt-2 group-hover:italic transition-all duration-300">{job.company}</h3>
+                    </MagneticWrap>
                 </div>
 
                 <div className="md:col-span-4">
@@ -38,11 +41,21 @@ const ExperienceRow = ({ job, index }) => {
                     </p>
                 </div>
 
-                <div className="md:col-span-1 flex justify-end">
-                    <ArrowUpRight
-                        className="text-white opacity-0 transition-all duration-500 group-hover:rotate-45 group-hover:opacity-100 group-hover:scale-125"
-                        size={24}
-                    />
+                <div className="md:col-span-1 flex items-center justify-end">
+                    <Motion.div
+                        className="flex items-center gap-2 text-zinc-500 group-hover:text-white transition-colors"
+                        initial={false}
+                        animate={{ x: 0, opacity: 0.6 }}
+                        whileHover={{ x: 6 }}
+                    >
+                        <span className="text-[10px] font-mono uppercase tracking-[0.2em] opacity-0 group-hover:opacity-100 transition-opacity">
+                            Ver
+                        </span>
+                        <ArrowUpRight
+                            className="opacity-50 transition-all duration-500 group-hover:rotate-45 group-hover:opacity-100 group-hover:scale-125"
+                            size={22}
+                        />
+                    </Motion.div>
                 </div>
             </div>
         </Motion.div>

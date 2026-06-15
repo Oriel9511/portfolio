@@ -202,7 +202,7 @@ const CustomCursor = () => {
     }
   }, []);
 
-  const scheduleIdleCheck = useCallback((delay = IDLE_DELAY_MS) => {
+  const scheduleIdleCheck = useCallback(function self(delay = IDLE_DELAY_MS) {
     if (idleTimerRef.current) return;
     idleTimerRef.current = window.setTimeout(() => {
       idleTimerRef.current = null;
@@ -214,7 +214,7 @@ const CustomCursor = () => {
         }
         return;
       }
-      scheduleIdleCheck(remaining);
+      self(remaining);
     }, Math.max(delay, 0));
   }, []);
 
