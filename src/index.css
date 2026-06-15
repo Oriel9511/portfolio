@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+:root {
+    color-scheme: dark;
+}
+
 html, body {
     margin: 0;
     padding: 0;
@@ -11,6 +15,54 @@ html, body {
 body {
     background-color: #0a0a0a;
     color: white;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+#root {
+    min-height: 100vh;
+}
+
+.app-shell {
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.app-shell[data-splash-active="true"] {
+    opacity: 0;
+    visibility: visible;
+    pointer-events: none;
+}
+
+.skip-link {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 250;
+    padding: 0.75rem 1rem;
+    background: white;
+    color: black;
+    transform: translateY(-200%);
+    transition: transform 0.2s ease;
+}
+
+.skip-link:focus-visible {
+    transform: translateY(0);
+}
+
+:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.95);
+    outline-offset: 4px;
+}
+
+[data-theme="light"] :focus-visible,
+[role="dialog"] :focus-visible {
+    outline-color: rgba(0, 0, 0, 0.95);
+}
+
+[aria-current="page"] {
+    opacity: 1 !important;
 }
 
 /* --- Global: Hide native scrollbars but keep scrolling --- */
@@ -80,4 +132,20 @@ body::-webkit-scrollbar,
 
 [data-theme="light"] .internal-scroller::-webkit-scrollbar-thumb:hover {
     background-color: rgba(0, 0, 0, 0.4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .app-shell {
+        transition: none;
+    }
 }

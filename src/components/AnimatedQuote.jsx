@@ -52,16 +52,16 @@ const AnimatedQuote = ({ text, author, theme = "dark" }) => {
     const { textColor, iconColor } = THEME_STYLES[theme] || THEME_STYLES.dark;
 
     return (
-        <div ref={ref} className="w-full max-w-5xl mx-auto px-6 text-center">
+        <blockquote ref={ref} className="w-full max-w-5xl mx-auto px-6 text-center">
             <Motion.div
                 initial="hidden"
                 animate={animateState}
                 variants={ICON_VARIANTS}
             >
-                <Quote size={40} className={`mx-auto mb-10 ${iconColor}`} />
+                <Quote size={40} className={`mx-auto mb-10 ${iconColor}`} aria-hidden="true" />
             </Motion.div>
 
-            <h3 className={`text-3xl md:text-5xl lg:text-6xl font-serif leading-[1.1] mb-8 ${textColor} flex flex-wrap justify-center gap-x-3 gap-y-2`}>
+            <p className={`text-3xl md:text-5xl lg:text-6xl font-serif leading-[1.1] mb-8 ${textColor} flex flex-wrap justify-center gap-x-3 gap-y-2`}>
                 {words.map((word, i) => (
                     <Motion.span
                         key={i}
@@ -74,19 +74,19 @@ const AnimatedQuote = ({ text, author, theme = "dark" }) => {
                         {word}
                     </Motion.span>
                 ))}
-            </h3>
+            </p>
 
             {author && (
-                <Motion.p
+                <Motion.footer
                     initial="hidden"
                     animate={animateState}
                     variants={AUTHOR_VARIANTS}
                     className={`font-mono text-xs md:text-sm uppercase tracking-widest mt-8 ${textColor}`}
                 >
                     — {author}
-                </Motion.p>
+                </Motion.footer>
             )}
-        </div>
+        </blockquote>
     );
 };
 

@@ -12,7 +12,7 @@ const ExperienceRow = ({ job, index }) => {
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={{ duration: 0.8, delay: index * 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="group border-t border-white/20 py-12 transition-colors hover:bg-white/5 cursor-pointer"
+            className="group border-t border-white/20 py-10 transition-colors hover:bg-white/5 cursor-pointer"
             data-cursor="hover"
         >
             <div className="container mx-auto px-4 md:px-6 grid md:grid-cols-12 gap-8 items-start">
