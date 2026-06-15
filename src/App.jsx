@@ -60,6 +60,26 @@ function App() {
     isTransitionLockedRef.current = isTransitionLocked;
   }, [isTransitionLocked]);
 
+  const shouldBypassSlideTransition = useCallback((target, deltaY) => {
+    const scroller = target.closest('[data-internal-scroller="true"]');
+    if (!scroller) return false;
+
+    // Check if the element is actually scrollable
+    const isScrollable = scroller.scrollHeight > scroller.clientHeight;
+    if (!isScrollable) return false;
+
+    if (deltaY > 0) {
+      // Scrolling down: bypass if NOT at the bottom of internal scroller
+      const isAtBottom = scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 1;
+      return !isAtBottom;
+    } else if (deltaY < 0) {
+      // Scrolling up: bypass if NOT at the top of internal scroller
+      const isAtTop = scroller.scrollTop <= 0;
+      return !isAtTop;
+    }
+    return false;
+  }, []);
+
   const scrollToSlide = useCallback((index) => {
     if (index < 0 || index >= SLIDES.length) return;
 
@@ -68,26 +88,7 @@ function App() {
     setActiveIndex(index);
     activeIndexRef.current = index;
 
-    const slideId = SLIDES[index];
-    const element = document.getElementById(slideId);
-    if (!element) {
-      setIsTransitionLocked(false);
-      isTransitionLockedRef.current = false;
-      return;
-    }
-
-    const sections = document.querySelectorAll('[data-theme]');
-    const originals = Array.from(sections).map(s => s.style.position);
-    sections.forEach(s => {
-      s.style.position = 'relative';
-    });
-
-    const rect = element.getBoundingClientRect();
-    const top = rect.top + window.scrollY;
-
-    sections.forEach((s, i) => {
-      s.style.position = originals[i];
-    });
+    const top = index * window.innerHeight;
 
     window.scrollTo({
       top,
@@ -120,16 +121,23 @@ function App() {
 
     const handleKeyDown = (e) => {
       if (['ArrowDown', 'ArrowUp', ' '].includes(e.key)) {
-        if (e.target instanceof Element && e.target.closest('[data-internal-scroller="true"]')) {
+        let deltaY = 0;
+        if (e.key === 'ArrowDown' || e.key === ' ') {
+          deltaY = 100;
+        } else if (e.key === 'ArrowUp') {
+          deltaY = -100;
+        }
+
+        if (e.target instanceof Element && shouldBypassSlideTransition(e.target, deltaY)) {
           return;
         }
         e.preventDefault();
 
         if (isTransitionLockedRef.current) return;
 
-        if (e.key === 'ArrowDown' || e.key === ' ') {
+        if (deltaY > 0) {
           goToNextSlide();
-        } else if (e.key === 'ArrowUp') {
+        } else if (deltaY < 0) {
           goToPrevSlide();
         }
       }
@@ -139,23 +147,24 @@ function App() {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [showSplash, selectedProject, goToNextSlide, goToPrevSlide]);
+  }, [showSplash, selectedProject, goToNextSlide, goToPrevSlide, shouldBypassSlideTransition]);
 
   // Wheel and touch navigation listeners
   useEffect(() => {
     if (showSplash || selectedProject) return;
 
     const handleWheel = (e) => {
-      if (e.target instanceof Element && e.target.closest('[data-internal-scroller="true"]')) {
+      const deltaY = e.deltaY;
+      if (e.target instanceof Element && shouldBypassSlideTransition(e.target, deltaY)) {
         return;
       }
       e.preventDefault();
 
       if (isTransitionLockedRef.current) return;
 
-      if (e.deltaY > 0) {
+      if (deltaY > 0) {
         goToNextSlide();
-      } else if (e.deltaY < 0) {
+      } else if (deltaY < 0) {
         goToPrevSlide();
       }
     };
@@ -163,73 +172,49 @@ function App() {
     let touchStartY = 0;
 
     const handleTouchStart = (e) => {
-      if (e.target instanceof Element && e.target.closest('[data-internal-scroller="true"]')) {
-        return;
-      }
       touchStartY = e.touches[0].clientY;
     };
 
     const handleTouchMove = (e) => {
-      if (e.target instanceof Element && e.target.closest('[data-internal-scroller="true"]')) {
-        return;
-      }
-      e.preventDefault();
-    };
+      const currentY = e.touches[0].clientY;
+      const deltaY = touchStartY - currentY;
 
-    const handleTouchEnd = (e) => {
-      if (e.target instanceof Element && e.target.closest('[data-internal-scroller="true"]')) {
+      if (e.target instanceof Element && shouldBypassSlideTransition(e.target, deltaY)) {
         return;
       }
+
+      e.preventDefault();
+
       if (isTransitionLockedRef.current) return;
 
-      const touchEndY = e.changedTouches[0].clientY;
-      const deltaY = touchStartY - touchEndY;
-      const swipeThreshold = 50;
-
+      const swipeThreshold = 30; // Small threshold for highly responsive feel
       if (Math.abs(deltaY) > swipeThreshold) {
         if (deltaY > 0) {
           goToNextSlide();
         } else {
           goToPrevSlide();
         }
+        touchStartY = currentY;
       }
     };
 
     window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('touchstart', handleTouchStart, { passive: true });
     window.addEventListener('touchmove', handleTouchMove, { passive: false });
-    window.addEventListener('touchend', handleTouchEnd, { passive: true });
 
     return () => {
       window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchmove', handleTouchMove);
-      window.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [showSplash, selectedProject, goToNextSlide, goToPrevSlide]);
+  }, [showSplash, selectedProject, goToNextSlide, goToPrevSlide, shouldBypassSlideTransition]);
 
   // Resize stabilization
   useEffect(() => {
     if (showSplash || selectedProject) return;
 
     const handleResize = () => {
-      const slideId = SLIDES[activeIndexRef.current];
-      const element = document.getElementById(slideId);
-      if (!element) return;
-
-      const sections = document.querySelectorAll('[data-theme]');
-      const originals = Array.from(sections).map(s => s.style.position);
-      sections.forEach(s => {
-        s.style.position = 'relative';
-      });
-
-      const rect = element.getBoundingClientRect();
-      const top = rect.top + window.scrollY;
-
-      sections.forEach((s, i) => {
-        s.style.position = originals[i];
-      });
-
+      const top = activeIndexRef.current * window.innerHeight;
       window.scrollTo({
         top,
         behavior: 'auto'
@@ -240,7 +225,7 @@ function App() {
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, [showSplash, selectedProject, SLIDES]);
+  }, [showSplash, selectedProject]);
 
   return (
     <div className="bg-[#0a0a0a] min-h-screen w-full font-sans selection:bg-white selection:text-black">
