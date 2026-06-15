@@ -14,3 +14,14 @@ The React Compiler is not enabled on this template because of its impact on dev 
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+## Scroll Snapping & Gesture Navigation
+
+This project features a custom slide-by-slide scroll snapping implementation that hijacks standard viewport scrolls to align the viewport to exactly one section at a time.
+
+### Key Features
+- **Centralized Slide Controller**: Manages state-driven transitions between slides (`hero`, `quote1`, `work`, `quote2`, `opensource`, `about`, `contact`).
+- **Gesture Interception**: Captures mouse wheels (`wheel`), touch gestures (`touchstart`, `touchmove`, `touchend`), and keyboard arrows/Space inputs.
+- **Transition Lock**: Prevents double-triggering or scroll bounces by locking scroll events during the 800ms slide-settling duration.
+- **Internal Scrollers**: Bypasses slide-snapping transitions when scrolling inside containers marked with `data-internal-scroller="true"` (e.g., tall lists on mobile).
+- **Navbar Integration**: Directly synchronizes the Navbar's active indicator and light/dark theme behavior with the centralized active slide index.

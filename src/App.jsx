@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import { AnimatePresence, motion as Motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowDown, Code2, Database, Layers } from 'lucide-react';
 import Navbar from './components/Navbar';
@@ -44,6 +44,204 @@ function App() {
     return () => { document.documentElement.style.overflow = ''; };
   }, [showSplash, selectedProject]);
 
+  // --- Slide Controller Implementation ---
+  const SLIDES = useMemo(() => ['hero', 'quote1', 'work', 'quote2', 'opensource', 'about', 'contact'], []);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isTransitionLocked, setIsTransitionLocked] = useState(false);
+
+  const activeIndexRef = useRef(0);
+  const isTransitionLockedRef = useRef(false);
+
+  useEffect(() => {
+    activeIndexRef.current = activeIndex;
+  }, [activeIndex]);
+
+  useEffect(() => {
+    isTransitionLockedRef.current = isTransitionLocked;
+  }, [isTransitionLocked]);
+
+  const scrollToSlide = useCallback((index) => {
+    if (index < 0 || index >= SLIDES.length) return;
+
+    setIsTransitionLocked(true);
+    isTransitionLockedRef.current = true;
+    setActiveIndex(index);
+    activeIndexRef.current = index;
+
+    const slideId = SLIDES[index];
+    const element = document.getElementById(slideId);
+    if (!element) {
+      setIsTransitionLocked(false);
+      isTransitionLockedRef.current = false;
+      return;
+    }
+
+    const sections = document.querySelectorAll('[data-theme]');
+    const originals = Array.from(sections).map(s => s.style.position);
+    sections.forEach(s => {
+      s.style.position = 'relative';
+    });
+
+    const rect = element.getBoundingClientRect();
+    const top = rect.top + window.scrollY;
+
+    sections.forEach((s, i) => {
+      s.style.position = originals[i];
+    });
+
+    window.scrollTo({
+      top,
+      behavior: 'smooth'
+    });
+
+    setTimeout(() => {
+      setIsTransitionLocked(false);
+      isTransitionLockedRef.current = false;
+    }, 800);
+  }, [SLIDES]);
+
+  const goToNextSlide = useCallback(() => {
+    const nextIdx = activeIndexRef.current + 1;
+    if (nextIdx < SLIDES.length) {
+      scrollToSlide(nextIdx);
+    }
+  }, [SLIDES, scrollToSlide]);
+
+  const goToPrevSlide = useCallback(() => {
+    const prevIdx = activeIndexRef.current - 1;
+    if (prevIdx >= 0) {
+      scrollToSlide(prevIdx);
+    }
+  }, [SLIDES, scrollToSlide]);
+
+  // Keyboard navigation listener
+  useEffect(() => {
+    if (showSplash || selectedProject) return;
+
+    const handleKeyDown = (e) => {
+      if (['ArrowDown', 'ArrowUp', ' '].includes(e.key)) {
+        if (e.target instanceof Element && e.target.closest('[data-internal-scroller="true"]')) {
+          return;
+        }
+        e.preventDefault();
+
+        if (isTransitionLockedRef.current) return;
+
+        if (e.key === 'ArrowDown' || e.key === ' ') {
+          goToNextSlide();
+        } else if (e.key === 'ArrowUp') {
+          goToPrevSlide();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [showSplash, selectedProject, goToNextSlide, goToPrevSlide]);
+
+  // Wheel and touch navigation listeners
+  useEffect(() => {
+    if (showSplash || selectedProject) return;
+
+    const handleWheel = (e) => {
+      if (e.target instanceof Element && e.target.closest('[data-internal-scroller="true"]')) {
+        return;
+      }
+      e.preventDefault();
+
+      if (isTransitionLockedRef.current) return;
+
+      if (e.deltaY > 0) {
+        goToNextSlide();
+      } else if (e.deltaY < 0) {
+        goToPrevSlide();
+      }
+    };
+
+    let touchStartY = 0;
+
+    const handleTouchStart = (e) => {
+      if (e.target instanceof Element && e.target.closest('[data-internal-scroller="true"]')) {
+        return;
+      }
+      touchStartY = e.touches[0].clientY;
+    };
+
+    const handleTouchMove = (e) => {
+      if (e.target instanceof Element && e.target.closest('[data-internal-scroller="true"]')) {
+        return;
+      }
+      e.preventDefault();
+    };
+
+    const handleTouchEnd = (e) => {
+      if (e.target instanceof Element && e.target.closest('[data-internal-scroller="true"]')) {
+        return;
+      }
+      if (isTransitionLockedRef.current) return;
+
+      const touchEndY = e.changedTouches[0].clientY;
+      const deltaY = touchStartY - touchEndY;
+      const swipeThreshold = 50;
+
+      if (Math.abs(deltaY) > swipeThreshold) {
+        if (deltaY > 0) {
+          goToNextSlide();
+        } else {
+          goToPrevSlide();
+        }
+      }
+    };
+
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    window.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+    return () => {
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [showSplash, selectedProject, goToNextSlide, goToPrevSlide]);
+
+  // Resize stabilization
+  useEffect(() => {
+    if (showSplash || selectedProject) return;
+
+    const handleResize = () => {
+      const slideId = SLIDES[activeIndexRef.current];
+      const element = document.getElementById(slideId);
+      if (!element) return;
+
+      const sections = document.querySelectorAll('[data-theme]');
+      const originals = Array.from(sections).map(s => s.style.position);
+      sections.forEach(s => {
+        s.style.position = 'relative';
+      });
+
+      const rect = element.getBoundingClientRect();
+      const top = rect.top + window.scrollY;
+
+      sections.forEach((s, i) => {
+        s.style.position = originals[i];
+      });
+
+      window.scrollTo({
+        top,
+        behavior: 'auto'
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [showSplash, selectedProject, SLIDES]);
+
   return (
     <div className="bg-[#0a0a0a] min-h-screen w-full font-sans selection:bg-white selection:text-black">
       <CustomCursor />
@@ -64,7 +262,7 @@ function App() {
 
       {!showSplash && (
         <main>
-          <Navbar />
+          <Navbar activeSectionId={SLIDES[activeIndex]} onNavigate={scrollToSlide} />
 
           {/* Progress Bar */}
           <Motion.div
@@ -132,22 +330,6 @@ function App() {
                   </p>
                 </Motion.div>
 
-                {/* Right: Availability */}
-                {/* <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.2, duration: 1 }}
-              className="md:col-span-3 flex justify-end"
-            >
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-green-900/30 bg-green-900/10 text-green-400 text-xs font-mono uppercase tracking-widest">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                </span>
-                Disponible 2025
-              </div>
-            </motion.div> */}
-
                 {/* Mobile Scroll (Visible only on mobile) */}
                 <div className="md:hidden col-span-12 flex justify-center mt-4">
                   <ArrowDown size={20} className="animate-bounce text-zinc-600" />
@@ -182,7 +364,7 @@ function App() {
               </Motion.div>
             </div>
 
-            <div className="w-full">
+            <div className="w-full overflow-y-auto max-h-[50vh] internal-scroller" data-internal-scroller="true">
               {DATA.experience.map((job, index) => (
                 <ExperienceRow key={index} job={job} index={index} />
               ))}
@@ -216,13 +398,15 @@ function App() {
               </Motion.div>
             </div>
 
-            <div className="container mx-auto px-6 grid md:grid-cols-2 gap-6">
-              {projectCards.map(({ key, ...cardProps }) => (
-                <ProjectCard
-                  key={key}
-                  {...cardProps}
-                />
-              ))}
+            <div className="container mx-auto px-6 overflow-y-auto max-h-[50vh] internal-scroller" data-internal-scroller="true">
+              <div className="grid md:grid-cols-2 gap-6">
+                {projectCards.map(({ key, ...cardProps }) => (
+                  <ProjectCard
+                    key={key}
+                    {...cardProps}
+                  />
+                ))}
+              </div>
             </div>
           </StackedSection>
 
