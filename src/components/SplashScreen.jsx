@@ -28,7 +28,7 @@ const SplashScreen = () => {
           transition={{ delay: 0.4, duration: 0.6 }}
           className="font-mono text-xs uppercase tracking-[0.3em] text-zinc-400"
         >
-          Diseñando una experiencia que querrás explorar. Quédate, lo mejor está por revelarse…
+          PREPARANDO EL RECORRIDO.
         </motion.p>
 
         {/* Loader line */}

@@ -401,8 +401,8 @@ function App() {
 
               <div className="mb-16 md:mb-24">
                 <h2 className="text-4xl md:text-6xl lg:text-7xl font-serif leading-none text-black max-w-5xl">
-                  La lógica del ingeniero. <br />
-                  <span className="text-zinc-500">La creatividad del desarrollador.</span>
+                  Ingeniería, software y criterio de producto. <br />
+                  <span className="text-zinc-500 text-3xl md:text-4xl lg:text-5xl block mt-4 font-sans font-light">Soluciones técnicas mantenibles enfocadas en la experiencia de uso.</span>
                 </h2>
               </div>
 
@@ -411,10 +411,10 @@ function App() {
                 {/* Bio Text */}
                 <div className="md:col-span-8 text-zinc-700 font-light text-lg md:text-xl leading-relaxed space-y-6">
                   <p>
-                    Mi formación en Ingeniería Automática ({DATA.education.school}) me enseñó a ver el mundo en sistemas, bucles de control y optimización. Hoy aplico esa misma mentalidad rigurosa al desarrollo de software full stack.
+                    Mi formación en Ingeniería Automática en la CUJAE me dio una forma de pensar basada en sistemas, procesos, control y optimización. Hoy aplico esa base al desarrollo de software, especialmente en soluciones backend, arquitecturas web e integraciones complejas.
                   </p>
                   <p>
-                    He evolucionado desde programar hardware hasta orquestar arquitecturas web complejas, lo que me da una ventaja única: entiendo la máquina desde el bit más bajo hasta la interfaz de usuario más alta.
+                    He trabajado desde entornos cercanos al hardware y la automatización hasta aplicaciones web modernas. Esa trayectoria me permite entender tanto las restricciones técnicas de un sistema como la experiencia de las personas que lo usan.
                   </p>
                 </div>
 
