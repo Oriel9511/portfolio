@@ -20,6 +20,7 @@ uniform float uPointerActive;
 uniform float uDetail;
 uniform vec2 uFocus;
 uniform sampler2D uNoise;
+uniform vec4 uLens;
 uniform vec4 uZone[6];
 uniform vec2 uZoneP[6];
 
@@ -35,6 +36,19 @@ vec2 hash22(vec2 p) {
 // Precomputed value noise (see noiseTexture.js): one texture fetch instead of ~40 ALU ops of simplex.
 float snoise(vec2 v) {
   return textureLod(uNoise, v * (1.0 / 16.0), 0.0).r;
+}
+
+// The cursor is a point mass. Each pixel looks at the source position beta = theta - thetaE^2 / theta, so
+// light bends around the lens and fades back to normal with distance. Inside the horizon the mapping is
+// clamped to the horizon radius, so the whole interior samples the light at the centre: continuous with the
+// outside (no seam), and the post pass then blurs and dims it so nothing inside is legible.
+vec2 lensSource(vec2 p) {
+  if (uLens.w < 0.002) return p;
+  vec2 c = vec2((uLens.x - 0.5 * uCss.x) / uCss.y, (0.5 * uCss.y - uLens.y) / uCss.y);
+  float re = uLens.z / uCss.y;
+  vec2 d = p - c;
+  float re2 = re * re;
+  return p - d * (re2 * uLens.w / (max(dot(d, d), re2) + re2 * 0.08));
 }
 
 float hairline(float d, float w) { return 1.0 - smoothstep(w, w + PX * 1.4, d); }
@@ -339,7 +353,7 @@ float weight(float i) {
 void main() {
   PX = 1.0 / uRes.y;
   vec2 fc = gl_FragCoord.xy;
-  vec2 p = (fc - 0.5 * uRes) / uRes.y;
+  vec2 p = lensSource((fc - 0.5 * uRes) / uRes.y);
   vec2 m = (vec2(uPointer.x, 1.0 - uPointer.y) * uRes - 0.5 * uRes) / uRes.y;
   float t = uTime;
 
@@ -367,5 +381,41 @@ void main() {
   float sec = (uRes.y - fc.y) < edge ? idx : idx + 1.0;
   float ink = mod(sec, 2.0) > 0.5 ? 0.0 : 1.0;
   outColor = vec4(vec3(ink * a), a);
+}
+`;
+
+// Second pass (only while the lens is active): copies the field untouched, except inside the horizon,
+// where it is replaced by a blurred, dimmed version so no structure is recognizable there.
+export const POST_FRAGMENT = `#version 300 es
+precision highp float;
+precision highp sampler2D;
+out vec4 outColor;
+
+uniform sampler2D uTex;
+uniform vec4 uLensPx; // gl pixels (origin bottom-left): x, y, horizon radius, strength
+
+const int TAPS = 14;
+
+void main() {
+  ivec2 ip = ivec2(gl_FragCoord.xy);
+  vec4 sharp = texelFetch(uTex, ip, 0);
+  float re = uLensPx.z;
+  float r = length(gl_FragCoord.xy - uLensPx.xy);
+  float t = (1.0 - smoothstep(re * 0.5, re * 1.4, r)) * uLensPx.w;
+  if (t <= 0.001) { outColor = sharp; return; }
+
+  vec2 texel = 1.0 / vec2(textureSize(uTex, 0));
+  float blurR = re * 1.0;
+  float lod = clamp(log2(max(blurR * 0.5, 1.0)), 0.0, 6.0);
+  vec4 acc = vec4(0.0);
+  for (int i = 0; i < TAPS; i++) {
+    float a = float(i) * 2.399963;
+    float rad = sqrt((float(i) + 0.5) / float(TAPS)) * blurR;
+    acc += textureLod(uTex, (gl_FragCoord.xy + vec2(cos(a), sin(a)) * rad) * texel, lod);
+  }
+  vec4 blurred = acc / float(TAPS);
+  float s = smoothstep(0.0, 1.0, t);
+  vec4 color = mix(sharp, blurred, s);
+  outColor = color * (1.0 - 0.5 * smoothstep(0.35, 1.0, t));
 }
 `;

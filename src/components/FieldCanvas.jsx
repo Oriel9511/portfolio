@@ -80,6 +80,7 @@ function FieldCanvas({ visible }) {
         zoneParams,
         detail: controller.level.detail,
         focus,
+        lens: experience.lens,
       });
     };
 

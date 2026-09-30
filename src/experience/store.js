@@ -9,6 +9,8 @@ export const experience = {
   pointerActive: 0,
   hoverProject: -1,
   covered: false,
+  // Gravitational lens driven by the custom cursor: css-px centre, Einstein radius (px) and strength 0..1.
+  lens: { x: -1000, y: -1000, r: 22, s: 0 },
   zones: new Set(),
   focus: null,
 };

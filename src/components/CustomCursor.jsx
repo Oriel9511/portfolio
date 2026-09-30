@@ -9,6 +9,8 @@ import {
   AnimatePresence,
 } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
+import { subscribeFrame } from '../experience/frameLoop';
+import { experience } from '../experience/store';
 
 // ─── Utilities ────────────────────────────────────────────────────────────────
 function isInteractive(el) {
@@ -390,6 +392,32 @@ const CustomCursor = () => {
       isRunningRef.current = false;
     };
   }, [isIdle, hovering, pupilX, pupilY, idleScaleY, idleDotScale, nextFromBag]);
+
+  // ── Gravitational lens: the cursor is a mass that bends the light of the background field ──
+  const lensTargetRef = useRef({ r: 22, s: 0 });
+
+  useEffect(() => {
+    // larger mass over interactive elements (the eye dilates), tighter while pressed
+    lensTargetRef.current.r = (hovering ? 36 : 22) * (pressed ? 0.85 : 1);
+    lensTargetRef.current.s = visible ? 1 : 0;
+  }, [hovering, pressed, visible]);
+
+  useEffect(() => {
+    if (!enabled) return undefined;
+    const lens = experience.lens;
+    const stop = subscribeFrame((dt) => {
+      const target = lensTargetRef.current;
+      const blink = 0.82 + 0.18 * idleScaleY.get();
+      lens.r += (target.r * blink - lens.r) * (1 - Math.exp(-dt * 10));
+      lens.s += (target.s - lens.s) * (1 - Math.exp(-dt * 6));
+      lens.x = ringX.get();
+      lens.y = ringY.get();
+    });
+    return () => {
+      stop();
+      lens.s = 0;
+    };
+  }, [enabled, ringX, ringY, idleScaleY]);
 
   // ── Visual constants ──────────────────────────────────────────────────────
   const BASE_RING = 28;
