@@ -2,6 +2,7 @@ import React, { memo, useEffect, useMemo, useRef } from 'react';
 import FocusTrap from 'focus-trap-react';
 import { motion as Motion } from 'framer-motion';
 import { ArrowLeft, Github, ExternalLink, X } from 'lucide-react';
+import { useI18n } from '../i18n/context';
 import ProjectWorld from './ProjectWorld';
 
 const IRIS_EASE = [0.16, 1, 0.3, 1];
@@ -19,6 +20,7 @@ const BACK_BUTTON_TRANSITION = { type: 'spring', stiffness: 300, damping: 20 };
 const CLOSE_BUTTON_TRANSITION = { type: 'spring', stiffness: 300, damping: 18 };
 
 const ProjectDetailBody = memo(function ProjectDetailBody({ project }) {
+  const { ui } = useI18n();
   const stackItems = useMemo(
     () => project.tech.split(/[,/]/).map((item) => item.trim()).filter(Boolean),
     [project.tech],
@@ -26,10 +28,10 @@ const ProjectDetailBody = memo(function ProjectDetailBody({ project }) {
 
   const ctas = useMemo(
     () => [
-      project.repo ? { key: 'repo', href: project.repo, icon: Github, label: 'Ver Repositorio' } : null,
-      project.demo ? { key: 'demo', href: project.demo, icon: ExternalLink, label: 'Demo en Vivo' } : null,
+      project.repo ? { key: 'repo', href: project.repo, icon: Github, label: ui.detail.repo } : null,
+      project.demo ? { key: 'demo', href: project.demo, icon: ExternalLink, label: ui.detail.demo } : null,
     ].filter(Boolean),
-    [project.demo, project.repo],
+    [project.demo, project.repo, ui.detail.repo, ui.detail.demo],
   );
 
   return (
@@ -37,13 +39,13 @@ const ProjectDetailBody = memo(function ProjectDetailBody({ project }) {
       <div className="flex-1 container mx-auto px-6 md:px-12 py-16 md:py-24 max-w-5xl">
         <div className="grid md:grid-cols-12 gap-12 mb-20">
           <Motion.div custom={2} variants={itemVariants} initial="hidden" animate="visible" className="md:col-span-7 space-y-6">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-zinc-400 mb-6">Descripción</p>
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-zinc-400 mb-6">{ui.detail.description}</p>
             <p className="text-zinc-700 font-light text-lg leading-relaxed">{project.desc}</p>
             {project.overview && <p className="text-zinc-500 font-light leading-relaxed">{project.overview}</p>}
 
             {!!project.flow?.length && (
               <div className="pt-8">
-                <p className="font-mono text-xs uppercase tracking-[0.2em] text-zinc-400 mb-5">Cómo funciona</p>
+                <p className="font-mono text-xs uppercase tracking-[0.2em] text-zinc-400 mb-5">{ui.detail.howItWorks}</p>
                 <ol className="space-y-4">
                   {project.flow.map((step, i) => (
                     <li key={step} className="flex items-start gap-4">
@@ -58,8 +60,8 @@ const ProjectDetailBody = memo(function ProjectDetailBody({ project }) {
 
           <Motion.div custom={3} variants={itemVariants} initial="hidden" animate="visible" className="md:col-span-4 md:col-start-9 space-y-10">
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.2em] text-zinc-400 mb-4">Rol</p>
-              <p className="text-zinc-600 font-light leading-relaxed">{project.role || 'Project delivery'}</p>
+              <p className="font-mono text-xs uppercase tracking-[0.2em] text-zinc-400 mb-4">{ui.detail.role}</p>
+              <p className="text-zinc-600 font-light leading-relaxed">{project.role || ui.detail.defaultRole}</p>
               {project.status && (
                 <p className="mt-3 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-500">
                   <span className="h-1.5 w-1.5 rounded-full bg-black/60" />
@@ -69,7 +71,7 @@ const ProjectDetailBody = memo(function ProjectDetailBody({ project }) {
             </div>
 
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.2em] text-zinc-400 mb-4">Stack</p>
+              <p className="font-mono text-xs uppercase tracking-[0.2em] text-zinc-400 mb-4">{ui.detail.stack}</p>
               <div className="flex flex-wrap gap-2">
                 {stackItems.map((item) => (
                   <span
@@ -84,7 +86,7 @@ const ProjectDetailBody = memo(function ProjectDetailBody({ project }) {
 
             {!!project.highlights?.length && (
               <div>
-                <p className="font-mono text-xs uppercase tracking-[0.2em] text-zinc-400 mb-4">Aspectos clave</p>
+                <p className="font-mono text-xs uppercase tracking-[0.2em] text-zinc-400 mb-4">{ui.detail.keyPoints}</p>
                 <ul className="space-y-3">
                   {project.highlights.map((highlight) => (
                     <li key={highlight} className="flex items-start gap-3 text-sm text-zinc-400 font-light">
@@ -100,7 +102,7 @@ const ProjectDetailBody = memo(function ProjectDetailBody({ project }) {
 
         {!!project.facts?.length && (
           <Motion.div custom={4} variants={itemVariants} initial="hidden" animate="visible" className="border-t border-black/10 pt-12 mb-16">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-zinc-400 mb-8">En datos</p>
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-zinc-400 mb-8">{ui.detail.inNumbers}</p>
             <dl className="grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
               {project.facts.map((fact) => (
                 <div key={fact.label}>
@@ -115,7 +117,7 @@ const ProjectDetailBody = memo(function ProjectDetailBody({ project }) {
 
         {!!project.challenges?.length && (
           <Motion.div custom={5} variants={itemVariants} initial="hidden" animate="visible" className="border-t border-black/10 pt-16 mb-20">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-zinc-400 mb-8">Desafíos & Soluciones</p>
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-zinc-400 mb-8">{ui.detail.challenges}</p>
             <div className="grid md:grid-cols-2 gap-8">
               {project.challenges.map((card) => (
                 <div key={card.title} className="border border-black/10 p-8 bg-black/3">
@@ -160,6 +162,7 @@ const ProjectDetailBody = memo(function ProjectDetailBody({ project }) {
 });
 
 const ProjectDetail = ({ project, origin, onClose }) => {
+  const { ui, format } = useI18n();
   const closeButtonRef = useRef(null);
   const cx = origin?.x ?? (typeof window === 'undefined' ? 0 : window.innerWidth / 2);
   const cy = origin?.y ?? (typeof window === 'undefined' ? 0 : window.innerHeight / 2);
@@ -185,7 +188,7 @@ const ProjectDetail = ({ project, origin, onClose }) => {
         className="fixed inset-0 z-[150] flex flex-col overflow-y-auto bg-[#f0f0f0] text-black scroll-hidden"
         aria-modal="true"
         role="dialog"
-        aria-label={`Detalle del proyecto: ${project.name}`}
+        aria-label={format(ui.detail.dialog, { name: project.name })}
       >
         <div className="sticky top-0 left-0 right-0 z-20 flex items-center justify-between border-b border-white/10 bg-[#0a0a0a] px-6 py-5 text-white md:px-12">
           <Motion.button
@@ -194,10 +197,10 @@ const ProjectDetail = ({ project, origin, onClose }) => {
             data-cursor="hover"
             whileHover={{ x: -4 }}
             transition={BACK_BUTTON_TRANSITION}
-            aria-label="Volver a Labs"
+            aria-label={ui.detail.back}
           >
             <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" />
-            Labs & Open Source
+            {ui.detail.backLabel}
           </Motion.button>
 
           <Motion.button
@@ -207,7 +210,7 @@ const ProjectDetail = ({ project, origin, onClose }) => {
             data-cursor="hover"
             whileHover={{ rotate: 90 }}
             transition={CLOSE_BUTTON_TRANSITION}
-            aria-label="Cerrar"
+            aria-label={ui.detail.close}
           >
             <X size={20} />
           </Motion.button>

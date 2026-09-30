@@ -3,6 +3,7 @@ import { AnimatePresence, motion as Motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { WORLDS } from '../labs/worlds';
 import { useZone } from '../experience/useZone';
+import { useI18n } from '../i18n/context';
 import ProjectWorld from './ProjectWorld';
 
 const CINE = [0.16, 1, 0.3, 1];
@@ -15,6 +16,7 @@ const worldVariants = {
 
 // Stage where each lab project is presented as its own small procedural world.
 const LabsStage = forwardRef(function LabsStage({ project, index, direction, paused, onOpen, className = '' }, ref) {
+  const { ui, tr } = useI18n();
   const hud = WORLDS[project.world].hud;
   const localRef = useRef(null);
 
@@ -48,12 +50,12 @@ const LabsStage = forwardRef(function LabsStage({ project, index, direction, pau
       </AnimatePresence>
 
       <div className="pointer-events-none absolute inset-x-0 top-0 flex items-start justify-between p-4 font-mono text-[10px] uppercase tracking-[0.25em] text-zinc-500 md:p-5">
-        <span>{String(index + 1).padStart(2, '0')} — {hud[0]}</span>
-        <span className="hidden sm:inline">{hud[1]}</span>
+        <span>{String(index + 1).padStart(2, '0')} — {tr(hud[0])}</span>
+        <span className="hidden sm:inline">{tr(hud[1])}</span>
       </div>
 
       <div className="pointer-events-none absolute bottom-4 right-4 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-zinc-400 transition-colors duration-500 group-hover:text-white md:bottom-5 md:right-5">
-        <span>Entrar</span>
+        <span>{ui.labs.enter}</span>
         <ArrowUpRight size={14} className="transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
       </div>
     </div>

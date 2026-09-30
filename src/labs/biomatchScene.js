@@ -23,7 +23,7 @@ function dotHead(ctx, x, y, size, scanX, alpha) {
 export const biomatchScene = {
   hud: ['BIOPASS · BIOMATCH', 'VERIFICACIÓN DE IDENTIDAD'],
   stillAt: 9,
-  draw({ ctx, w, h, t, px, py }) {
+  draw({ ctx, tr, num, w, h, t, px, py }) {
     const compact = isCompact(w, h);
     const local = t % CYCLE;
     const size = compact ? Math.min(w * 0.36, h * 0.27) : Math.min(w * 0.3, h * 0.5);
@@ -42,10 +42,10 @@ export const biomatchScene = {
     ctx.strokeStyle = ink(0.25);
     ctx.strokeRect(fx - 8, fy - 8, size + 16, size + 16);
     if (scanning) line(ctx, scanX, fy - 12, scanX, fy + size + 12, 0.9);
-    if (!compact) label(ctx, 'PERSONA', fx, fy - 18, { alpha: 0.45, size: 8 });
+    if (!compact) label(ctx, tr('PERSONA'), fx, fy - 18, { alpha: 0.45, size: 8 });
 
     pill(ctx, dx, dy, dw, dh, 0.55, { radius: 6 });
-    label(ctx, 'DOCUMENTO', dx + 12, dy + 14, { alpha: 0.4, size: 8 });
+    label(ctx, tr('DOCUMENTO'), dx + 12, dy + 14, { alpha: 0.4, size: 8 });
     const pw = Math.min(dh * 0.62, dw * 0.34);
     const phx = dx + 14;
     const phy = dy + 26;
@@ -81,15 +81,15 @@ export const biomatchScene = {
     const seconds = clamp((local - 0.4) / 6.4) * 11;
     const cx = compact ? w * 0.5 : w * 0.5;
     const cy = compact ? h * 0.54 : h * 0.86;
-    label(ctx, `${seconds.toFixed(1).replace('.', ',')} s`, compact ? w * 0.08 : w * 0.1, compact ? h * 0.54 : h * 0.86, { alpha: 0.9, size: compact ? 16 : 20 });
+    label(ctx, `${num(seconds.toFixed(1))} s`, compact ? w * 0.08 : w * 0.1, compact ? h * 0.54 : h * 0.86, { alpha: 0.9, size: compact ? 16 : 20 });
     if (done > 0) {
       ring(ctx, compact ? w * 0.8 : cx, cy, 12 + (1 - done) * 8, 0.95 * done);
       label(ctx, '✓', compact ? w * 0.8 : cx, cy, { alpha: done, align: 'center', size: 12 });
-      label(ctx, 'IDENTIDAD VERIFICADA', compact ? w * 0.8 : cx + 22, compact ? cy + 28 : cy, { alpha: 0.9 * done, align: compact ? 'center' : 'left', size: 8 });
+      label(ctx, tr('IDENTIDAD VERIFICADA'), compact ? w * 0.8 : cx + 22, compact ? cy + 28 : cy, { alpha: 0.9 * done, align: compact ? 'center' : 'left', size: 8 });
     }
     const arrowHash = hash(Math.floor(t / CYCLE), 2);
     if (px >= 0 && arrowHash >= 0) ring(ctx, px * w, py * h, 8, 0.4);
     bracket(ctx, 14, 14, w - 28, h - 28, 10, 0.3);
-    label(ctx, local < 2.4 ? (compact ? 'ESCANEANDO' : 'ESCANEANDO ROSTRO') : done < 1 ? (compact ? 'COTEJANDO' : 'COTEJANDO CON EL DOCUMENTO') : 'COINCIDENCIA', 26, h - 26, { alpha: 0.5 });
+    label(ctx, local < 2.4 ? (compact ? tr('ESCANEANDO') : tr('ESCANEANDO ROSTRO')) : done < 1 ? (compact ? tr('COTEJANDO') : tr('COTEJANDO CON EL DOCUMENTO')) : tr('COINCIDENCIA'), 26, h - 26, { alpha: 0.5 });
   },
 };

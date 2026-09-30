@@ -1,19 +1,15 @@
 import React from 'react';
+import { useI18n } from '../i18n/context';
 
-const LABELS = {
-  hero: 'Inicio',
-  quote1: 'Visión',
-  work: 'Experiencia',
-  quote2: 'Filosofía',
-  opensource: 'Labs',
-  about: 'Perfil',
-  contact: 'Contacto',
-};
 
 // Right-edge scene ticks; blended with difference so it reads on both themes.
-const SlideRail = ({ slides, activeIndex, onNavigate }) => (
+const SlideRail = ({ slides, activeIndex, onNavigate }) => {
+  const { ui } = useI18n();
+  const LABELS = ui.rail;
+
+  return (
   <nav
-    aria-label="Secciones"
+    aria-label={ui.nav.sections}
     className="fixed right-3 top-1/2 z-[95] hidden -translate-y-1/2 flex-col items-end gap-3 mix-blend-difference md:flex"
   >
     {slides.map((id, i) => {
@@ -36,6 +32,7 @@ const SlideRail = ({ slides, activeIndex, onNavigate }) => (
       );
     })}
   </nav>
-);
+  );
+};
 
 export default SlideRail;

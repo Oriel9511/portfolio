@@ -8,17 +8,17 @@ const CANDIDATES = 7;
 export const peopleScene = {
   hud: ['PEOPLEFLOW', 'PERSONAS Y SELECCIÓN'],
   stillAt: 9.4,
-  draw({ ctx, w, h, t, px, py }) {
+  draw({ ctx, tr, w, h, t, px, py }) {
     const compact = isCompact(w, h);
     const cycle = Math.floor(t / CYCLE);
     const local = t % CYCLE;
-    const names = compact ? STAGES_SHORT : STAGES;
+    const names = (compact ? STAGES_SHORT : STAGES).map((name) => tr(name));
 
     const root = { x: w * 0.5, y: h * 0.16 };
     const kids = [{ x: w * 0.26, y: h * 0.31 }, { x: w * 0.74, y: h * 0.31 }, { x: w * 0.5, y: h * 0.31 }];
     ring(ctx, root.x, root.y, 11, 0.85);
     disc(ctx, root.x, root.y, 2.6, 0.9);
-    label(ctx, 'ORGANIZACIÓN', root.x, root.y - 22, { alpha: 0.45, align: 'center', size: 8 });
+    label(ctx, tr('ORGANIZACIÓN'), root.x, root.y - 22, { alpha: 0.45, align: 'center', size: 8 });
     kids.forEach((k, i) => {
       line(ctx, root.x, root.y + 11, k.x, k.y - 8, 0.2);
       ring(ctx, k.x, k.y, 7, i === 2 ? 0.25 : 0.6);
@@ -74,6 +74,6 @@ export const peopleScene = {
 
     if (px >= 0) ring(ctx, px * w, py * h, 8, 0.4);
     bracket(ctx, 14, 14, w - 28, h - 28, 10, 0.3);
-    label(ctx, local < 8 ? (compact ? 'SELECCIÓN' : 'PROCESO DE SELECCIÓN') : compact ? 'NUEVO INGRESO' : 'NUEVO INGRESO EN LA ESTRUCTURA', 26, h - 26, { alpha: 0.5 });
+    label(ctx, local < 8 ? (compact ? tr('SELECCIÓN') : tr('PROCESO DE SELECCIÓN')) : compact ? tr('NUEVO INGRESO') : tr('NUEVO INGRESO EN LA ESTRUCTURA'), 26, h - 26, { alpha: 0.5 });
   },
 };

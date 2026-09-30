@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useReducedMotion } from 'framer-motion';
 import { subscribeFrame } from '../experience/frameLoop';
 import { WORLDS } from '../labs/worlds';
+import { useI18n } from '../i18n/context';
 
 const DPR_CAP = 1.75;
 
@@ -10,6 +11,7 @@ const ProjectWorld = ({ world, paused = false, className = '' }) => {
   const wrapRef = useRef(null);
   const canvasRef = useRef(null);
   const pausedRef = useRef(paused);
+  const { tr, num } = useI18n();
   const reduceMotion = useReducedMotion();
 
   useEffect(() => {
@@ -47,7 +49,7 @@ const ProjectWorld = ({ world, paused = false, className = '' }) => {
         pointer.sy += (pointer.y - pointer.sy) * follow;
       }
       const active = pointer.amount > 0.02;
-      scene.draw({ ctx, w: size.w, h: size.h, t: clock, dt, px: active ? pointer.sx : -1, py: active ? pointer.sy : -1 });
+      scene.draw({ ctx, w: size.w, h: size.h, t: clock, dt, px: active ? pointer.sx : -1, py: active ? pointer.sy : -1, tr, num });
     };
 
     const onMove = (event) => {
@@ -93,7 +95,7 @@ const ProjectWorld = ({ world, paused = false, className = '' }) => {
       wrap.removeEventListener('pointermove', onMove);
       wrap.removeEventListener('pointerleave', onLeave);
     };
-  }, [world, reduceMotion]);
+  }, [world, reduceMotion, tr, num]);
 
   return (
     <div ref={wrapRef} className={`relative h-full w-full ${className}`}>

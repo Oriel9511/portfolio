@@ -3,13 +3,16 @@ import { createRoot, hydrateRoot } from 'react-dom/client';
 import { MotionConfig } from 'framer-motion';
 import './index.css';
 import App from './App.jsx';
+import { LanguageProvider } from './i18n';
 
 const container = document.getElementById('root');
 
 const app = (
   <StrictMode>
     <MotionConfig reducedMotion="user">
-      <App />
+      <LanguageProvider>
+        <App />
+      </LanguageProvider>
     </MotionConfig>
   </StrictMode>
 );

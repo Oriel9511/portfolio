@@ -9,7 +9,7 @@ const ANSWER = [0.92, 0.7, 0.84, 0.46];
 export const docScene = {
   hud: ['CHAT DOC QUERY', 'RECUPERACIÓN'],
   stillAt: 5.2,
-  draw({ ctx, w, h, t, px, py }) {
+  draw({ ctx, tr, w, h, t, px, py }) {
     const compact = isCompact(w, h);
     const cycle = Math.floor(t / CYCLE);
     const local = t % CYCLE;
@@ -24,12 +24,12 @@ export const docScene = {
     const ax = compact ? w * 0.63 : qx;
     const aw = compact ? w * 0.31 : qw;
     const ay = (k) => (compact ? pageY + 22 + k * 26 : qy + 56 + k * 34);
-    const text = compact ? QUERY_SHORT : QUERY;
+    const text = tr(compact ? QUERY_SHORT : QUERY);
 
     ctx.strokeStyle = ink(0.28);
     ctx.lineWidth = 1;
     ctx.strokeRect(pageX, pageY, pageW, pageH);
-    label(ctx, compact ? 'CONTRATO · P.4' : 'CONTRATO.PDF · P.4', pageX + 12, pageY + 14, { alpha: 0.4, size: 8 });
+    label(ctx, compact ? tr('CONTRATO · P.4') : tr('CONTRATO.PDF · P.4'), pageX + 12, pageY + 14, { alpha: 0.4, size: 8 });
 
     const picks = [3, 9, 15].map((base, k) => base + Math.floor(hash(cycle, k) * 3));
     const retrieval = easeOut((local - 2.2) / 0.9);
@@ -80,7 +80,7 @@ export const docScene = {
     });
 
     bracket(ctx, 14, 14, w - 28, h - 28, 10, 0.3);
-    const status = local < 2.2 ? 'CONSULTA…' : local < 4 ? 'RECUPERANDO' : compact ? 'RESPUESTA' : 'RESPUESTA · CON REFERENCIAS';
+    const status = local < 2.2 ? tr('CONSULTA…') : local < 4 ? tr('RECUPERANDO') : compact ? tr('RESPUESTA') : tr('RESPUESTA · CON REFERENCIAS');
     label(ctx, status, 26, h - 26, { alpha: 0.5 });
     if (!compact) line(ctx, qx, h * 0.9, qx + qw, h * 0.9, 0.12);
   },

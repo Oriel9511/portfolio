@@ -11,16 +11,13 @@ import AboutSection from './sections/AboutSection';
 import ContactSection from './sections/ContactSection';
 import { useSlideController } from './experience/useSlideController';
 import { experience } from './experience/store';
-import { canonicalUrl, defaultMeta, getJsonLdPayload, socialImageUrl } from './data/seo';
+import { useI18n } from './i18n/context';
+import { canonicalUrl, getJsonLdPayload, socialImageUrl } from './data/seo';
 
 const ProjectDetail = lazy(() => import('./components/ProjectDetail'));
 const CustomCursor = lazy(() => import('./components/CustomCursor'));
 const FieldCanvas = lazy(() => import('./components/FieldCanvas'));
 const SLIDES = ['hero', 'quote1', 'work', 'quote2', 'opensource', 'about', 'contact'];
-const QUOTES = {
-  vision: 'No es solo escribir código. Se trata de diseñar sistemas que escalen y transformen negocios. Tu gran proyecto se encuentra a una decisión de distancia.',
-  philosophy: 'La excelencia no es un acto, es un hábito forjado en la resiliencia, la autoexigencia y la perseverancia.',
-};
 
 function setDocumentMeta(name, content, attribute = 'name') {
   const selector = `meta[${attribute}="${name}"]`;
@@ -32,28 +29,31 @@ function setDocumentMeta(name, content, attribute = 'name') {
 
 function App() {
   const reduceMotion = useReducedMotion();
+  const { lang, ui, seo, data } = useI18n();
   const { scrollYProgress } = useScroll();
   const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
   const [showSplash, setShowSplash] = useState(true);
   const [isClient, setIsClient] = useState(false);
-  const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedWorld, setSelectedWorld] = useState(null);
   const [projectOrigin, setProjectOrigin] = useState(null);
   const [shouldLoadCursor, setShouldLoadCursor] = useState(false);
   const lastProjectTriggerRef = useRef(null);
+  const selectedProject = data.opensource.find((item) => item.world === selectedWorld) ?? null;
+  const hasProject = selectedWorld !== null;
 
   const { activeIndex, scrollToSlide } = useSlideController(SLIDES, {
-    paused: showSplash || Boolean(selectedProject),
+    paused: showSplash || hasProject,
     reduceMotion,
   });
 
   const openProject = useCallback((project, trigger, origin) => {
     lastProjectTriggerRef.current = trigger ?? null;
     setProjectOrigin(origin ?? null);
-    setSelectedProject(project);
+    setSelectedWorld(project.world);
   }, []);
 
   const closeProject = useCallback(() => {
-    setSelectedProject(null);
+    setSelectedWorld(null);
     window.setTimeout(() => {
       lastProjectTriggerRef.current?.focus?.();
     }, 0);
@@ -66,12 +66,12 @@ function App() {
   }, [reduceMotion]);
 
   useEffect(() => {
-    document.documentElement.style.overflow = (showSplash || selectedProject) ? 'hidden' : '';
-    experience.covered = Boolean(selectedProject);
+    document.documentElement.style.overflow = (showSplash || hasProject) ? 'hidden' : '';
+    experience.covered = hasProject;
     return () => {
       document.documentElement.style.overflow = '';
     };
-  }, [showSplash, selectedProject]);
+  }, [showSplash, hasProject]);
 
   useEffect(() => {
     if (typeof window === 'undefined') return undefined;
@@ -94,27 +94,30 @@ function App() {
   }, [reduceMotion]);
 
   useEffect(() => {
-    document.title = defaultMeta.title;
-    setDocumentMeta('description', defaultMeta.description);
-    setDocumentMeta('author', defaultMeta.siteName);
-    setDocumentMeta('theme-color', defaultMeta.themeColor);
-    setDocumentMeta('twitter:title', defaultMeta.title);
-    setDocumentMeta('twitter:description', defaultMeta.ogDescription);
+    document.title = seo.title;
+    setDocumentMeta('description', seo.description);
+    setDocumentMeta('author', 'Oriel Arteaga');
+    setDocumentMeta('theme-color', '#0a0a0a');
+    setDocumentMeta('twitter:title', seo.title);
+    setDocumentMeta('twitter:description', seo.ogDescription);
     setDocumentMeta('twitter:image', socialImageUrl);
-    setDocumentMeta('og:title', defaultMeta.title, 'property');
-    setDocumentMeta('og:description', defaultMeta.ogDescription, 'property');
+    setDocumentMeta('og:title', seo.title, 'property');
+    setDocumentMeta('og:description', seo.ogDescription, 'property');
     setDocumentMeta('og:url', canonicalUrl, 'property');
     setDocumentMeta('og:image', socialImageUrl, 'property');
-    setDocumentMeta('og:image:alt', defaultMeta.imageAlt, 'property');
+    setDocumentMeta('og:image:alt', seo.imageAlt, 'property');
+    setDocumentMeta('og:locale', seo.locale, 'property');
 
     const canonicalLink = document.head.querySelector('link[rel="canonical"]');
     canonicalLink?.setAttribute('href', canonicalUrl);
 
     const jsonLdScript = document.getElementById('seo-json-ld');
     if (jsonLdScript) {
-      jsonLdScript.textContent = JSON.stringify(getJsonLdPayload());
+      jsonLdScript.textContent = JSON.stringify(getJsonLdPayload({ seo, lang }));
     }
+  }, [lang, seo]);
 
+  useEffect(() => {
     document.documentElement.dataset.appHydrated = 'true';
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsClient(true);
@@ -131,7 +134,7 @@ function App() {
         <AnimatePresence>
           {selectedProject && (
             <ProjectDetail
-              key={selectedProject.name}
+              key={selectedProject.world}
               project={selectedProject}
               origin={projectOrigin}
               onClose={closeProject}
@@ -156,10 +159,10 @@ function App() {
         />
 
         <HeroSection index={0} play={!showSplash} />
-        <QuoteSection id="quote1" index={1} zIndex={10} text={QUOTES.vision} framed tone="bg-[#f8f8f8]" />
+        <QuoteSection id="quote1" index={1} zIndex={10} text={ui.quotes.vision} framed tone="bg-[#f8f8f8]" />
         <WorkSection index={2} />
-        <QuoteSection id="quote2" index={3} zIndex={30} text={QUOTES.philosophy} author="Filosofía de Trabajo" />
-        <LabsSection index={4} paused={Boolean(selectedProject)} onOpenProject={openProject} />
+        <QuoteSection id="quote2" index={3} zIndex={30} text={ui.quotes.philosophy} author={ui.quotes.philosophyAuthor} />
+        <LabsSection index={4} paused={hasProject} onOpenProject={openProject} />
         <AboutSection index={5} />
         <ContactSection index={6} />
       </main>

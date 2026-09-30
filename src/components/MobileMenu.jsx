@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { motion as Motion, useReducedMotion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { subscribeFrame } from '../experience/frameLoop';
-import { DATA } from '../data/portfolioData';
+import { useI18n } from '../i18n/context';
 
 const CINE = [0.16, 1, 0.3, 1];
 const COLS = 15;
@@ -115,6 +115,7 @@ function SheetCanvas({ originX, originY }) {
 
 const MobileMenu = ({ items, activeId, onNavigate }) => {
   const reduce = useReducedMotion();
+  const { ui, data } = useI18n();
   const originX = typeof window === 'undefined' ? 340 : window.innerWidth - 36;
   const originY = 46;
   const iris = (radius) => `circle(${radius} at ${originX}px ${originY}px)`;
@@ -124,7 +125,7 @@ const MobileMenu = ({ items, activeId, onNavigate }) => {
       id="mobile-navigation"
       role="dialog"
       aria-modal="true"
-      aria-label="Navegación"
+      aria-label={ui.nav.menu}
       className="fixed inset-0 z-[90] flex flex-col overflow-hidden bg-[#0a0a0a] text-white"
       initial={reduce ? { opacity: 0 } : { clipPath: iris('0px') }}
       animate={reduce ? { opacity: 1 } : { clipPath: iris('160vmax'), transition: { duration: 1.05, ease: CINE } }}
@@ -133,7 +134,7 @@ const MobileMenu = ({ items, activeId, onNavigate }) => {
       <SheetCanvas originX={originX} originY={originY} />
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_55%,transparent_30%,rgba(0,0,0,0.65)_100%)]" />
 
-      <nav className="relative z-10 flex flex-1 flex-col justify-center px-6 pt-24 pb-6" aria-label="Secciones">
+      <nav className="relative z-10 flex flex-1 flex-col justify-center px-6 pt-24 pb-6" aria-label={ui.nav.sections}>
         <ul className="border-t border-white/10">
           {items.map((item, i) => {
             const active = item.id === activeId;
@@ -174,10 +175,10 @@ const MobileMenu = ({ items, activeId, onNavigate }) => {
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0, transition: { delay: 0.9, duration: 0.9, ease: CINE } }}
       >
-        <a href={`mailto:${DATA.profile.email}`} className="text-zinc-200">{DATA.profile.email}</a>
+        <a href={`mailto:${data.profile.email}`} className="text-zinc-200">{data.profile.email}</a>
         <span className="flex gap-5">
-          <a href={DATA.profile.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          <a href={DATA.profile.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href={data.profile.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href={data.profile.github} target="_blank" rel="noopener noreferrer">GitHub</a>
         </span>
       </Motion.div>
     </Motion.div>

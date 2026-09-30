@@ -24,7 +24,7 @@ const SELECT_ORDER = [1, 2, 4, 3];
 export const processScene = {
   hud: ['MAPEO DE PROCESOS', 'LIENZO + DATOS'],
   stillAt: 5.2,
-  draw({ ctx, w, h, t, px, py }) {
+  draw({ ctx, tr, w, h, t, px, py }) {
     const compact = isCompact(w, h);
     const NODES = compact ? STACKED : WIDE;
     const gap = 26;
@@ -56,7 +56,7 @@ export const processScene = {
       if (n.kind === 'pill') pill(ctx, c.x - n.w / 2, c.y - 13, n.w, 26, a, { fill: active ? 0.14 : 0.04 });
       else if (n.kind === 'rect') pill(ctx, c.x - n.w / 2, c.y - 16, n.w, 32, a, { fill: active ? 0.14 : 0.04, radius: 3 });
       else diamond(ctx, c.x, c.y, n.w, 46, a, active ? 0.14 : 0.04);
-      label(ctx, n.text, c.x, c.y, { alpha: active ? 1 : 0.6, align: 'center', size: 9 });
+      label(ctx, tr(n.text), c.x, c.y, { alpha: active ? 1 : 0.6, align: 'center', size: 9 });
     });
 
     const target = hovered ?? NODES[sel];
@@ -70,7 +70,7 @@ export const processScene = {
     pill(ctx, cx, cy, cardW, cardH, 0.7, { fill: 0.07, radius: 4 });
     if (reveal > 0.6) {
       const rowGap = compact ? 16 : 20;
-      ['RESPONSABLE', 'TIEMPO', 'ESTADO'].forEach((k, i) => {
+      [tr('RESPONSABLE'), tr('TIEMPO'), tr('ESTADO')].forEach((k, i) => {
         label(ctx, k, cx + 10, cy + (compact ? 12 : 16) + i * rowGap, { alpha: 0.5, size: 8 });
         bar(ctx, cx + 88, cy + (compact ? 10 : 14) + i * rowGap, 32 + ((i * 17 + target.id * 13) % 12), 3, 0.55);
       });
@@ -91,6 +91,6 @@ export const processScene = {
     });
 
     bracket(ctx, 14, 14, w - 28, h - 28, 10, 0.3);
-    label(ctx, compact ? 'CADA FORMA, SUS DATOS' : 'CADA FORMA GUARDA SUS DATOS', 26, h - 26, { alpha: 0.5 });
+    label(ctx, compact ? tr('CADA FORMA, SUS DATOS') : tr('CADA FORMA GUARDA SUS DATOS'), 26, h - 26, { alpha: 0.5 });
   },
 };

@@ -13,7 +13,7 @@ const block = (ctx, x, y, w, h, radius, alpha) => {
 export const kinetScene = {
   hud: ['KINET · PRE-ALPHA', 'ACTIVIDAD EN VIVO'],
   stillAt: 6.8,
-  draw({ ctx, w, h, t, px, py }) {
+  draw({ ctx, tr, w, h, t, px, py }) {
     const compact = isCompact(w, h);
     const local = t % CYCLE;
     const cardX = w * (compact ? 0.06 : 0.07);
@@ -22,7 +22,7 @@ export const kinetScene = {
     const cardH = h * (compact ? 0.36 : 0.5);
 
     block(ctx, cardX, cardY, cardW, cardH, 12, 0.85);
-    label(ctx, 'PREGUNTA 3 / 8', cardX + 16, cardY + 18, { alpha: 0.5, size: 8 });
+    label(ctx, tr('PREGUNTA 3 / 8'), cardX + 16, cardY + 18, { alpha: 0.5, size: 8 });
     bar(ctx, cardX + 16, cardY + 34, cardW * 0.75, 4, 0.7);
     bar(ctx, cardX + 16, cardY + 46, cardW * 0.5, 4, 0.4);
 
@@ -49,7 +49,7 @@ export const kinetScene = {
     const py0 = compact ? h * 0.55 : h * 0.16;
     const pw = compact ? (w * 0.88 - 5 * 8) / 6 : 50;
     const ph = compact ? 50 : 84;
-    label(ctx, 'DISPOSITIVOS', px0, py0 - 8, { alpha: 0.45, size: 8 });
+    label(ctx, tr('DISPOSITIVOS'), px0, py0 - 8, { alpha: 0.45, size: 8 });
     for (let i = 0; i < PHONES; i += 1) {
       const col = compact ? i : i % 3;
       const row = compact ? 0 : Math.floor(i / 3);
@@ -70,7 +70,7 @@ export const kinetScene = {
     }
 
     const cy = compact ? h * 0.76 : h * 0.76;
-    label(ctx, 'RESULTADOS EN VIVO', cardX, cy - 10, { alpha: 0.45, size: 8 });
+    label(ctx, tr('RESULTADOS EN VIVO'), cardX, cy - 10, { alpha: 0.45, size: 8 });
     OPTIONS.forEach((o, i) => {
       const step = compact ? 11 : 14;
       const bw = (cardW * counts[i]) / total * 1.2;
@@ -80,6 +80,6 @@ export const kinetScene = {
 
     if (px >= 0) disc(ctx, px * w, py * h, 3, 0.6);
     bracket(ctx, 14, 14, w - 28, h - 28, 10, 0.3);
-    label(ctx, revealed ? (compact ? 'RESPUESTA REVELADA' : 'RESPUESTA CORRECTA REVELADA') : compact ? 'RESPONDIENDO' : 'ESTUDIANTES RESPONDIENDO', 26, h - 26, { alpha: 0.5 });
+    label(ctx, revealed ? (compact ? tr('RESPUESTA REVELADA') : tr('RESPUESTA CORRECTA REVELADA')) : compact ? tr('RESPONDIENDO') : tr('ESTUDIANTES RESPONDIENDO'), 26, h - 26, { alpha: 0.5 });
   },
 };

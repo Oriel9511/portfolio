@@ -3,15 +3,17 @@ import { AnimatePresence, motion as Motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import LabsStage from '../components/LabsStage';
 import StackedSection from '../components/StackedSection';
-import { DATA } from '../data/portfolioData';
+import { useI18n } from '../i18n/context';
 import { experience } from '../experience/store';
 import { useZone } from '../experience/useZone';
 
-const PROJECTS = DATA.opensource;
 const CINE = [0.16, 1, 0.3, 1];
 const SWIPE_DISTANCE = 48;
 
 const LabsSection = ({ index, paused, onOpenProject }) => {
+  const { ui, data } = useI18n();
+  const PROJECTS = data.opensource;
+  const count = PROJECTS.length;
   const [active, setActive] = useState(0);
   const [direction, setDirection] = useState(1);
   const stageRef = useRef(null);
@@ -21,11 +23,11 @@ const LabsSection = ({ index, paused, onOpenProject }) => {
   const project = PROJECTS[active];
 
   const select = useCallback((next) => {
-    const target = (next + PROJECTS.length) % PROJECTS.length;
+    const target = (next + count) % count;
     setDirection(target >= active ? 1 : -1);
     setActive(target);
     experience.hoverProject = target;
-  }, [active]);
+  }, [active, count]);
 
   useEffect(() => () => {
     experience.hoverProject = -1;
@@ -62,9 +64,9 @@ const LabsSection = ({ index, paused, onOpenProject }) => {
       <div className="container mx-auto flex min-h-0 flex-1 flex-col px-6">
         <div className="mb-5 flex items-end justify-between gap-6 md:mb-7">
           <div>
-            <h2 className="font-serif text-4xl md:text-[clamp(2rem,5.2vh,3rem)]">Labs & Open Source.</h2>
+            <h2 className="font-serif text-4xl md:text-[clamp(2rem,5.2vh,3rem)]">{ui.labs.title}</h2>
             <p className="mt-3 hidden max-w-xl text-sm font-light text-zinc-400 md:block [@media(max-height:830px)]:!hidden">
-              Proyectos paralelos, herramientas experimentales y contribuciones que mantienen mis habilidades afiladas.
+              {ui.labs.subtitle}
             </p>
           </div>
           <span className="whitespace-nowrap font-mono text-xs uppercase tracking-[0.25em] text-zinc-500">
@@ -117,7 +119,7 @@ const LabsSection = ({ index, paused, onOpenProject }) => {
                             <span className="mt-3 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.25em] text-zinc-500">
                               {item.year}
                               <span className="h-px w-8 bg-zinc-600" />
-                              <span className="flex items-center gap-2 text-zinc-300">Abrir proyecto <ArrowRight size={12} /></span>
+                              <span className="flex items-center gap-2 text-zinc-300">{ui.labs.open} <ArrowRight size={12} /></span>
                             </span>
                           </Motion.span>
                         )}
@@ -170,7 +172,7 @@ const LabsSection = ({ index, paused, onOpenProject }) => {
               onClick={(event) => open(event.currentTarget)}
               className="flex h-11 shrink-0 items-center gap-2 whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.2em] text-white"
             >
-              Abrir proyecto <ArrowRight size={14} />
+              {ui.labs.open} <ArrowRight size={14} />
             </button>
           </div>
         </div>

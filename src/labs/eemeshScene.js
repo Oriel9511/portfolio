@@ -12,7 +12,7 @@ const HOT = 2;
 export const eemeshScene = {
   hud: ['EEMESH · SIMULACIÓN', 'EXPERTOS DISTRIBUIDOS'],
   stillAt: 4.6,
-  draw({ ctx, w, h, t, px, py }) {
+  draw({ ctx, tr, num, w, h, t, px, py }) {
     const compact = isCompact(w, h);
     const local = t % CYCLE;
     const chunked = local >= 6;
@@ -21,7 +21,7 @@ export const eemeshScene = {
 
     ring(ctx, rx, ry, 16, 0.9);
     disc(ctx, rx, ry, 3.5, 1);
-    label(ctx, 'ENRUTADOR', rx, ry + 34, { alpha: 0.55, align: 'center', size: 9 });
+    label(ctx, tr('ENRUTADOR'), rx, ry + 34, { alpha: 0.55, align: 'center', size: 9 });
 
     EXPERTS.forEach((e, i) => {
       const ex = w * e.x;
@@ -49,7 +49,7 @@ export const eemeshScene = {
     if (!chunked) {
       const bigIn = easeOut(local / 1.2);
       pill(ctx, qx - 92 * bigIn, hy - 9, 88 * bigIn, 18, 0.95, { fill: 0.22, radius: 3 });
-      label(ctx, 'PROMPT LARGO', qx - 92, hy - 26, { alpha: 0.7, size: 8 });
+      label(ctx, tr('PROMPT LARGO'), qx - 92, hy - 26, { alpha: 0.7, size: 8 });
       const queued = Math.floor(clamp((local - 1.2) / 4.6) * 9);
       for (let j = 0; j < queued; j += 1) {
         pill(ctx, qx - 92 + j * 11, hy + 14, 8, 8, 0.65, { fill: 0.15, radius: 2 });
@@ -65,14 +65,14 @@ export const eemeshScene = {
       for (let j = 0; j < left; j += 1) {
         pill(ctx, qx - 92 + j * 11, hy + 14, 8, 8, 0.6, { fill: 0.12, radius: 2 });
       }
-      label(ctx, 'PREFILL FRAGMENTADO', qx - 92, hy - 26, { alpha: 0.9, size: 8 });
+      label(ctx, tr('PREFILL FRAGMENTADO'), qx - 92, hy - 26, { alpha: 0.9, size: 8 });
     }
 
     const from = 1930;
     const to = 58;
     const p99 = !chunked ? from : Math.round(from + (to - from) * easeOut((local - 6) / 2.5));
-    const shown = p99 >= 1000 ? `${(p99 / 1000).toFixed(2).replace('.', ',')} s` : `${p99} ms`;
-    label(ctx, 'LATENCIA P99 POR TOKEN', w * 0.07, h * 0.12, { alpha: 0.45, size: 8 });
+    const shown = p99 >= 1000 ? `${num((p99 / 1000).toFixed(2))} s` : `${p99} ms`;
+    label(ctx, tr('LATENCIA P99 POR TOKEN'), w * 0.07, h * 0.12, { alpha: 0.45, size: 8 });
     label(ctx, shown, w * 0.07, h * 0.12 + 26, { alpha: 0.95, size: 24 });
 
     const gx = w * 0.07;
@@ -94,6 +94,6 @@ export const eemeshScene = {
 
     if (px >= 0) ring(ctx, px * w, py * h, 8, 0.4);
     bracket(ctx, 14, 14, w - 28, h - 28, 10, 0.3);
-    label(ctx, chunked ? (compact ? 'COLA DRENADA' : 'COLA DRENADA · RESULTADO DE SIMULACIÓN') : compact ? 'HEAD-OF-LINE' : 'BLOQUEO HEAD-OF-LINE · COLA CRECIENDO', 26, h - 26, { alpha: 0.5 });
+    label(ctx, chunked ? (compact ? tr('COLA DRENADA') : tr('COLA DRENADA · RESULTADO DE SIMULACIÓN')) : compact ? tr('HEAD-OF-LINE') : tr('BLOQUEO HEAD-OF-LINE · COLA CRECIENDO'), 26, h - 26, { alpha: 0.5 });
   },
 };

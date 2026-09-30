@@ -6,6 +6,7 @@ React 19 + Vite + framer-motion + Tailwind 4. A slide-based portfolio treated as
 npm run dev      # dev server
 npm run build    # production build + prerender
 npm run verify   # static HTML a11y/SEO checks on dist/
+npm run verify:i18n  # English translations are complete and aligned with the Spanish source
 npm run lint
 ```
 
@@ -43,7 +44,7 @@ src/
     LabsStage.jsx, ProjectWorld.jsx  Labs stage and its procedural Canvas 2D worlds
   labs/                one procedural Canvas 2D world per project (8 scenes, see worlds.js)
   sections/            one file per slide
-  data/portfolioData.js  content (synced with the CV)
+  i18n/                Spanish base (es.js) + English overrides (en/*), provider, ES/EN store
 ```
 
 ### Design rules
@@ -62,3 +63,12 @@ src/
 ### Verifying visually
 
 The dev server can be driven with a headless Chrome (`--use-angle=swiftshader`) to capture each slide at 1440×900, 1366×768 and 390×844, plus static mid-transition frames by scrolling to fractional slide positions (e.g. `scrollY = 0.5 * innerHeight`).
+
+### Translations (ES / EN)
+
+- `src/i18n/es.js` is the source of truth: UI strings, SEO and all site data (profile, experience, projects).
+- `src/i18n/en/*` only contains the *translatable* text; everything else (links, stack, scene ids) is inherited from Spanish through `mergeContent`, so the two languages cannot drift structurally. Arrays merge by index.
+- Canvas labels are looked up by their Spanish text (`tr('CADA FORMA…')`), so scenes keep working if a translation is missing.
+- The language is chosen from `?lang=`, then `localStorage`, then the browser (Spanish/Portuguese -> ES, anything else -> EN). The prerendered HTML is Spanish; the client switches right after hydration without a mismatch (`useSyncExternalStore`).
+- `npm run verify:i18n` (also run in CI) fails on missing keys, array length mismatches, leftover Spanish characters, unused or untranslated canvas labels.
+- Adding a language: create `src/i18n/<code>/`, register it in `i18n/index.jsx`, `store.js` and `LanguageSwitch.jsx`.

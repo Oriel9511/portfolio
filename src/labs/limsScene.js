@@ -8,7 +8,7 @@ const ROW_NAMES = 'ABCDEFGH';
 export const limsScene = {
   hud: ['LIMS · LABSTAT', 'PLACA 96 POZOS'],
   stillAt: 6.2,
-  draw({ ctx, w, h, t, px, py }) {
+  draw({ ctx, tr, w, h, t, px, py }) {
     const pitch = Math.min((w * 0.8) / COLS, (h * 0.62) / ROWS);
     const plateW = pitch * COLS;
     const plateH = pitch * ROWS;
@@ -81,11 +81,11 @@ export const limsScene = {
     if (hovered) {
       ring(ctx, hovered.cx, hovered.cy, hovered.radius + 5, 0.9);
       const id = `${ROW_NAMES[hovered.r]}${hovered.c + 1}`;
-      label(ctx, `${id} · MUESTRA ${String(Math.floor(hovered.seed * 9000) + 1000)}`, hovered.cx, hovered.cy - hovered.radius - 16, { alpha: 0.95, align: 'center' });
+      label(ctx, `${id} · ${tr('MUESTRA')} ${String(Math.floor(hovered.seed * 9000) + 1000)}`, hovered.cx, hovered.cy - hovered.radius - 16, { alpha: 0.95, align: 'center' });
     }
 
     bracket(ctx, 14, 14, w - 28, h - 28, 10, 0.3);
     const complete = Math.round(clamp(phase / 0.78) * 96);
-    label(ctx, `PROCESADAS ${String(complete).padStart(2, '0')}/96`, 26, h - 26, { alpha: 0.5 });
+    label(ctx, `${tr('PROCESADAS')} ${String(complete).padStart(2, '0')}/96`, 26, h - 26, { alpha: 0.5 });
   },
 };

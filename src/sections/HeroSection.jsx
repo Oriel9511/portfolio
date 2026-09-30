@@ -3,7 +3,7 @@ import { motion as Motion } from 'framer-motion';
 import { ArrowDown } from 'lucide-react';
 import AnimatedName from '../components/AnimatedName';
 import StackedSection from '../components/StackedSection';
-import { DATA } from '../data/portfolioData';
+import { useI18n } from '../i18n/context';
 import { useZone } from '../experience/useZone';
 
 const CINE = [0.16, 1, 0.3, 1];
@@ -18,6 +18,7 @@ const MetaItem = ({ label, value, align }) => (
 const Divider = () => <span aria-hidden="true" className="hidden h-10 w-px self-center bg-white/25 md:block" />;
 
 const HeroSection = ({ index, play }) => {
+  const { ui, data } = useI18n();
   const nameRef = useRef(null);
   const captionRef = useRef(null);
   useZone(nameRef, { slide: index, k: 0.5, feather: 60 });
@@ -33,21 +34,21 @@ const HeroSection = ({ index, play }) => {
           className="flex w-full items-start justify-between border-t border-white/10 pt-6"
         >
           <div className="flex flex-1 justify-start">
-            <MetaItem label="Ubicación" value={DATA.profile.location} align="items-start text-left" />
+            <MetaItem label={ui.hero.location} value={data.profile.location} align="items-start text-left" />
           </div>
           <Divider />
           <div className="hidden flex-[1.5] justify-center md:flex">
-            <MetaItem label="Enfoque" value="IA agéntica · Sistemas distribuidos" align="items-center text-center" />
+            <MetaItem label={ui.hero.focus} value={ui.hero.focusValue} align="items-center text-center" />
           </div>
           <Divider />
           <div className="flex flex-1 justify-end">
-            <MetaItem label="Rol" value={DATA.profile.role} align="items-end text-right" />
+            <MetaItem label={ui.hero.role} value={data.profile.role} align="items-end text-right" />
           </div>
         </Motion.div>
 
         <div ref={nameRef} className="my-8 flex flex-grow items-center justify-center md:my-0">
           <AnimatedName
-            text={DATA.profile.name}
+            text={data.profile.name}
             play={play}
             className="font-serif text-[18vw] font-medium tracking-tighter text-white [text-shadow:0_0_42px_rgba(255,255,255,0.28)] md:text-[12.6vw]"
           />
@@ -61,8 +62,8 @@ const HeroSection = ({ index, play }) => {
             transition={{ delay: 1.3, duration: 1.2, ease: CINE }}
           >
             <p className="mx-auto max-w-xl text-sm font-light leading-relaxed text-white md:text-lg">
-              De la programación de hardware al desarrollo Full Stack.
-              <span className="block text-zinc-400">Una visión sistémica para arquitecturas web complejas.</span>
+              {ui.hero.subtitleLead}
+              <span className="block text-zinc-400">{ui.hero.subtitleTail}</span>
             </p>
           </Motion.div>
 
@@ -73,7 +74,7 @@ const HeroSection = ({ index, play }) => {
             className="mt-6 flex flex-col items-center gap-2 font-mono text-[11px] uppercase tracking-[0.3em] text-zinc-500"
           >
             <span className="h-px w-8 bg-zinc-600" />
-            <span>Scroll</span>
+            <span>{ui.hero.scroll}</span>
             <span className="h-6 w-px bg-zinc-600" />
             <ArrowDown size={12} className="-mt-2 animate-bounce" />
           </Motion.div>

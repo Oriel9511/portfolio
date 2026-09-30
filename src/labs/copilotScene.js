@@ -7,7 +7,7 @@ const TRAVEL = 2.4;
 export const copilotScene = {
   hud: ['COPILOTO OMNICANAL', 'UN SOLO HILO'],
   stillAt: 6.4,
-  draw({ ctx, w, h, t, px, py }) {
+  draw({ ctx, tr, w, h, t, px, py }) {
     const compact = isCompact(w, h);
     const local = t % CYCLE;
     const mx = w * (compact ? 0.3 : 0.4);
@@ -38,7 +38,7 @@ export const copilotScene = {
     ring(ctx, mx, my, 18, 0.9);
     ring(ctx, mx, my, 26 + Math.sin(t * 2) * 1.2, 0.2);
     disc(ctx, mx, my, 4, 1);
-    label(ctx, 'HILO ÚNICO', mx, my + 44, { alpha: 0.6, align: 'center', size: 9 });
+    label(ctx, tr('HILO ÚNICO'), mx, my + 44, { alpha: 0.6, align: 'center', size: 9 });
 
     const lineY = my;
     const tx0 = mx + 30;
@@ -73,18 +73,18 @@ export const copilotScene = {
       ctx.setLineDash([]);
       bar(ctx, bx + 6, by + 6, width * 0.7 * easeOut(draft), 2, 0.7);
       line(ctx, bx + 8, by + 14, bx + 8, lineY, 0.3);
-      label(ctx, accepted < 1 ? (compact ? 'SUGERENCIA' : 'SUGERENCIA IA') : compact ? '✓ AGENTE' : '✓ RESPONDE EL AGENTE', bx - (compact ? 22 : 0), by - 12, { alpha: 0.9, size: 8 });
+      label(ctx, accepted < 1 ? (compact ? tr('SUGERENCIA') : tr('SUGERENCIA IA')) : compact ? tr('✓ AGENTE') : tr('✓ RESPONDE EL AGENTE'), bx - (compact ? 22 : 0), by - 12, { alpha: 0.9, size: 8 });
     }
 
     const summary = easeOut((local - 3.2) / 0.6);
     if (summary > 0) {
       const sw = (compact ? 84 : 150) * summary;
       pill(ctx, tx0 + 4, h * 0.84, sw, 20, 0.5);
-      label(ctx, compact ? 'RESUMEN' : 'RESUMEN · 3 MENSAJES', tx0 + 16, h * 0.84 + 10, { alpha: 0.7 * summary, size: 8 });
+      label(ctx, compact ? tr('RESUMEN') : tr('RESUMEN · 3 MENSAJES'), tx0 + 16, h * 0.84 + 10, { alpha: 0.7 * summary, size: 8 });
     }
 
     if (px >= 0) ring(ctx, px * w, py * h, 8, 0.4);
     bracket(ctx, 14, 14, w - 28, h - 28, 10, 0.3);
-    label(ctx, local < 4.6 ? (compact ? 'LA IA RESUME' : 'LA IA RESUME EL CONTEXTO') : accepted < 1 ? (compact ? 'LA IA PROPONE' : 'LA IA PROPONE, EL AGENTE DECIDE') : 'RESPUESTA ENVIADA', 26, h - 26, { alpha: 0.5 });
+    label(ctx, local < 4.6 ? (compact ? tr('LA IA RESUME') : tr('LA IA RESUME EL CONTEXTO')) : accepted < 1 ? (compact ? tr('LA IA PROPONE') : tr('LA IA PROPONE, EL AGENTE DECIDE')) : tr('RESPUESTA ENVIADA'), 26, h - 26, { alpha: 0.5 });
   },
 };

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { AnimatePresence, motion as Motion } from 'framer-motion';
+import LanguageSwitch from './LanguageSwitch';
 import MobileMenu from './MobileMenu';
+import { useI18n } from '../i18n/context';
 import { experience } from '../experience/store';
 
 const SECTION_INDICES = {
@@ -11,12 +13,6 @@ const SECTION_INDICES = {
     contact: 6
 };
 
-const SECTION_LABELS = {
-    work: 'Experiencia',
-    opensource: 'Labs',
-    about: 'Perfil',
-    contact: 'Contacto'
-};
 
 const GLYPH_SPRING = { type: 'spring', stiffness: 260, damping: 22 };
 const GLYPH_STYLE = { transformBox: 'view-box', transformOrigin: '13px 13px' };
@@ -29,6 +25,7 @@ const MenuGlyph = ({ open }) => (
 );
 
 const Navbar = ({ activeSectionId = 'hero', onNavigate }) => {
+    const { ui } = useI18n();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     useEffect(() => {
@@ -52,10 +49,10 @@ const Navbar = ({ activeSectionId = 'hero', onNavigate }) => {
 
     return (
         <>
-            <a href="#main-content" className="skip-link">Skip to content</a>
+            <a href="#main-content" className="skip-link">{ui.nav.skip}</a>
 
             <nav
-                aria-label="Primary"
+                aria-label={ui.nav.primary}
                 className={`fixed top-0 left-0 w-full z-[100] px-6 py-6 md:py-8 flex justify-between items-center mix-blend-difference pointer-events-none`}
             >
                 <Motion.button
@@ -64,7 +61,7 @@ const Navbar = ({ activeSectionId = 'hero', onNavigate }) => {
                     onClick={() => handleNavClick('hero')}
                     className={`text-2xl font-bold tracking-tighter font-serif z-[101] pointer-events-auto transition-colors duration-300 ${logoColor} p-4 -ml-4 relative`}
                     data-cursor="hover"
-                    aria-label="Go to hero section"
+                    aria-label={ui.nav.goHome}
                 >
                     OA.
                     <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none" style={{ overflow: 'visible' }}>
@@ -98,7 +95,7 @@ const Navbar = ({ activeSectionId = 'hero', onNavigate }) => {
                                 data-cursor="hover"
                                 aria-current={isActive ? 'page' : undefined}
                             >
-                                {SECTION_LABELS[section]}
+                                {ui.nav[section]}
                                 <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none" style={{ overflow: 'visible' }}>
                                     <Motion.polyline
                                         points="1,1 99,1 99,99"
@@ -116,17 +113,21 @@ const Navbar = ({ activeSectionId = 'hero', onNavigate }) => {
                             </Motion.button>
                         );
                     })}
+                    <span aria-hidden="true" className="mx-2 h-5 w-px self-center bg-current opacity-25" />
+                    <LanguageSwitch className="self-center" />
                 </div>
 
+                <div className="z-[101] flex items-center pointer-events-auto md:hidden">
+                <LanguageSwitch className={textColor} />
                 <Motion.button
                     whileHover="hover"
                     initial="initial"
-                    className={`md:hidden z-[101] pointer-events-auto transition-colors duration-300 ${isMobileMenuOpen ? 'text-white' : textColor} p-4 -mr-4 relative`}
+                    className={`z-[101] pointer-events-auto transition-colors duration-300 ${isMobileMenuOpen ? 'text-white' : textColor} p-4 -mr-4 relative`}
                     onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                     data-cursor="hover"
                     aria-expanded={isMobileMenuOpen}
                     aria-controls="mobile-navigation"
-                    aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+                    aria-label={isMobileMenuOpen ? ui.nav.closeMenu : ui.nav.openMenu}
                 >
                     <MenuGlyph open={isMobileMenuOpen} />
                     <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none" style={{ overflow: 'visible' }}>
@@ -144,12 +145,13 @@ const Navbar = ({ activeSectionId = 'hero', onNavigate }) => {
                         />
                     </svg>
                 </Motion.button>
+                </div>
             </nav>
 
             <AnimatePresence>
                 {isMobileMenuOpen && (
                     <MobileMenu
-                        items={[{ id: 'hero', label: 'Inicio' }, ...Object.entries(SECTION_LABELS).map(([id, label]) => ({ id, label }))]}
+                        items={['hero', 'work', 'opensource', 'about', 'contact'].map((id) => ({ id, label: id === 'hero' ? ui.nav.home : ui.nav[id] }))}
                         activeId={activeSectionId}
                         onNavigate={handleNavClick}
                     />

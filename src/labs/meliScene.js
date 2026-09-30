@@ -8,7 +8,7 @@ const ROWS = 5;
 export const meliScene = {
   hud: ['MARKETPLACE → BANDEJA', 'CANAL OMNICANAL'],
   stillAt: 6.4,
-  draw({ ctx, w, h, t, px, py }) {
+  draw({ ctx, tr, w, h, t, px, py }) {
     const compact = isCompact(w, h);
     const panel = compact
       ? { x: w * 0.08, y: h * 0.4, w: w * 0.84, h: h * 0.46 }
@@ -20,12 +20,12 @@ export const meliScene = {
     SOURCES.forEach((name, i) => {
       const s = src[i];
       pill(ctx, s.x - (compact ? 28 : 0), s.y - 11, compact ? 56 : 82, 22, 0.55, { radius: 5 });
-      label(ctx, compact ? name.slice(0, 5) : name, s.x + (compact ? 0 : 41), s.y, { alpha: 0.75, align: 'center', size: 8 });
+      label(ctx, compact ? tr(name).slice(0, 5) : tr(name), s.x + (compact ? 0 : 41), s.y, { alpha: 0.75, align: 'center', size: 8 });
     });
 
     ctx.strokeStyle = ink(0.28);
     ctx.strokeRect(panel.x, panel.y, panel.w, panel.h);
-    label(ctx, 'BANDEJA DE ATENCIÓN', panel.x + 12, panel.y + 14, { alpha: 0.45, size: 8 });
+    label(ctx, tr('BANDEJA DE ATENCIÓN'), panel.x + 12, panel.y + 14, { alpha: 0.45, size: 8 });
 
     const newestN = Math.floor((t - TRAVEL) / EVERY);
     const events = [];
@@ -54,7 +54,7 @@ export const meliScene = {
       pill(ctx, panel.x + 10, y + 3, panel.w - 20, rowH - 8, a * 0.7, { fill: fresh ? 0.1 : 0.03, radius: 4 });
       ring(ctx, panel.x + 24, y + rowH / 2 - 1, 5, a);
       if (e.lane === 2) disc(ctx, panel.x + 24, y + rowH / 2 - 1, 2, a);
-      label(ctx, SOURCES[e.lane].slice(0, compact ? 5 : 9), panel.x + 38, y + rowH / 2 - 1, { alpha: a, size: 8 });
+      label(ctx, tr(SOURCES[e.lane]).slice(0, compact ? 5 : 9), panel.x + 38, y + rowH / 2 - 1, { alpha: a, size: 8 });
       bar(ctx, panel.x + (compact ? 80 : 104), y + rowH / 2 - 2, (panel.w - (compact ? 110 : 140)) * (0.4 + ((e.n * 37) % 50) / 100), 3, a * 0.6);
     });
 
@@ -71,7 +71,7 @@ export const meliScene = {
           ctx.strokeRect(cx + 8, cy + 8, 22, 22);
           bar(ctx, cx + 38, cy + 12, 44, 3, 0.6);
           bar(ctx, cx + 38, cy + 21, 30, 2, 0.35);
-          label(ctx, newest.lane === 2 ? 'CONTEXTO · RECLAMO' : 'CONTEXTO', cx + 8, cy + 42, { alpha: 0.6, size: 7 });
+          label(ctx, newest.lane === 2 ? tr('CONTEXTO · RECLAMO') : tr('CONTEXTO'), cx + 8, cy + 42, { alpha: 0.6, size: 7 });
           line(ctx, cx + cw, cy + 25, panel.x + 10, cy + 25, 0.3);
         }
       }
@@ -79,7 +79,7 @@ export const meliScene = {
 
     const tl = compact ? { x: w * 0.1, y: h * 0.32, len: w * 0.8 } : { x: w * 0.06, y: h * 0.92, len: w * 0.36 };
     line(ctx, tl.x, tl.y, tl.x + tl.len, tl.y, 0.18);
-    ['APERTURA', 'MENSAJES', 'CIERRE'].forEach((k, i) => {
+    [tr('APERTURA'), tr('MENSAJES'), tr('CIERRE')].forEach((k, i) => {
       const x = tl.x + (tl.len * i) / 2;
       const lit = clamp(((t % 9) - i * 2.6) / 0.6);
       ring(ctx, x, tl.y, 4.5, 0.4 + 0.5 * lit);
@@ -89,6 +89,6 @@ export const meliScene = {
 
     if (px >= 0) ring(ctx, px * w, py * h, 8, 0.4);
     bracket(ctx, 14, 14, w - 28, h - 28, 10, 0.3);
-    label(ctx, compact ? 'TODO EN UN HILO' : 'PREGUNTAS, PEDIDOS Y RECLAMOS EN UN SOLO HILO', 26, compact ? h - 26 : h - 26, { alpha: 0.5 });
+    label(ctx, compact ? tr('TODO EN UN HILO') : tr('PREGUNTAS, PEDIDOS Y RECLAMOS EN UN SOLO HILO'), 26, compact ? h - 26 : h - 26, { alpha: 0.5 });
   },
 };

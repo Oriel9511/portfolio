@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 import { animate, motion as Motion, useMotionValue, useTransform } from 'framer-motion';
+import { useI18n } from '../i18n/context';
 
 const CINE = [0.16, 1, 0.3, 1];
 const LETTERS = ['O', 'A'];
 
 // The counter drives the progress line; on exit the whole overlay lifts away like a curtain.
 const SplashScreen = () => {
+  const { ui } = useI18n();
   const progress = useMotionValue(0);
   const scaleX = useTransform(progress, [0, 100], [0, 1]);
   const readout = useTransform(progress, (value) => String(Math.round(value)).padStart(3, '0'));
@@ -44,7 +46,7 @@ const SplashScreen = () => {
             <Motion.div className="h-full origin-left bg-white" style={{ scaleX }} />
           </div>
           <div className="mt-3 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.3em] text-zinc-500">
-            <span>Preparando el recorrido</span>
+            <span>{ui.splash.preparing}</span>
             <Motion.span>{readout}</Motion.span>
           </div>
         </div>
