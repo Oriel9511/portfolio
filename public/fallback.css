@@ -1,0 +1,43 @@
+/* Loaded only when the app cannot run (JavaScript disabled or hydration never happened).
+   It reveals the prerendered content as a plain readable page, without animation or sticky slides. */
+[data-app-shell] {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+[data-splash-overlay] {
+  display: none !important;
+}
+[data-app-shell] :not([aria-hidden="true"]) {
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+  clip-path: none !important;
+}
+[data-app-shell] section {
+  position: relative !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+  visibility: visible !important;
+  padding-top: 7rem !important;
+  padding-bottom: 4rem !important;
+}
+[data-app-shell] section > div {
+  height: auto !important;
+}
+[data-app-shell] .internal-scroller {
+  max-height: none !important;
+  overflow: visible !important;
+}
+/* keep the skip link hidden until focused, and drop chrome that only makes sense with scripting */
+[data-app-shell] .skip-link:not([aria-hidden="true"]) {
+  transform: translateY(-200%) !important;
+}
+[data-app-shell] .skip-link:not([aria-hidden="true"]):focus-visible {
+  transform: translateY(0) !important;
+}
+[data-app-shell] nav[data-bg-inert] {
+  display: none !important;
+}

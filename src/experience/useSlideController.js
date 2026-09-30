@@ -9,10 +9,10 @@ const COMMIT_RATIO = 0.12;
 const FLICK_SPEED = 0.25;
 const FOLLOW_LIMIT = 0.95;
 
-function readHashIndex(slides) {
-  if (typeof window === 'undefined') return 0;
+function readHashIndex(slides, fallback = 0) {
+  if (typeof window === 'undefined') return fallback;
   const index = slides.indexOf(window.location.hash.replace('#', ''));
-  return index > -1 ? index : 0;
+  return index > -1 ? index : fallback;
 }
 
 function isBlockedByInternalScroller(target, deltaY) {
@@ -24,8 +24,8 @@ function isBlockedByInternalScroller(target, deltaY) {
   return false;
 }
 
-export function useSlideController(slides, { paused, reduceMotion }) {
-  const [activeIndex, setActiveIndex] = useState(() => readHashIndex(slides));
+export function useSlideController(slides, { paused, reduceMotion, initialIndex = 0 }) {
+  const [activeIndex, setActiveIndex] = useState(() => readHashIndex(slides, initialIndex));
   const activeRef = useRef(activeIndex);
   const lockedRef = useRef(false);
   const lastWheelRef = useRef(0);

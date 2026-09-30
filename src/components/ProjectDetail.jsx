@@ -3,6 +3,7 @@ import FocusTrap from 'focus-trap-react';
 import { motion as Motion } from 'framer-motion';
 import { ArrowLeft, Github, ExternalLink, X } from 'lucide-react';
 import { useI18n } from '../i18n/context';
+import LanguageSwitch from './LanguageSwitch';
 import ProjectWorld from './ProjectWorld';
 
 const IRIS_EASE = [0.16, 1, 0.3, 1];
@@ -203,17 +204,20 @@ const ProjectDetail = ({ project, origin, onClose }) => {
             {ui.detail.backLabel}
           </Motion.button>
 
-          <Motion.button
-            ref={closeButtonRef}
-            onClick={onClose}
-            className="p-2 text-zinc-400 transition-colors hover:text-white"
-            data-cursor="hover"
-            whileHover={{ rotate: 90 }}
-            transition={CLOSE_BUTTON_TRANSITION}
-            aria-label={ui.detail.close}
-          >
-            <X size={20} />
-          </Motion.button>
+          <div className="flex items-center gap-2">
+            <LanguageSwitch className="text-white" />
+            <Motion.button
+              ref={closeButtonRef}
+              onClick={onClose}
+              className="p-2 text-zinc-400 transition-colors hover:text-white"
+              data-cursor="hover"
+              whileHover={{ rotate: 90 }}
+              transition={CLOSE_BUTTON_TRANSITION}
+              aria-label={ui.detail.close}
+            >
+              <X size={20} />
+            </Motion.button>
+          </div>
         </div>
 
         <div className="relative bg-[#0a0a0a] text-white">

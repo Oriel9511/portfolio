@@ -132,6 +132,7 @@ const es = {
           {
               name: "Copiloto Omnicanal de IA",
               world: "copilot",
+            slug: "omnichannel-ai-copilot",
               tech: "Python, Java, Go, TypeScript",
               desc: "IA integrada en una plataforma de atención omnicanal: propone respuestas, resume conversaciones y mantiene el hilo entre canales.",
               year: "2025 — Presente",
@@ -176,6 +177,7 @@ const es = {
           {
               name: "Integración con Mercado Libre",
               world: "meli",
+            slug: "mercado-libre-integration",
               tech: "Go, HTTP, mensajería por eventos",
               desc: "Canal que lleva las preguntas, pedidos y reclamos de un marketplace a la bandeja de atención omnicanal, con el contexto que el agente necesita.",
               year: "2025 — 2026",
@@ -225,6 +227,7 @@ const es = {
           {
               name: "BioPass / BioMatch",
               world: "biomatch",
+            slug: "biopass-biomatch",
               tech: "Backend, APIs, verificación biométrica",
               desc: "Verificación de identidad con biometría y documentos de distintos países, dentro de una plataforma de eventos e invitados.",
               year: "2025",
@@ -267,6 +270,7 @@ const es = {
           {
               name: "PeopleFlow",
               world: "people",
+            slug: "peopleflow",
               tech: "C#, .NET, ASP.NET Core, gRPC",
               desc: "Plataforma SaaS de gestión y contratación de personal, con un backend modular que cubre desde la estructura organizativa hasta la selección.",
               year: "2025",
@@ -307,6 +311,7 @@ const es = {
           {
               name: "EEMesh",
               world: "eemesh",
+            slug: "eemesh",
               tech: "Rust, Python",
               desc: "Simulador de eventos discretos para estudiar si una mezcla de expertos distribuida puede servir inferencia sobre redes reales.",
               year: "2026",
@@ -348,6 +353,7 @@ const es = {
           {
               name: "LIMS de Toxicología",
               world: "lims",
+            slug: "toxicology-lims",
               tech: ".NET, WinForms, ASP.NET MVC",
               desc: "Sistema de gestión de laboratorio (LIMS) para Labstat, con aplicación de escritorio para la operación y portal web para clientes.",
               year: "2024",
@@ -388,6 +394,7 @@ const es = {
           {
               name: "Mapeo de Procesos Colaborativo",
               world: "process",
+            slug: "process-mapping",
               tech: "TypeScript, React, Express",
               desc: "Lienzo colaborativo donde los diagramas de proceso llevan información asociada, en vez de quedar como dibujos aislados.",
               year: "2023 — 2024",
@@ -424,6 +431,7 @@ const es = {
           {
               name: "Chat Doc Query",
               world: "doc",
+            slug: "chat-doc-query",
               tech: "TypeScript, React, Next.js, LLM",
               desc: "Chat inteligente para consultar y extraer información de documentos PDF, con respuestas apoyadas en su contenido.",
               year: "2023",
@@ -462,6 +470,7 @@ const es = {
           {
               name: "Kinet",
               world: "kinet",
+            slug: "kinet",
               tech: "Go, React",
               desc: "Plataforma para que docentes creen actividades interactivas y las ejecuten con sus estudiantes desde el móvil.",
               year: "2026",
@@ -501,6 +510,7 @@ const es = {
           {
               name: "Reservas Grupales",
               world: "booking",
+            slug: "group-bookings",
               tech: "React, TypeScript, Odoo, Python",
               desc: "Reserva de servicios en línea: elegir servicios, profesionales y horarios compatibles para grupos de personas.",
               year: "2024",

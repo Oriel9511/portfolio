@@ -23,6 +23,7 @@ const StackedSection = ({ children, className = '', id = '', zIndex = 0, theme =
             ref={ref}
             id={id}
             data-theme={theme}
+            data-bg-inert="true"
             className={`sticky h-[var(--slide-h)] min-h-[var(--slide-h)] max-h-[var(--slide-h)] w-full overflow-hidden ${bgColor} ${shadowClass}`}
             style={{ zIndex, top: 0, visibility: reduceMotion ? undefined : visibility }}
         >

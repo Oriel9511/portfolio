@@ -18,27 +18,67 @@ const UNIFORMS = ['uRes', 'uCss', 'uTime', 'uProg', 'uPointer', 'uEnergy', 'uHov
 export class FieldRenderer {
   constructor(canvas) {
     this.canvas = canvas;
-    canvas.addEventListener('webglcontextlost', (event) => event.preventDefault());
+    this.lost = false;
+    this.lastResize = null;
+    this.onLost = (event) => {
+      event.preventDefault();
+      this.lost = true;
+    };
+    this.onRestored = () => {
+      this.init();
+      if (this.lastResize) this.resize(...this.lastResize);
+      this.lost = false;
+    };
+    canvas.addEventListener('webglcontextlost', this.onLost);
+    canvas.addEventListener('webglcontextrestored', this.onRestored);
+
     this.gl = canvas.getContext('webgl2', { alpha: true, antialias: false, premultipliedAlpha: true, powerPreference: 'high-performance' });
-    if (!this.gl) throw new Error('WebGL2 unavailable');
-    this.init();
+    if (!this.gl) {
+      this.detach();
+      throw new Error('WebGL2 unavailable');
+    }
+    try {
+      this.init();
+    } catch (error) {
+      this.dispose();
+      throw error;
+    }
+  }
+
+  detach() {
+    this.canvas.removeEventListener('webglcontextlost', this.onLost);
+    this.canvas.removeEventListener('webglcontextrestored', this.onRestored);
   }
 
   init() {
     const { gl } = this;
+    const vertex = compile(gl, gl.VERTEX_SHADER, VERTEX);
+    let fragment;
+    try {
+      fragment = compile(gl, gl.FRAGMENT_SHADER, FRAGMENT);
+    } catch (error) {
+      gl.deleteShader(vertex);
+      throw error;
+    }
+
     const program = gl.createProgram();
-    gl.attachShader(program, compile(gl, gl.VERTEX_SHADER, VERTEX));
-    gl.attachShader(program, compile(gl, gl.FRAGMENT_SHADER, FRAGMENT));
+    gl.attachShader(program, vertex);
+    gl.attachShader(program, fragment);
     gl.linkProgram(program);
+    // Once linked the shader objects are no longer needed.
+    gl.deleteShader(vertex);
+    gl.deleteShader(fragment);
     if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-      throw new Error(`Program link failed: ${gl.getProgramInfoLog(program)}`);
+      const log = gl.getProgramInfoLog(program);
+      gl.deleteProgram(program);
+      throw new Error(`Program link failed: ${log}`);
     }
 
     this.program = program;
     this.locations = Object.fromEntries(UNIFORMS.map((name) => [name, gl.getUniformLocation(program, name)]));
 
-    const buffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+    this.buffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
     const position = gl.getAttribLocation(program, 'aPos');
     gl.enableVertexAttribArray(position);
@@ -52,6 +92,8 @@ export class FieldRenderer {
   }
 
   resize(cssWidth, cssHeight, pixelRatio) {
+    this.lastResize = [cssWidth, cssHeight, pixelRatio];
+    if (this.lost) return;
     const width = Math.max(2, Math.round(cssWidth * pixelRatio));
     const height = Math.max(2, Math.round(cssHeight * pixelRatio));
     if (this.canvas.width !== width || this.canvas.height !== height) {
@@ -63,6 +105,7 @@ export class FieldRenderer {
   }
 
   render({ time, progress, pointerX, pointerY, energy, hover, active, zones, zoneParams, detail, focus }) {
+    if (this.lost) return;
     const { gl, locations: u } = this;
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.uniform2f(u.uRes, this.canvas.width, this.canvas.height);
@@ -81,8 +124,11 @@ export class FieldRenderer {
   }
 
   dispose() {
+    this.detach();
     const { gl } = this;
-    gl.deleteTexture(this.noise);
-    gl.deleteProgram(this.program);
+    if (!gl || this.lost) return;
+    if (this.noise) gl.deleteTexture(this.noise);
+    if (this.buffer) gl.deleteBuffer(this.buffer);
+    if (this.program) gl.deleteProgram(this.program);
   }
 }

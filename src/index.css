@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./fonts.css";
 
 @theme {
     --font-serif: "Newsreader", ui-serif, Georgia, "Times New Roman", serif;

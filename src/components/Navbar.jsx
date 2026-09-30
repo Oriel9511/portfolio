@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion as Motion } from 'framer-motion';
 import LanguageSwitch from './LanguageSwitch';
 import MobileMenu from './MobileMenu';
@@ -24,9 +24,18 @@ const MenuGlyph = ({ open }) => (
     </svg>
 );
 
-const Navbar = ({ activeSectionId = 'hero', onNavigate }) => {
+const Navbar = ({ activeSectionId = 'hero', onNavigate, onMenuChange }) => {
     const { ui } = useI18n();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+    const toggleRef = useRef(null);
+    const wasOpenRef = useRef(false);
+
+    useEffect(() => {
+        onMenuChange?.(isMobileMenuOpen);
+        if (wasOpenRef.current && !isMobileMenuOpen) toggleRef.current?.focus();
+        wasOpenRef.current = isMobileMenuOpen;
+    }, [isMobileMenuOpen, onMenuChange]);
 
     useEffect(() => {
         experience.covered = isMobileMenuOpen;
@@ -120,6 +129,7 @@ const Navbar = ({ activeSectionId = 'hero', onNavigate }) => {
                 <div className="z-[101] flex items-center pointer-events-auto md:hidden">
                 <LanguageSwitch className={textColor} />
                 <Motion.button
+                    ref={toggleRef}
                     whileHover="hover"
                     initial="initial"
                     className={`z-[101] pointer-events-auto transition-colors duration-300 ${isMobileMenuOpen ? 'text-white' : textColor} p-4 -mr-4 relative`}

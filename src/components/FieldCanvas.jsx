@@ -11,6 +11,11 @@ const MAX_ZONES = 6;
 function FieldCanvas({ visible }) {
   const canvasRef = useRef(null);
   const reduceMotion = useReducedMotion();
+  const visibleRef = useRef(visible);
+
+  useEffect(() => {
+    visibleRef.current = visible;
+  }, [visible]);
 
   useEffect(() => {
     let renderer;
@@ -41,8 +46,13 @@ function FieldCanvas({ visible }) {
       experience.zones.forEach((zone) => {
         if (count >= MAX_ZONES || Math.abs(experience.progress - zone.slide) >= 1) return;
         const rect = zone.el.getBoundingClientRect();
-        zones.set([rect.left, rect.top, rect.right, rect.bottom], count * 4);
-        zoneParams.set([zone.k, zone.feather], count * 2);
+        const at = count * 4;
+        zones[at] = rect.left;
+        zones[at + 1] = rect.top;
+        zones[at + 2] = rect.right;
+        zones[at + 3] = rect.bottom;
+        zoneParams[count * 2] = zone.k;
+        zoneParams[count * 2 + 1] = zone.feather;
         count += 1;
       });
     };
@@ -85,14 +95,28 @@ function FieldCanvas({ visible }) {
       };
       window.addEventListener('scroll', draw, { passive: true });
       window.addEventListener('resize', repaint);
+      // The single still frame must follow layout changes (fonts arriving, language switch, resizes).
+      const observer = new ResizeObserver(draw);
+      experience.zones.forEach((zone) => observer.observe(zone.el));
+      if (experience.focus) observer.observe(experience.focus.el);
+      document.fonts?.ready.then(draw);
+      document.fonts?.addEventListener?.('loadingdone', draw);
       stop = () => {
+        observer.disconnect();
+        document.fonts?.removeEventListener?.('loadingdone', draw);
         window.removeEventListener('scroll', draw);
         window.removeEventListener('resize', repaint);
       };
     } else {
       stop = subscribeFrame((dt) => {
-        if (experience.covered || document.hidden) return;
-        const changed = controller.sample(dt * 1000);
+        if (experience.covered || document.hidden) {
+          controller.reset();
+          return;
+        }
+        // frames measured behind the splash (page still loading) say nothing about scroll-time cost
+        let changed = false;
+        if (visibleRef.current) changed = controller.sample(dt * 1000);
+        else controller.reset();
         if (changed) {
           resize();
           draw();

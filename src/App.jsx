@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react';
+import React, { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion as Motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import Navbar from './components/Navbar';
 import SlideRail from './components/SlideRail';
@@ -12,7 +12,9 @@ import ContactSection from './sections/ContactSection';
 import { useSlideController } from './experience/useSlideController';
 import { experience } from './experience/store';
 import { useI18n } from './i18n/context';
-import { canonicalUrl, getJsonLdPayload, socialImageUrl } from './data/seo';
+import { getLang } from './i18n/store';
+import { pageMeta } from './i18n/seoModel';
+import { BASE, buildPath, parsePath, stripBase } from './i18n/routes';
 
 const ProjectDetail = lazy(() => import('./components/ProjectDetail'));
 const CustomCursor = lazy(() => import('./components/CustomCursor'));
@@ -27,14 +29,17 @@ function setDocumentMeta(name, content, attribute = 'name') {
   }
 }
 
-function App() {
+function App({ initialProjectSlug = null }) {
   const reduceMotion = useReducedMotion();
-  const { lang, ui, seo, data } = useI18n();
+  const { lang, ui, data } = useI18n();
   const { scrollYProgress } = useScroll();
   const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
   const [showSplash, setShowSplash] = useState(true);
   const [isClient, setIsClient] = useState(false);
-  const [selectedWorld, setSelectedWorld] = useState(null);
+  const [selectedWorld, setSelectedWorld] = useState(() => data.opensource.find((item) => item.slug === initialProjectSlug)?.world ?? null);
+  const pushedProjectRef = useRef(false);
+  const mainRef = useRef(null);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [projectOrigin, setProjectOrigin] = useState(null);
   const [shouldLoadCursor, setShouldLoadCursor] = useState(false);
   const lastProjectTriggerRef = useRef(null);
@@ -44,20 +49,42 @@ function App() {
   const { activeIndex, scrollToSlide } = useSlideController(SLIDES, {
     paused: showSplash || hasProject,
     reduceMotion,
+    initialIndex: initialProjectSlug ? SLIDES.indexOf('opensource') : 0,
   });
 
   const openProject = useCallback((project, trigger, origin) => {
     lastProjectTriggerRef.current = trigger ?? null;
     setProjectOrigin(origin ?? null);
     setSelectedWorld(project.world);
+    // Each project has its own indexable URL; opening the overlay moves the address bar there.
+    window.history.pushState({ project: project.slug }, '', `${BASE}${buildPath(getLang(), project.slug)}`);
+    pushedProjectRef.current = true;
   }, []);
 
   const closeProject = useCallback(() => {
     setSelectedWorld(null);
+    if (pushedProjectRef.current) {
+      pushedProjectRef.current = false;
+      window.history.back();
+    } else {
+      window.history.replaceState(null, '', `${BASE}${buildPath(getLang())}#opensource`);
+    }
     window.setTimeout(() => {
       lastProjectTriggerRef.current?.focus?.();
     }, 0);
   }, []);
+
+  // Back/forward buttons open and close the overlay.
+  useEffect(() => {
+    const onPopState = () => {
+      const { slug } = parsePath(stripBase(window.location.pathname));
+      const world = data.opensource.find((item) => item.slug === slug)?.world ?? null;
+      pushedProjectRef.current = false;
+      setSelectedWorld(world);
+    };
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, [data]);
 
   useEffect(() => {
     const delay = reduceMotion ? 0 : 2200;
@@ -93,29 +120,41 @@ function App() {
     };
   }, [reduceMotion]);
 
+  // Background content must not be reachable by keyboard or screen readers under an overlay.
   useEffect(() => {
-    document.title = seo.title;
-    setDocumentMeta('description', seo.description);
-    setDocumentMeta('author', 'Oriel Arteaga');
-    setDocumentMeta('theme-color', '#0a0a0a');
-    setDocumentMeta('twitter:title', seo.title);
-    setDocumentMeta('twitter:description', seo.ogDescription);
-    setDocumentMeta('twitter:image', socialImageUrl);
-    setDocumentMeta('og:title', seo.title, 'property');
-    setDocumentMeta('og:description', seo.ogDescription, 'property');
-    setDocumentMeta('og:url', canonicalUrl, 'property');
-    setDocumentMeta('og:image', socialImageUrl, 'property');
-    setDocumentMeta('og:image:alt', seo.imageAlt, 'property');
-    setDocumentMeta('og:locale', seo.locale, 'property');
+    const blocked = menuOpen || hasProject;
+    document.querySelectorAll('[data-bg-inert]').forEach((node) => {
+      node.inert = blocked;
+    });
+  }, [menuOpen, hasProject]);
 
-    const canonicalLink = document.head.querySelector('link[rel="canonical"]');
-    canonicalLink?.setAttribute('href', canonicalUrl);
+  useEffect(() => {
+    if (mainRef.current) mainRef.current.inert = isClient && showSplash;
+  }, [isClient, showSplash]);
+
+  const meta = useMemo(() => pageMeta(lang, selectedProject?.slug ?? null), [lang, selectedProject?.slug]);
+
+  // Keeps the head in sync when the language or the open project changes without a page load.
+  useEffect(() => {
+    document.title = meta.title;
+    setDocumentMeta('description', meta.description);
+    setDocumentMeta('twitter:title', meta.title);
+    setDocumentMeta('twitter:description', meta.ogDescription);
+    setDocumentMeta('og:title', meta.title, 'property');
+    setDocumentMeta('og:description', meta.ogDescription, 'property');
+    setDocumentMeta('og:url', meta.canonical, 'property');
+    setDocumentMeta('og:locale', meta.locale, 'property');
+    setDocumentMeta('og:locale:alternate', meta.otherLocale, 'property');
+
+    document.head.querySelector('link[rel="canonical"]')?.setAttribute('href', meta.canonical);
+    document.head.querySelectorAll('link[rel="alternate"][hreflang]').forEach((link) => {
+      const match = meta.alternates.find((item) => item.hreflang === link.getAttribute('hreflang'));
+      if (match) link.setAttribute('href', match.href);
+    });
 
     const jsonLdScript = document.getElementById('seo-json-ld');
-    if (jsonLdScript) {
-      jsonLdScript.textContent = JSON.stringify(getJsonLdPayload({ seo, lang }));
-    }
-  }, [lang, seo]);
+    if (jsonLdScript) jsonLdScript.textContent = JSON.stringify(meta.jsonLd);
+  }, [meta]);
 
   useEffect(() => {
     document.documentElement.dataset.appHydrated = 'true';
@@ -144,13 +183,14 @@ function App() {
       </Suspense>
 
       <main
+        ref={mainRef}
         id="main-content"
         data-app-shell="true"
         data-splash-active={showSplash ? 'true' : 'false'}
         aria-hidden={isClient && showSplash ? 'true' : undefined}
         className="app-shell"
       >
-        <Navbar activeSectionId={SLIDES[activeIndex]} onNavigate={scrollToSlide} />
+        <Navbar activeSectionId={SLIDES[activeIndex]} onNavigate={scrollToSlide} onMenuChange={setMenuOpen} />
         <SlideRail slides={SLIDES} activeIndex={activeIndex} onNavigate={scrollToSlide} />
 
         <Motion.div

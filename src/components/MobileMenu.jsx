@@ -50,28 +50,26 @@ function SheetCanvas({ originX, originY }) {
       ctx.clearRect(0, 0, w, h);
       ctx.lineWidth = 1;
 
-      const warp = (x, y) => {
-        const dx = x - well.x;
-        const dy = y - well.y;
+      // Same warp as before, written straight into the path (no per-vertex arrays, so no GC pressure).
+      const wx = well.x;
+      const wy = well.y;
+      const plot = (x, y, first) => {
+        const dx = x - wx;
+        const dy = y - wy;
         const k = strength / (dx * dx + dy * dy + soft);
-        return [x - dx * k, y - dy * k];
+        if (first) ctx.moveTo(x - dx * k, y - dy * k);
+        else ctx.lineTo(x - dx * k, y - dy * k);
       };
 
       ctx.strokeStyle = 'rgba(255,255,255,0.15)';
       ctx.beginPath();
       for (let i = 0; i <= COLS; i += 1) {
         const x = (w * i) / COLS;
-        for (let j = 0; j <= SEGMENTS; j += 1) {
-          const [px, py] = warp(x, (h * j) / SEGMENTS);
-          if (j === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
-        }
+        for (let j = 0; j <= SEGMENTS; j += 1) plot(x, (h * j) / SEGMENTS, j === 0);
       }
       for (let r = 0; r <= ROWS; r += 1) {
         const y = (h * r) / ROWS;
-        for (let j = 0; j <= SEGMENTS; j += 1) {
-          const [px, py] = warp((w * j) / SEGMENTS, y);
-          if (j === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
-        }
+        for (let j = 0; j <= SEGMENTS; j += 1) plot((w * j) / SEGMENTS, y, j === 0);
       }
       ctx.stroke();
 
@@ -99,7 +97,9 @@ function SheetCanvas({ originX, originY }) {
     window.addEventListener('touchstart', onMove, { passive: true });
     window.addEventListener('touchmove', onMove, { passive: true });
     window.addEventListener('touchend', onEnd, { passive: true });
-    const stop = reduce ? () => {} : subscribeFrame((dt) => paint(dt));
+    const stop = reduce ? () => {} : subscribeFrame((dt) => {
+      if (!document.hidden) paint(dt);
+    });
 
     return () => {
       stop();
@@ -115,6 +115,11 @@ function SheetCanvas({ originX, originY }) {
 
 const MobileMenu = ({ items, activeId, onNavigate }) => {
   const reduce = useReducedMotion();
+  const listRef = useRef(null);
+
+  useEffect(() => {
+    listRef.current?.querySelector('button')?.focus({ preventScroll: true });
+  }, []);
   const { ui, data } = useI18n();
   const originX = typeof window === 'undefined' ? 340 : window.innerWidth - 36;
   const originY = 46;
@@ -135,7 +140,7 @@ const MobileMenu = ({ items, activeId, onNavigate }) => {
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_55%,transparent_30%,rgba(0,0,0,0.65)_100%)]" />
 
       <nav className="relative z-10 flex flex-1 flex-col justify-center px-6 pt-24 pb-6" aria-label={ui.nav.sections}>
-        <ul className="border-t border-white/10">
+        <ul ref={listRef} className="border-t border-white/10">
           {items.map((item, i) => {
             const active = item.id === activeId;
             return (

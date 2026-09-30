@@ -4,6 +4,7 @@ import { ArrowRight } from 'lucide-react';
 import LabsStage from '../components/LabsStage';
 import StackedSection from '../components/StackedSection';
 import { useI18n } from '../i18n/context';
+import { BASE, buildPath } from '../i18n/routes';
 import { experience } from '../experience/store';
 import { useZone } from '../experience/useZone';
 
@@ -11,7 +12,10 @@ const CINE = [0.16, 1, 0.3, 1];
 const SWIPE_DISTANCE = 48;
 
 const LabsSection = ({ index, paused, onOpenProject }) => {
-  const { ui, data } = useI18n();
+  const { ui, data, lang } = useI18n();
+  const hrefFor = (item) => `${BASE}${buildPath(lang, item.slug)}`;
+  // Plain left clicks drive the in-page experience; modified clicks keep normal link behavior.
+  const isPlainClick = (event) => event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
   const PROJECTS = data.opensource;
   const count = PROJECTS.length;
   const [active, setActive] = useState(0);
@@ -87,14 +91,19 @@ const LabsSection = ({ index, paused, onOpenProject }) => {
               const isActive = i === active;
               return (
                 <li key={item.name} className="shrink-0 md:shrink md:border-t md:border-white/10 md:last:border-b">
-                  <button
-                    type="button"
+                  <a
+                    href={hrefFor(item)}
                     data-lab-item="true"
                     data-cursor="hover"
                     aria-current={isActive ? 'true' : undefined}
                     onMouseEnter={() => select(i)}
                     onFocus={() => select(i)}
-                    onClick={(event) => (isActive ? open(event.currentTarget) : select(i))}
+                    onClick={(event) => {
+                      if (!isPlainClick(event)) return;
+                      event.preventDefault();
+                      if (isActive) open(event.currentTarget);
+                      else select(i);
+                    }}
                     className="group grid w-full grid-cols-[2.25rem_1fr] items-baseline gap-1 py-2 text-left md:py-[0.6vh]"
                   >
                     <span className={`font-mono text-xs transition-colors duration-500 ${isActive ? 'text-white' : 'text-zinc-600'}`}>
@@ -125,7 +134,7 @@ const LabsSection = ({ index, paused, onOpenProject }) => {
                         )}
                       </AnimatePresence>
                     </span>
-                  </button>
+                  </a>
                 </li>
               );
             })}
@@ -167,13 +176,17 @@ const LabsSection = ({ index, paused, onOpenProject }) => {
                 </button>
               ))}
             </div>
-            <button
-              type="button"
-              onClick={(event) => open(event.currentTarget)}
+            <a
+              href={hrefFor(project)}
+              onClick={(event) => {
+                if (!isPlainClick(event)) return;
+                event.preventDefault();
+                open(event.currentTarget);
+              }}
               className="flex h-11 shrink-0 items-center gap-2 whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.2em] text-white"
             >
               {ui.labs.open} <ArrowRight size={14} />
-            </button>
+            </a>
           </div>
         </div>
       </div>

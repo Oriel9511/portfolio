@@ -4,7 +4,7 @@ React 19 + Vite + framer-motion + Tailwind 4. A slide-based portfolio treated as
 
 ```bash
 npm run dev      # dev server
-npm run build    # production build + prerender
+npm run build    # vite build + prerender of 22 pages + SEO finalize (head tags, sitemap, 404)
 npm run verify   # static HTML a11y/SEO checks on dist/
 npm run verify:i18n  # English translations are complete and aligned with the Spanish source
 npm run lint
@@ -69,6 +69,22 @@ The dev server can be driven with a headless Chrome (`--use-angle=swiftshader`) 
 - `src/i18n/es.js` is the source of truth: UI strings, SEO and all site data (profile, experience, projects).
 - `src/i18n/en/*` only contains the *translatable* text; everything else (links, stack, scene ids) is inherited from Spanish through `mergeContent`, so the two languages cannot drift structurally. Arrays merge by index.
 - Canvas labels are looked up by their Spanish text (`tr('CADA FORMA…')`), so scenes keep working if a translation is missing.
-- The language is chosen from `?lang=`, then `localStorage`, then the browser (Spanish/Portuguese -> ES, anything else -> EN). The prerendered HTML is Spanish; the client switches right after hydration without a mismatch (`useSyncExternalStore`).
+- **The URL decides the language** (what gets indexed): `/portfolio/` is Spanish, `/portfolio/en/` English. `?lang=` and a remembered explicit choice (`localStorage`) only apply on the default-language URLs and rewrite the address bar to the canonical URL. The browser language is deliberately ignored so crawlers see exactly the language of the URL they request. Hydration is mismatch-free (`useSyncExternalStore` with the route language as server snapshot).
 - `npm run verify:i18n` (also run in CI) fails on missing keys, array length mismatches, leftover Spanish characters, unused or untranslated canvas labels.
 - Adding a language: create `src/i18n/<code>/`, register it in `i18n/index.jsx`, `store.js` and `LanguageSwitch.jsx`.
+
+### SEO and indexing
+
+- `src/prerender.jsx` uses React's `react-dom/static` `prerender`, so lazy boundaries resolve and **22 real HTML pages** are emitted: home and 10 project pages, in ES (`/`, `/proyectos/<slug>/`) and EN (`/en/`, `/en/projects/<slug>/`). URLs come from one module, `src/i18n/routes.js`, shared by browser, prerender and scripts.
+- `scripts/finalize-seo.mjs` (run by `npm run build`) rewrites each page's head from `src/i18n/seoModel.js`: `<html lang>`, title, description, canonical, reciprocal `hreflang` (es / en / x-default), Open Graph / Twitter tags, and JSON-LD (`ProfilePage` + `Person` on home, `CreativeWork` on project pages). It also writes `sitemap.xml` (with language alternates) and `404.html` (noindex).
+- Opening a project pushes its own URL (`history.pushState`), so the address bar, Back/Forward and shared links all work; project rows are real `<a href>` links for crawlers.
+- No-JS / failed-hydration fallback: `public/fallback.css` (`<noscript>` and a 6 s watchdog) reveals the prerendered content as a readable page.
+- Accessibility: background sections are `inert` under the mobile menu, project overlay and splash; focus moves into the menu and returns to its button.
+- GitHub Pages limits: this site lives under `/portfolio/`, so `robots.txt` at the host root cannot be controlled. Submit `https://oriel9511.github.io/portfolio/sitemap.xml` in Google Search Console and Bing Webmaster Tools. A custom domain or a `<user>.github.io` repo would allow a root `robots.txt`.
+- `npm run verify` checks all 22 pages (tags, hreflang, JSON-LD, headings, language of the body, project detail text, sitemap, 404, assets).
+
+### Performance notes
+
+- The server renderer is imported dynamically inside `prerender()`, so it never reaches the client entry chunk (about 58 kB gzip less JS on first load).
+- Fonts are self-hosted (latin + latin-ext subsets of the same Google files) and the two critical ones are preloaded: no render-blocking third-party CSS.
+- The field's quality controller retries a degraded level after a cooldown (20 s, doubling), ignores frames measured behind the splash or in a hidden tab, and WebGL recovers from context loss.

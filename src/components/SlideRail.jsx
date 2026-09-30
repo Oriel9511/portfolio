@@ -9,6 +9,7 @@ const SlideRail = ({ slides, activeIndex, onNavigate }) => {
 
   return (
   <nav
+    data-bg-inert="true"
     aria-label={ui.nav.sections}
     className="fixed right-3 top-1/2 z-[95] hidden -translate-y-1/2 flex-col items-end gap-3 mix-blend-difference md:flex"
   >

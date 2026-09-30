@@ -7,10 +7,9 @@
   <meta name="theme-color" content="#0a0a0a" />
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://oriel9511.github.io/portfolio/" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" />
+  <!-- Critical fonts (hero name, splash, body copy) are preloaded; the rest load on demand from the local @font-face rules. -->
+  <link rel="preload" href="/src/assets/fonts/newsreader-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/src/assets/fonts/inter-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
 
   <title>Oriel Arteaga — Full Stack Developer</title>
   <meta name="description"
@@ -36,36 +35,31 @@
   <meta name="twitter:image" content="https://oriel9511.github.io/portfolio/og-image.png" />
 
   <!-- Theme & Favicon -->
-  <link rel="icon" type="image/png" href="/BrandIcon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
   <script type="application/ld+json" id="seo-json-ld">[{"@context":"https://schema.org","@type":"Person","name":"Oriel Arteaga","url":"https://oriel9511.github.io/portfolio/","jobTitle":"Full Stack Developer","email":"mailto:arteaga95.jimenez@gmail.com","address":{"@type":"PostalAddress","addressLocality":"Montevideo","addressCountry":"UY"}},{"@context":"https://schema.org","@type":"WebSite","name":"Oriel Arteaga","url":"https://oriel9511.github.io/portfolio/","description":"Portfolio de Oriel Arteaga, Full Stack Developer en Montevideo. Ingeniero en Automática especializado en arquitecturas web escalables con React, .NET, Node.js y Azure.","inLanguage":"es"}]</script>
 </head>
 
 <body>
   <div id="root"></div>
   <noscript>
-    <style>
-      [data-app-shell] {
-        opacity: 1 !important;
-        visibility: visible !important;
-        pointer-events: auto !important;
-      }
-
-      [data-splash-overlay] {
-        display: none !important;
-      }
-    </style>
+    <link rel="stylesheet" href="/fallback.css" />
     <p style="margin:0;padding:1rem;background:#0a0a0a;color:#fff;font-family:system-ui,sans-serif;">
       This portfolio works best with JavaScript enabled, but the main content remains available below.
     </p>
   </noscript>
   <script type="module" src="/src/main.jsx"></script>
   <script>
-    // Fail-safe: if the app never hydrates (script blocked, runtime error), reveal the prerendered content.
+    // Fail-safe: if the app never hydrates (script blocked, runtime error), load the readable fallback stylesheet.
     window.setTimeout(function () {
       if (document.documentElement.dataset.appHydrated === 'true') return;
-      var style = document.createElement('style');
-      style.textContent = '[data-app-shell]{opacity:1!important;visibility:visible!important;pointer-events:auto!important}[data-splash-overlay]{display:none!important}';
-      document.head.appendChild(style);
+      var icon = document.querySelector('link[rel="icon"]');
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = new URL('fallback.css', icon ? icon.href : window.location.href).href;
+      document.head.appendChild(link);
     }, 6000);
   </script>
 </body>
