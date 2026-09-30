@@ -19,7 +19,7 @@ const ContactSection = ({ index }) => {
   useFocus(focusRef, index);
 
   return (
-    <StackedSection id="contact" index={index} zIndex={60} theme="dark" className="justify-center pt-28 pb-2">
+    <StackedSection id="contact" index={index} zIndex={60} theme="dark" className="justify-center pt-[7.5rem] pb-2">
       <span aria-hidden="true" className="pointer-events-none absolute inset-x-6 top-[100px] h-px bg-white/15" />
 
       <div className="container mx-auto px-6 text-center">

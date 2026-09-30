@@ -1,4 +1,4 @@
-import { bracket, clamp, disc, easeInOut, easeOut, hash, ink, label, line, pill, ring } from './worldKit';
+import { bracket, clamp, disc, easeInOut, easeOut, hash, ink, isCompact, label, line, pill, ring } from './worldKit';
 
 const CYCLE = 12;
 const EXPERTS = [
@@ -13,6 +13,7 @@ export const eemeshScene = {
   hud: ['EEMESH · SIMULACIÓN', 'EXPERTOS DISTRIBUIDOS'],
   stillAt: 4.6,
   draw({ ctx, w, h, t, px, py }) {
+    const compact = isCompact(w, h);
     const local = t % CYCLE;
     const chunked = local >= 6;
     const rx = w * 0.14;
@@ -75,7 +76,7 @@ export const eemeshScene = {
     label(ctx, shown, w * 0.07, h * 0.12 + 26, { alpha: 0.95, size: 24 });
 
     const gx = w * 0.07;
-    const gy = h * 0.82;
+    const gy = compact ? h * 0.72 : h * 0.82;
     line(ctx, gx, gy, gx + 150, gy, 0.2);
     ctx.strokeStyle = ink(0.8);
     ctx.lineWidth = 1;
@@ -93,6 +94,6 @@ export const eemeshScene = {
 
     if (px >= 0) ring(ctx, px * w, py * h, 8, 0.4);
     bracket(ctx, 14, 14, w - 28, h - 28, 10, 0.3);
-    label(ctx, chunked ? 'COLA DRENADA · RESULTADO DE SIMULACIÓN' : 'BLOQUEO HEAD-OF-LINE · COLA CRECIENDO', 26, h - 26, { alpha: 0.5 });
+    label(ctx, chunked ? (compact ? 'COLA DRENADA' : 'COLA DRENADA · RESULTADO DE SIMULACIÓN') : compact ? 'HEAD-OF-LINE' : 'BLOQUEO HEAD-OF-LINE · COLA CRECIENDO', 26, h - 26, { alpha: 0.5 });
   },
 };

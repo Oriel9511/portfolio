@@ -58,12 +58,12 @@ const LabsSection = ({ index, paused, onOpenProject }) => {
   };
 
   return (
-    <StackedSection id="opensource" index={index} zIndex={40} theme="dark" rule className="justify-start pt-24 pb-6 md:pt-28">
+    <StackedSection id="opensource" index={index} zIndex={40} theme="dark" rule className="justify-start pt-[7.5rem] pb-6">
       <div className="container mx-auto flex min-h-0 flex-1 flex-col px-6">
         <div className="mb-5 flex items-end justify-between gap-6 md:mb-7">
           <div>
-            <h2 className="font-serif text-4xl md:text-5xl">Labs & Open Source.</h2>
-            <p className="mt-3 hidden max-w-xl text-sm font-light text-zinc-400 md:block">
+            <h2 className="font-serif text-4xl md:text-[clamp(2rem,5.2vh,3rem)]">Labs & Open Source.</h2>
+            <p className="mt-3 hidden max-w-xl text-sm font-light text-zinc-400 md:block [@media(max-height:830px)]:!hidden">
               Proyectos paralelos, herramientas experimentales y contribuciones que mantienen mis habilidades afiladas.
             </p>
           </div>
@@ -75,7 +75,7 @@ const LabsSection = ({ index, paused, onOpenProject }) => {
         <div className="grid min-h-0 content-start gap-5 md:flex-1 md:grid-cols-12 md:grid-rows-[minmax(0,1fr)] md:content-stretch md:gap-10">
           <ul
             ref={listRef}
-            className="order-2 hidden md:order-1 md:col-span-5 md:flex md:flex-col"
+            className="order-2 hidden min-h-0 md:order-1 md:col-span-5 md:flex md:flex-col md:justify-start"
             onKeyDown={onListKeyDown}
             onMouseLeave={() => {
               experience.hoverProject = -1;
@@ -93,13 +93,13 @@ const LabsSection = ({ index, paused, onOpenProject }) => {
                     onMouseEnter={() => select(i)}
                     onFocus={() => select(i)}
                     onClick={(event) => (isActive ? open(event.currentTarget) : select(i))}
-                    className="group grid w-full grid-cols-[2.25rem_1fr] items-baseline gap-1 py-2 text-left md:py-[1vh]"
+                    className="group grid w-full grid-cols-[2.25rem_1fr] items-baseline gap-1 py-2 text-left md:py-[0.6vh]"
                   >
                     <span className={`font-mono text-xs transition-colors duration-500 ${isActive ? 'text-white' : 'text-zinc-600'}`}>
                       {String(i + 1).padStart(2, '0')}
                     </span>
                     <span>
-                      <span className={`block font-serif text-lg transition-all duration-500 md:text-[clamp(1.15rem,2.9vh,1.85rem)] ${isActive ? 'italic text-white' : 'text-zinc-500 group-hover:text-zinc-300'}`}>
+                      <span className={`block font-serif text-lg transition-all duration-500 md:text-[clamp(1.05rem,2.5vh,1.7rem)] ${isActive ? 'italic text-white' : 'text-zinc-500 group-hover:text-zinc-300'}`}>
                         {item.name}
                       </span>
                       <AnimatePresence initial={false}>
@@ -151,7 +151,7 @@ const LabsSection = ({ index, paused, onOpenProject }) => {
           <p className="mt-3 text-sm font-light leading-relaxed text-zinc-300">{project.desc}</p>
 
           <div className="mt-4 flex items-center justify-between">
-            <div className="flex items-center">
+            <div className="flex min-w-0 flex-1 items-center pr-3">
               {PROJECTS.map((item, i) => (
                 <button
                   key={item.name}
@@ -159,16 +159,16 @@ const LabsSection = ({ index, paused, onOpenProject }) => {
                   onClick={() => select(i)}
                   aria-label={item.name}
                   aria-current={i === active ? 'true' : undefined}
-                  className="flex h-11 items-center px-1"
+                  className="flex h-11 min-w-0 flex-1 items-center px-[1px]"
                 >
-                  <span className={`block h-px transition-all duration-500 ${i === active ? 'w-7 bg-white' : 'w-3.5 bg-zinc-600'}`} />
+                  <span className={`block h-px transition-all duration-500 ${i === active ? 'bg-white' : 'bg-zinc-600'} w-full`} />
                 </button>
               ))}
             </div>
             <button
               type="button"
               onClick={(event) => open(event.currentTarget)}
-              className="flex h-11 items-center gap-2 whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.2em] text-white"
+              className="flex h-11 shrink-0 items-center gap-2 whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.2em] text-white"
             >
               Abrir proyecto <ArrowRight size={14} />
             </button>

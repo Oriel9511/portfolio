@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { motion as Motion } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { AnimatePresence, motion as Motion } from 'framer-motion';
+import MobileMenu from './MobileMenu';
+import { experience } from '../experience/store';
 
 const SECTION_INDICES = {
     hero: 0,
@@ -17,8 +18,26 @@ const SECTION_LABELS = {
     contact: 'Contacto'
 };
 
+const GLYPH_SPRING = { type: 'spring', stiffness: 260, damping: 22 };
+const GLYPH_STYLE = { transformBox: 'view-box', transformOrigin: '13px 13px' };
+
+const MenuGlyph = ({ open }) => (
+    <svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" aria-hidden="true">
+        <Motion.line x1="4" y1="13" x2="22" y2="13" style={GLYPH_STYLE} animate={{ y: open ? 0 : -4, rotate: open ? 45 : 0 }} transition={GLYPH_SPRING} />
+        <Motion.line x1="4" y1="13" x2="22" y2="13" style={GLYPH_STYLE} animate={{ y: open ? 0 : 4, rotate: open ? -45 : 0 }} transition={GLYPH_SPRING} />
+    </svg>
+);
+
 const Navbar = ({ activeSectionId = 'hero', onNavigate }) => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+    useEffect(() => {
+        experience.covered = isMobileMenuOpen;
+        if (!isMobileMenuOpen) return undefined;
+        const onKey = (event) => event.key === 'Escape' && setIsMobileMenuOpen(false);
+        window.addEventListener('keydown', onKey);
+        return () => window.removeEventListener('keydown', onKey);
+    }, [isMobileMenuOpen]);
 
     const textColor = 'text-white';
     const logoColor = textColor;
@@ -109,7 +128,7 @@ const Navbar = ({ activeSectionId = 'hero', onNavigate }) => {
                     aria-controls="mobile-navigation"
                     aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
                 >
-                    {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                    <MenuGlyph open={isMobileMenuOpen} />
                     <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none" style={{ overflow: 'visible' }}>
                         <Motion.polyline
                             points="1,1 99,1 99,99"
@@ -127,15 +146,15 @@ const Navbar = ({ activeSectionId = 'hero', onNavigate }) => {
                 </Motion.button>
             </nav>
 
-            {isMobileMenuOpen && (
-                <div id="mobile-navigation" role="dialog" aria-modal="true" aria-label="Mobile navigation" className="fixed inset-0 bg-black z-[90] flex flex-col items-center justify-center gap-8 text-white font-serif text-2xl pointer-events-auto">
-                    {Object.entries(SECTION_LABELS).map(([section, label]) => (
-                        <button key={section} onClick={() => handleNavClick(section)} aria-current={activeSectionId === section ? 'page' : undefined}>
-                            {label}
-                        </button>
-                    ))}
-                </div>
-            )}
+            <AnimatePresence>
+                {isMobileMenuOpen && (
+                    <MobileMenu
+                        items={[{ id: 'hero', label: 'Inicio' }, ...Object.entries(SECTION_LABELS).map(([id, label]) => ({ id, label }))]}
+                        activeId={activeSectionId}
+                        onNavigate={handleNavClick}
+                    />
+                )}
+            </AnimatePresence>
         </>
     );
 };

@@ -85,6 +85,137 @@ export const DATA = {
             ]
         },
         {
+            name: "Integración con Mercado Libre",
+            world: "meli",
+            tech: "Go, HTTP, mensajería por eventos",
+            desc: "Canal que lleva las preguntas, pedidos y reclamos de un marketplace a la bandeja de atención omnicanal, con el contexto que el agente necesita.",
+            year: "2025 — 2026",
+            role: "Desarrollo del canal y reestructuración del servicio",
+            status: "Entregado",
+            overview: "Partí de un servicio de canal genérico que ya existía y lo extendí hasta convertirlo en una integración completa con el marketplace, reestructurando varias partes del código en el camino. Las conversaciones de compra y de posventa llegan al agente con el contexto del producto, del pedido o del reclamo, en la misma bandeja donde atiende el resto de los canales.",
+            highlights: [
+                "Preguntas de compradores con el contexto del producto y un resumen de la venta.",
+                "Pedidos relacionados agrupados, incluidas las ventas por paquete.",
+                "Conversaciones de posventa ligadas a reclamos y mediaciones, con avisos de apertura y cierre.",
+                "Mensajes con adjuntos, en ambos sentidos.",
+                "Vinculación de cuentas mediante flujos de autorización, con renovación de credenciales.",
+                "Prevención de mensajes duplicados y recuperación ante errores transitorios."
+            ],
+            flow: [
+                "El comprador consulta por un producto.",
+                "La integración recibe el mensaje junto con el contexto disponible.",
+                "La conversación aparece en la bandeja con una tarjeta de contexto.",
+                "El agente responde desde su herramienta de atención habitual.",
+                "Si la consulta deriva en posventa, se muestra el contexto del pedido o del reclamo.",
+                "Comprador y agente intercambian mensajes y, cuando corresponde, adjuntos."
+            ],
+            facts: [
+                { label: "Periodo", value: "Octubre 2025 — mayo 2026" },
+                { label: "Alcance", value: "Preguntas · pedidos · reclamos · adjuntos" },
+                { label: "Punto de partida", value: "Servicio de canal existente, extendido y reestructurado" }
+            ],
+            challenges: [
+                {
+                    title: "Un solo hilo para situaciones distintas",
+                    detail: "Una pregunta previa a la compra, un pedido y un reclamo son cosas diferentes; el agente debía verlas como conversaciones coherentes y con su contexto."
+                },
+                {
+                    title: "Que ningún mensaje se pierda ni se repita",
+                    detail: "Se trabajó la deduplicación y la recuperación ante fallos transitorios, para que las conversaciones fueran confiables."
+                },
+                {
+                    title: "Autorización que caduca",
+                    detail: "Las cuentas vinculadas necesitan renovar su acceso sin intervención manual ni cortes en la atención."
+                },
+                {
+                    title: "Reestructurar mientras se construye",
+                    detail: "Sumar funcionalidad sobre un servicio existente obligó a reorganizar partes del código y a reforzarlo con pruebas."
+                }
+            ]
+        },
+        {
+            name: "BioPass / BioMatch",
+            world: "biomatch",
+            tech: "Backend, APIs, verificación biométrica",
+            desc: "Verificación de identidad con biometría y documentos de distintos países, dentro de una plataforma de eventos e invitados.",
+            year: "2025",
+            role: "Desarrollo backend",
+            status: "Producto SaaS",
+            overview: "Familia de productos SaaS orientada a verificar identidades. BioMatch coteja a una persona con su documento y valida documentos de distintos países en unos 11 segundos; BioPass es la plataforma donde los equipos organizan eventos, invitados e invitaciones. Mi aporte fue el backend del producto; la interfaz la desarrolló otro equipo.",
+            highlights: [
+                "Verificación de identidad y de documentos de distintos países.",
+                "Respuesta en alrededor de 11 segundos.",
+                "Gestión de eventos, invitados e invitaciones.",
+                "Carga masiva de invitados con validación de campos obligatorios y de duplicados.",
+                "Seguimiento del estado de las invitaciones y de la asistencia.",
+                "Panel de administración de empresas, contratos y planes."
+            ],
+            flow: [
+                "El equipo crea un evento y define sus fechas.",
+                "Registra invitados, de uno en uno o de forma masiva.",
+                "Envía las invitaciones y revisa su estado.",
+                "La identidad de cada persona se coteja con su documento.",
+                "Se consulta la asistencia y las métricas del evento."
+            ],
+            facts: [
+                { label: "Verificación", value: "≈ 11 segundos" },
+                { label: "Documentos", value: "De distintos países" },
+                { label: "Periodo", value: "Abril — agosto 2025" },
+                { label: "Mi rol", value: "Backend" }
+            ],
+            note: "Descripción basada en mi experiencia y en la interfaz del producto; el frontend no es trabajo mío.",
+            challenges: [
+                {
+                    title: "Verificar rápido",
+                    detail: "La respuesta debía llegar en pocos segundos aun combinando la validación del documento y la de la persona."
+                },
+                {
+                    title: "Documentos de distintas jurisdicciones",
+                    detail: "Cada país trae formatos propios que el sistema tenía que aceptar y validar."
+                }
+            ]
+        },
+        {
+            name: "PeopleFlow",
+            world: "people",
+            tech: "C#, .NET, ASP.NET Core, gRPC",
+            desc: "Plataforma SaaS de gestión y contratación de personal, con un backend modular que cubre desde la estructura organizativa hasta la selección.",
+            year: "2025",
+            role: "Desarrollo backend",
+            status: "Producto SaaS",
+            overview: "Backend modular de una plataforma para gestionar personas y procesos de selección: estructura de la organización, puestos, habilidades, vacantes, candidatos y entrevistas. Forma parte de las soluciones SaaS con IA en las que trabajé en Alsacia; mi responsabilidad fue el backend.",
+            highlights: [
+                "Empleados, contratos y beneficios.",
+                "Estructura organizativa, puestos y descripciones de puesto.",
+                "Habilidades asociadas a cada puesto.",
+                "Vacantes, candidatos y etapas de selección con entrevistas.",
+                "Gestión de documentos con historial de versiones, usuarios y permisos.",
+                "Arquitectura modular con comunicación eficiente entre servicios."
+            ],
+            flow: [
+                "Se configura la organización y sus unidades.",
+                "Se definen los puestos y las habilidades que requieren.",
+                "Se publican vacantes y se reciben candidatos.",
+                "Se coordinan las entrevistas y las etapas de selección.",
+                "Al contratar, se registran la persona y su contrato dentro de la estructura."
+            ],
+            facts: [
+                { label: "Periodo", value: "Abril — agosto 2025" },
+                { label: "Enfoque", value: "Gestión de personas y selección" },
+                { label: "Mi rol", value: "Backend" }
+            ],
+            challenges: [
+                {
+                    title: "Módulos con fronteras claras",
+                    detail: "Cada área de personas y de selección se organizó como un módulo independiente para que la plataforma pudiera crecer sin enredarse."
+                },
+                {
+                    title: "Servicios que se hablan bien",
+                    detail: "La comunicación entre servicios se diseñó para ser eficiente y mantener los datos coherentes entre módulos."
+                }
+            ]
+        },
+        {
             name: "EEMesh",
             world: "eemesh",
             tech: "Rust, Python",
@@ -284,10 +415,12 @@ export const DATA = {
             tech: "React, TypeScript, Odoo, Python",
             desc: "Reserva de servicios en línea: elegir servicios, profesionales y horarios compatibles para grupos de personas.",
             year: "2024",
-            role: "Automatización y desarrollo sobre Odoo",
+            role: "Personalización de Odoo e integración con React",
             status: "Entregado",
-            overview: "Flujo web de reservas para negocios de servicios que permite coordinar a varias personas a la vez: cada asistente elige sus servicios y la herramienta calcula qué horarios sirven a todos, ya sea en el mismo momento o en momentos distintos.",
+            overview: "Flujo web de reservas para negocios de servicios que permite coordinar a varias personas a la vez: cada asistente elige sus servicios y la herramienta calcula qué horarios sirven a todos, ya sea en el mismo momento o en momentos distintos. Mi trabajo fue amplio: personalicé Odoo para que la agenda y las reservas soportaran esa lógica, y lo integré con una interfaz en React.",
             highlights: [
+                "Personalización profunda de Odoo para agenda, servicios y disponibilidad.",
+                "Integración entre Odoo y una interfaz web en React.",
                 "Selección de la cantidad de asistentes y de sus datos.",
                 "Elección de servicios y de profesionales.",
                 "Horarios disponibles calculados a partir de la agenda real.",
@@ -314,44 +447,6 @@ export const DATA = {
                 {
                     title: "Zonas horarias",
                     detail: "Las fechas debían mostrarse y guardarse correctamente sin importar desde dónde se reservara."
-                }
-            ]
-        },
-        {
-            name: "Agentes Analistas de Datos",
-            world: "agents",
-            tech: "Python, LLM",
-            desc: "Agentes de IA que colaboran para responder preguntas de análisis sobre datos tabulares, con una persona en el ciclo.",
-            year: "2023",
-            role: "Prototipo de agentes con herramientas",
-            status: "Experimento",
-            overview: "Experimento que combina agentes de lenguaje con funciones de análisis: el agente interpreta la solicitud y decide qué herramienta usar, y los cálculos los hace una función de filtrado y estadística. Una persona puede intervenir en el ciclo para revisar antes de dar por buena la respuesta.",
-            highlights: [
-                "Interpretación de la tarea planteada en lenguaje natural.",
-                "Llamada a una función que filtra por fechas y categorías.",
-                "Cálculo de medidas descriptivas sobre el resultado.",
-                "Resultado guardado en formato tabular.",
-                "Intervención humana dentro del ciclo de trabajo."
-            ],
-            flow: [
-                "Se plantea una pregunta sobre los datos.",
-                "El agente decide qué herramienta usar.",
-                "Se filtran los datos y se calculan las medidas.",
-                "Se devuelve una respuesta con su resultado.",
-                "Una persona valida antes de darla por buena."
-            ],
-            facts: [
-                { label: "Año", value: "2023" },
-                { label: "Patrón", value: "Agentes con llamada a funciones y humano en el ciclo" }
-            ],
-            challenges: [
-                {
-                    title: "Herramientas, no adivinanzas",
-                    detail: "Los números salen de una función, y el agente solo decide cuándo llamarla."
-                },
-                {
-                    title: "Confianza en el resultado",
-                    detail: "La intervención humana en el ciclo permite revisar antes de aceptar lo que devuelve el agente."
                 }
             ]
         }

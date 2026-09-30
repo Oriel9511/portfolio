@@ -1,6 +1,5 @@
 import React, { memo, useRef } from 'react';
 import { motion as Motion, useInView } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
 
 const ExperienceRow = ({ job, index }) => {
     const ref = useRef(null);
@@ -12,8 +11,7 @@ const ExperienceRow = ({ job, index }) => {
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={{ duration: 0.8, delay: index * 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="group border-t border-white/20 py-6 transition-colors md:py-7 hover:bg-white/5 cursor-pointer"
-            data-cursor="hover"
+            className="group border-t border-white/20 py-6 transition-colors md:py-7 hover:bg-white/[0.03]"
         >
             <div className="container mx-auto px-4 md:px-6 grid md:grid-cols-12 gap-8 items-start">
                 <div className="md:col-span-3">
@@ -32,17 +30,10 @@ const ExperienceRow = ({ job, index }) => {
                     </div>
                 </div>
 
-                <div className="md:col-span-5">
+                <div className="md:col-span-6">
                     <p className="text-zinc-300 font-light leading-relaxed text-sm">
                         {job.desc}
                     </p>
-                </div>
-
-                <div className="md:col-span-1 flex justify-end">
-                    <ArrowUpRight
-                        className="text-white opacity-0 transition-all duration-500 group-hover:rotate-45 group-hover:opacity-100 group-hover:scale-125"
-                        size={24}
-                    />
                 </div>
             </div>
         </Motion.div>

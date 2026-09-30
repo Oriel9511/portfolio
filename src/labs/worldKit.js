@@ -116,3 +116,6 @@ export const bar = (ctx, x, y, w, h, alpha) => {
   ctx.fillStyle = ink(alpha);
   ctx.fillRect(x, y, w, h);
 };
+
+// Narrow or near-square canvases get a stacked composition instead of the wide one.
+export const isCompact = (w, h) => w < 540 || w / h < 1.05;

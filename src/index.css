@@ -14,6 +14,9 @@
 }
 
 html, body {
+    overscroll-behavior: none;
+    /* Slide navigation is driven by JS gestures; scrollable regions opt back in below. */
+    touch-action: none;
     margin: 0;
     padding: 0;
     width: 100%;
@@ -112,6 +115,11 @@ body::-webkit-scrollbar,
 /* --- Reusable: styling for internal-scroller scrollbar --- */
 .internal-scroller {
     scrollbar-width: thin;
+    touch-action: pan-y;
+}
+
+.scroll-hidden {
+    touch-action: pan-y;
 }
 
 /* For Webkit browsers (Chrome, Safari, Edge) */

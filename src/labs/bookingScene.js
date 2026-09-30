@@ -1,4 +1,4 @@
-import { bracket, clamp, disc, easeOut, hash, ink, label, pill, ring } from './worldKit';
+import { bracket, clamp, disc, easeOut, hash, ink, isCompact, label, pill, ring } from './worldKit';
 
 const COLS = 6;
 const ROWS = 8;
@@ -10,12 +10,13 @@ export const bookingScene = {
   hud: ['RESERVAS GRUPALES', 'HORARIOS COMPATIBLES'],
   stillAt: 8,
   draw({ ctx, w, h, t, px, py }) {
+    const compact = isCompact(w, h);
     const cycle = Math.floor(t / CYCLE);
     const local = t % CYCLE;
-    const gx = w * 0.08;
-    const gy = h * 0.2;
-    const cw = (w * 0.6) / COLS;
-    const ch = (h * 0.62) / ROWS;
+    const gx = w * (compact ? 0.14 : 0.08);
+    const gy = h * (compact ? 0.17 : 0.2);
+    const cw = (w * (compact ? 0.8 : 0.6)) / COLS;
+    const ch = (h * (compact ? 0.46 : 0.62)) / ROWS;
     const pickC = 1 + Math.floor(hash(cycle, 1) * (COLS - 2));
     const pickR = 1 + Math.floor(hash(cycle, 2) * (ROWS - 2));
     const scan = clamp(local / 6.2) * COLS;
@@ -54,27 +55,33 @@ export const bookingScene = {
       ctx.lineWidth = 1.5;
       ctx.strokeRect(x, y, cw, ch);
       ctx.lineWidth = 1;
-      pill(ctx, x + cw + 10, y + ch / 2 - 10, 148 * confirm, 20, 0.9, { fill: 0.12 });
-      if (confirm > 0.8) label(ctx, '✓ RESERVA CONFIRMADA', x + cw + 20, y + ch / 2, { alpha: 0.95, size: 8 });
+      if (!compact) {
+        pill(ctx, x + cw + 10, y + ch / 2 - 10, 148 * confirm, 20, 0.9, { fill: 0.12 });
+        if (confirm > 0.8) label(ctx, '✓ RESERVA CONFIRMADA', x + cw + 20, y + ch / 2, { alpha: 0.95, size: 8 });
+      }
     }
 
-    const lx = w * 0.74;
-    label(ctx, 'ASISTENTES', lx, gy - 16, { alpha: 0.45, size: 8 });
+    const lx = compact ? w * 0.08 : w * 0.74;
+    const ly = compact ? gy + ch * ROWS + 16 : gy;
+    if (!compact) label(ctx, 'ASISTENTES', lx, gy - 16, { alpha: 0.45, size: 8 });
     for (let g = 0; g < GUESTS; g += 1) {
-      const y = gy + g * 46;
-      ring(ctx, lx + 8, y + 12, 8, 0.7);
-      disc(ctx, lx + 8, y + 12, 2.5, 0.8);
-      label(ctx, `PERSONA ${g + 1}`, lx + 24, y + 8, { alpha: 0.65, size: 8 });
+      const y = compact ? ly + g * 17 : ly + g * 46;
+      const dotY = compact ? y + 4 : y + 12;
+      ring(ctx, lx + 8, dotY, compact ? 5 : 8, 0.7);
+      disc(ctx, lx + 8, dotY, compact ? 1.6 : 2.5, 0.8);
+      label(ctx, `PERSONA ${g + 1}`, lx + (compact ? 20 : 24), compact ? y + 4 : y + 8, { alpha: 0.65, size: 8 });
       for (let c = 0; c < COLS; c += 1) {
         const on = free(c, pickR, g);
         ctx.fillStyle = ink(on ? 0.55 : 0.1);
-        ctx.fillRect(lx + 24 + c * 12, y + 18, 9, 3);
+        if (compact) ctx.fillRect(lx + 92 + c * 13, y + 2, 10, 3);
+        else ctx.fillRect(lx + 24 + c * 12, y + 18, 9, 3);
       }
     }
-    label(ctx, 'ZONA HORARIA LOCAL', lx, gy + GUESTS * 46 + 12, { alpha: 0.45, size: 8 });
+    if (!compact) label(ctx, 'ZONA HORARIA LOCAL', lx, gy + GUESTS * 46 + 12, { alpha: 0.45, size: 8 });
 
     if (hover) label(ctx, hover.all ? 'TODOS DISPONIBLES' : 'NO COINCIDE', px * w, py * h - 14, { alpha: 0.95, align: 'center', size: 8 });
     bracket(ctx, 14, 14, w - 28, h - 28, 10, 0.3);
-    label(ctx, local < 6.4 ? 'CRUZANDO DISPONIBILIDADES' : 'HORARIO COMPARTIDO ENCONTRADO', 26, h - 26, { alpha: 0.5 });
+    const status = local < 6.4 ? (compact ? 'CRUZANDO HORARIOS' : 'CRUZANDO DISPONIBILIDADES') : compact ? (confirm > 0.8 ? '✓ RESERVA CONFIRMADA' : 'HORARIO ENCONTRADO') : 'HORARIO COMPARTIDO ENCONTRADO';
+    label(ctx, status, 26, h - 26, { alpha: 0.5 });
   },
 };

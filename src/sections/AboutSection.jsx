@@ -15,7 +15,7 @@ const AboutSection = ({ index }) => {
   useZone(copyRef, { slide: index, k: 0.4, feather: 40 });
 
   return (
-    <StackedSection id="about" index={index} zIndex={50} theme="light" rule className="justify-center pt-24 pb-8">
+    <StackedSection id="about" index={index} zIndex={50} theme="light" rule className="justify-center pt-[7.5rem] pb-8">
       <div ref={copyRef} className="container internal-scroller mx-auto max-h-full min-h-0 overflow-y-auto px-6" data-internal-scroller="true">
         <div>
           <div className="mb-6 md:mb-[4vh]">
