@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState } from 'react';
 import { motion as Motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 
@@ -19,37 +19,8 @@ const SECTION_LABELS = {
 
 const Navbar = ({ activeSectionId = 'hero', onNavigate }) => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const [isVisible, setIsVisible] = useState(true);
-    const lastScrollY = useRef(0);
-    const rafId = useRef(null);
 
-    const isDarkBg = ['hero', 'work', 'opensource', 'contact'].includes(activeSectionId);
-
-    const handleScroll = useCallback(() => {
-        if (rafId.current) return;
-        rafId.current = requestAnimationFrame(() => {
-            const currentScrollY = window.scrollY;
-
-            if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
-                setIsVisible(false);
-            } else {
-                setIsVisible(true);
-            }
-            lastScrollY.current = currentScrollY;
-
-            rafId.current = null;
-        });
-    }, []);
-
-    useEffect(() => {
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-            if (rafId.current) cancelAnimationFrame(rafId.current);
-        };
-    }, [handleScroll]);
-
-    const textColor = isDarkBg ? 'text-white' : 'text-black';
+    const textColor = 'text-white';
     const logoColor = textColor;
 
     const handleNavClick = (sectionId) => {
@@ -60,15 +31,13 @@ const Navbar = ({ activeSectionId = 'hero', onNavigate }) => {
         }
     };
 
-    const visibilityClass = isVisible ? 'translate-y-0' : '-translate-y-full';
-
     return (
         <>
             <a href="#main-content" className="skip-link">Skip to content</a>
 
             <nav
                 aria-label="Primary"
-                className={`fixed top-0 left-0 w-full z-[100] px-6 py-6 md:py-8 flex justify-between items-center transition-all duration-500 ease-in-out ${visibilityClass} pointer-events-none`}
+                className={`fixed top-0 left-0 w-full z-[100] px-6 py-6 md:py-8 flex justify-between items-center mix-blend-difference pointer-events-none`}
             >
                 <Motion.button
                     whileHover="hover"
@@ -98,9 +67,7 @@ const Navbar = ({ activeSectionId = 'hero', onNavigate }) => {
                 <div className={`hidden md:flex gap-2 text-xs font-mono uppercase tracking-[0.2em] font-bold pointer-events-auto transition-colors duration-300 ${textColor}`}>
                     {['work', 'opensource', 'about', 'contact'].map((section) => {
                         const isActive = activeSectionId === section;
-                        const activeClass = isActive
-                            ? (isDarkBg ? 'text-white font-bold active' : 'text-black font-bold active')
-                            : (section === 'contact' ? 'text-zinc-400' : (isDarkBg ? 'text-white/60' : 'text-black/60'));
+                        const activeClass = isActive ? 'font-bold active' : 'opacity-60';
 
                         return (
                             <Motion.button

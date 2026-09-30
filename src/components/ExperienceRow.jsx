@@ -12,7 +12,7 @@ const ExperienceRow = ({ job, index }) => {
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={{ duration: 0.8, delay: index * 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="group border-t border-white/20 py-10 transition-colors hover:bg-white/5 cursor-pointer"
+            className="group border-t border-white/20 py-6 transition-colors md:py-7 hover:bg-white/5 cursor-pointer"
             data-cursor="hover"
         >
             <div className="container mx-auto px-4 md:px-6 grid md:grid-cols-12 gap-8 items-start">
@@ -21,7 +21,7 @@ const ExperienceRow = ({ job, index }) => {
                     <h3 className="text-2xl font-serif text-white mt-2 group-hover:italic transition-all duration-300">{job.company}</h3>
                 </div>
 
-                <div className="md:col-span-4">
+                <div className="md:col-span-3">
                     <p className="text-zinc-400 font-light text-sm uppercase tracking-wider mb-2">{job.role}</p>
                     <div className="flex flex-wrap gap-2">
                         {job.projects.map((p, i) => (
@@ -32,8 +32,8 @@ const ExperienceRow = ({ job, index }) => {
                     </div>
                 </div>
 
-                <div className="md:col-span-4">
-                    <p className="text-zinc-300 font-light leading-relaxed text-sm md:text-base">
+                <div className="md:col-span-5">
+                    <p className="text-zinc-300 font-light leading-relaxed text-sm">
                         {job.desc}
                     </p>
                 </div>

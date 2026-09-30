@@ -26,8 +26,8 @@ function assert(condition, message) {
 }
 
 // 1. Check Canonical Link
-const hasCanonical = html.includes('<link rel="canonical" href="https://orielarteaga.dev/">') ||
-                     html.includes('<link rel="canonical" href="https://orielarteaga.dev/"');
+const hasCanonical = html.includes('<link rel="canonical" href="https://oriel9511.github.io/portfolio/">') ||
+                     html.includes('<link rel="canonical" href="https://oriel9511.github.io/portfolio/"');
 assert(hasCanonical, 'Canonical URL link tag is present and correct');
 
 // 2. Check Preconnect Links

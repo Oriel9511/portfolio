@@ -29,7 +29,7 @@ const WORD_VARIANTS = {
         y: 0,
         rotateX: 0,
         transition: {
-            duration: 0.8,
+            duration: 0.9,
             delay: index * 0.04,
             ease: [0.215, 0.61, 0.355, 1]
         }
@@ -44,7 +44,12 @@ const AUTHOR_VARIANTS = {
     }
 };
 
-const AnimatedQuote = ({ text, author, theme = "dark" }) => {
+const SIZES = {
+    lg: 'text-3xl md:text-5xl lg:text-6xl leading-[1.1]',
+    md: 'text-2xl md:text-[clamp(1.6rem,min(3.2vw,5.6vh),2.75rem)] leading-[1.15]',
+};
+
+const AnimatedQuote = ({ text, author, theme = "dark", size = 'lg', textClass = '' }) => {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: false, margin: "-10% 0px" });
     const animateState = isInView ? 'visible' : 'hidden';
@@ -58,10 +63,10 @@ const AnimatedQuote = ({ text, author, theme = "dark" }) => {
                 animate={animateState}
                 variants={ICON_VARIANTS}
             >
-                <Quote size={40} className={`mx-auto mb-10 ${iconColor}`} aria-hidden="true" />
+                <Quote size={40} className={`mx-auto mb-[2.5vh] ${iconColor}`} aria-hidden="true" />
             </Motion.div>
 
-            <p className={`text-3xl md:text-5xl lg:text-6xl font-serif leading-[1.1] mb-8 ${textColor} flex flex-wrap justify-center gap-x-3 gap-y-2`}>
+            <p className={`${SIZES[size]} font-serif mb-8 ${textColor} ${textClass} flex flex-wrap justify-center gap-x-2 gap-y-2 md:gap-x-3`}>
                 {words.map((word, i) => (
                     <Motion.span
                         key={i}

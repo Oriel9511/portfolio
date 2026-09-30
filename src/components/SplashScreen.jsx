@@ -1,47 +1,56 @@
-import React from 'react';
-import { motion as Motion } from 'framer-motion';
+import React, { useEffect } from 'react';
+import { animate, motion as Motion, useMotionValue, useTransform } from 'framer-motion';
 
+const CINE = [0.16, 1, 0.3, 1];
+const LETTERS = ['O', 'A'];
+
+// The counter drives the progress line; on exit the whole overlay lifts away like a curtain.
 const SplashScreen = () => {
+  const progress = useMotionValue(0);
+  const scaleX = useTransform(progress, [0, 100], [0, 1]);
+  const readout = useTransform(progress, (value) => String(Math.round(value)).padStart(3, '0'));
+
+  useEffect(() => {
+    const controls = animate(progress, 100, { duration: 1.9, ease: [0.65, 0, 0.35, 1] });
+    return () => controls.stop();
+  }, [progress]);
+
   return (
     <Motion.div
       data-splash-overlay="true"
       className="fixed inset-0 z-[200] flex items-center justify-center bg-black text-white"
-      initial={{ opacity: 1 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      initial={{ clipPath: 'inset(0% 0% 0% 0%)' }}
+      animate={{ clipPath: 'inset(0% 0% 0% 0%)' }}
+      exit={{ clipPath: 'inset(0% 0% 100% 0%)', transition: { duration: 1.1, ease: CINE } }}
     >
-      <div className="relative flex flex-col items-center gap-6 px-6 text-center">
-        <Motion.div
-          initial={{ scale: 0.9, opacity: 0, rotateX: 20 }}
-          animate={{ scale: 1, opacity: 1, rotateX: 0 }}
-          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-          className="font-serif tracking-tighter"
-        >
-          <div className="text-[14vw] leading-none select-none">OA</div>
-        </Motion.div>
+      <div className="flex flex-col items-center gap-10 px-6">
+        <div className="flex font-serif text-[22vw] leading-none tracking-tighter md:text-[14vw]" aria-hidden="true">
+          {LETTERS.map((letter, i) => (
+            <span key={letter} className="block overflow-hidden py-[0.1em]">
+              <Motion.span
+                className="block"
+                initial={{ y: '105%' }}
+                animate={{ y: '0%' }}
+                transition={{ duration: 1.1, delay: 0.15 + i * 0.12, ease: CINE }}
+              >
+                {letter}
+              </Motion.span>
+            </span>
+          ))}
+        </div>
 
-        <Motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 0.8, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.6 }}
-          className="font-mono text-xs uppercase tracking-[0.3em] text-zinc-400"
-        >
-          PREPARANDO EL RECORRIDO.
-        </Motion.p>
-
-        <div className="w-64 h-px bg-zinc-700/40 overflow-hidden rounded">
-          <Motion.div
-            className="h-full bg-white"
-            initial={{ x: '-100%' }}
-            animate={{ x: '100%' }}
-            transition={{ repeat: Infinity, repeatType: 'loop', duration: 1.4, ease: 'easeInOut' }}
-            style={{ width: '40%' }}
-          />
+        <div className="w-[min(70vw,18rem)]">
+          <div className="h-px w-full bg-zinc-800">
+            <Motion.div className="h-full origin-left bg-white" style={{ scaleX }} />
+          </div>
+          <div className="mt-3 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.3em] text-zinc-500">
+            <span>Preparando el recorrido</span>
+            <Motion.span>{readout}</Motion.span>
+          </div>
         </div>
       </div>
 
-      <div className="pointer-events-none absolute inset-0 [background:radial-gradient(70%_60%_at_50%_40%,rgba(255,255,255,0.08),transparent)]" />
+      <div className="pointer-events-none absolute inset-0 [background:radial-gradient(70%_60%_at_50%_40%,rgba(255,255,255,0.07),transparent)]" />
     </Motion.div>
   );
 };

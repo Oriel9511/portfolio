@@ -1,66 +1,45 @@
-import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
+import { motion as Motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 
-const StackedSection = ({ children, className = "", id = "", zIndex = 0, theme = "dark", sticky = true }) => {
+const viewportHeight = () => (typeof window === 'undefined' ? 900 : window.innerHeight);
+
+// `index` places the section on the scroll timeline: rel -1 = arriving, 0 = current, 1 = covered.
+const StackedSection = ({ children, className = '', id = '', zIndex = 0, theme = 'dark', index = 0, tone = '', rule = false }) => {
     const ref = useRef(null);
-    const frameRef = useRef(0);
-    const topOffsetRef = useRef(0);
-    const [topOffset, setTopOffset] = useState(0);
+    const reduceMotion = useReducedMotion();
+    const { scrollY } = useScroll();
+    const rel = useTransform(() => scrollY.get() / viewportHeight() - index);
 
-    const updateTopOffset = useCallback(() => {
-        if (!sticky || !ref.current) return;
+    const y = useTransform(rel, [-1, 0, 1], ['18vh', '0vh', '-7vh']);
+    const scale = useTransform(rel, [-1, 0, 1], [1.07, 1, 0.92]);
+    const shade = useTransform(rel, [0, 1], [0, 0.7]);
+    const visibility = useTransform(rel, (value) => (Math.abs(value) > 1.02 ? 'hidden' : 'visible'));
 
-        const height = ref.current.offsetHeight;
-        const windowHeight = window.innerHeight;
-        const nextTopOffset = height > windowHeight ? (windowHeight - height) : 0;
-
-        if (topOffsetRef.current !== nextTopOffset) {
-            topOffsetRef.current = nextTopOffset;
-            setTopOffset(nextTopOffset);
-        }
-    }, [sticky]);
-
-    useLayoutEffect(() => {
-        if (!sticky || !ref.current) {
-            topOffsetRef.current = 0;
-            return;
-        }
-
-        const scheduleRecalc = () => {
-            window.cancelAnimationFrame(frameRef.current);
-            frameRef.current = window.requestAnimationFrame(updateTopOffset);
-        };
-
-        scheduleRecalc();
-
-        const ro = new ResizeObserver(scheduleRecalc);
-        ro.observe(ref.current);
-
-        return () => {
-            window.cancelAnimationFrame(frameRef.current);
-            ro.disconnect();
-        };
-    }, [sticky, updateTopOffset]);
-
-
-    const bgColor = theme === 'light' ? 'bg-[#f0f0f0] text-black' : 'bg-[#0a0a0a] text-white';
-    const shadowClass = zIndex > 0 ? "shadow-[0_-50px_40px_-20px_rgba(0,0,0,0.5)]" : "";
-
-    // Always use sticky if requested, but with dynamic top
-    const positionClass = sticky ? "sticky" : "relative";
+    const bgColor = theme === 'light' ? `${tone || 'bg-[#f0f0f0]'} text-black` : 'bg-[#0a0a0a] text-white';
+    const shadowClass = zIndex > 0 ? 'shadow-[0_-50px_40px_-20px_rgba(0,0,0,0.5)]' : '';
+    const layout = /\bjustify-/.test(className) ? className : `justify-center ${className}`;
 
     return (
-        <section
+        <Motion.section
             ref={ref}
             id={id}
             data-theme={theme}
-            className={`${positionClass} h-screen min-h-screen max-h-screen w-full flex flex-col justify-center overflow-hidden ${bgColor} ${className} ${shadowClass}`}
-            style={{
-                zIndex,
-                top: sticky ? topOffset : undefined
-            }}
+            className={`sticky h-screen min-h-screen max-h-screen w-full overflow-hidden ${bgColor} ${shadowClass}`}
+            style={{ zIndex, top: 0, visibility: reduceMotion ? undefined : visibility }}
         >
-            {children}
-        </section>
+            <Motion.div
+                className={`relative flex h-full w-full flex-col will-change-transform ${layout}`}
+                style={reduceMotion ? undefined : { y, scale, transformOrigin: '50% 60%' }}
+            >
+                {children}
+            </Motion.div>
+            {rule && <span aria-hidden="true" className={`pointer-events-none absolute inset-x-6 top-[100px] z-10 h-px ${theme === 'light' ? 'bg-black/15' : 'bg-white/15'}`} />}
+            <Motion.div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 z-50 bg-black"
+                style={{ opacity: reduceMotion ? 0 : shade }}
+            />
+        </Motion.section>
     );
 };
 

@@ -6,9 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0a0a0a" />
   <meta name="robots" content="index,follow" />
-  <link rel="canonical" href="https://orielarteaga.dev/" />
+  <link rel="canonical" href="https://oriel9511.github.io/portfolio/" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" />
 
   <title>Oriel Arteaga — Full Stack Developer</title>
   <meta name="description"
@@ -22,8 +24,8 @@
     content="De la ingeniería de hardware al desarrollo Full Stack. Una visión sistémica para arquitecturas web complejas." />
   <meta property="og:locale" content="es_UY" />
   <meta property="og:site_name" content="Oriel Arteaga" />
-  <meta property="og:url" content="https://orielarteaga.dev/" />
-  <meta property="og:image" content="https://orielarteaga.dev/og-image.png" />
+  <meta property="og:url" content="https://oriel9511.github.io/portfolio/" />
+  <meta property="og:image" content="https://oriel9511.github.io/portfolio/og-image.png" />
   <meta property="og:image:alt" content="Oriel Arteaga portfolio preview" />
 
   <!-- Twitter Card -->
@@ -31,11 +33,11 @@
   <meta name="twitter:title" content="Oriel Arteaga — Full Stack Developer" />
   <meta name="twitter:description"
     content="De la ingeniería de hardware al desarrollo Full Stack. Una visión sistémica para arquitecturas web complejas." />
-  <meta name="twitter:image" content="https://orielarteaga.dev/og-image.png" />
+  <meta name="twitter:image" content="https://oriel9511.github.io/portfolio/og-image.png" />
 
   <!-- Theme & Favicon -->
   <link rel="icon" type="image/png" href="/BrandIcon.png" />
-  <script type="application/ld+json" id="seo-json-ld">[{"@context":"https://schema.org","@type":"Person","name":"Oriel Arteaga","url":"https://orielarteaga.dev/","jobTitle":"Full Stack Developer","email":"mailto:arteaga95.jimenez@gmail.com","address":{"@type":"PostalAddress","addressLocality":"Montevideo","addressCountry":"UY"}},{"@context":"https://schema.org","@type":"WebSite","name":"Oriel Arteaga","url":"https://orielarteaga.dev/","description":"Portfolio de Oriel Arteaga, Full Stack Developer en Montevideo. Ingeniero en Automática especializado en arquitecturas web escalables con React, .NET, Node.js y Azure.","inLanguage":"es"}]</script>
+  <script type="application/ld+json" id="seo-json-ld">[{"@context":"https://schema.org","@type":"Person","name":"Oriel Arteaga","url":"https://oriel9511.github.io/portfolio/","jobTitle":"Full Stack Developer","email":"mailto:arteaga95.jimenez@gmail.com","address":{"@type":"PostalAddress","addressLocality":"Montevideo","addressCountry":"UY"}},{"@context":"https://schema.org","@type":"WebSite","name":"Oriel Arteaga","url":"https://oriel9511.github.io/portfolio/","description":"Portfolio de Oriel Arteaga, Full Stack Developer en Montevideo. Ingeniero en Automática especializado en arquitecturas web escalables con React, .NET, Node.js y Azure.","inLanguage":"es"}]</script>
 </head>
 
 <body>
@@ -57,6 +59,15 @@
     </p>
   </noscript>
   <script type="module" src="/src/main.jsx"></script>
+  <script>
+    // Fail-safe: if the app never hydrates (script blocked, runtime error), reveal the prerendered content.
+    window.setTimeout(function () {
+      if (document.documentElement.dataset.appHydrated === 'true') return;
+      var style = document.createElement('style');
+      style.textContent = '[data-app-shell]{opacity:1!important;visibility:visible!important;pointer-events:auto!important}[data-splash-overlay]{display:none!important}';
+      document.head.appendChild(style);
+    }, 6000);
+  </script>
 </body>
 
 </html>

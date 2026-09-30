@@ -9,6 +9,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // https://vite.dev/config/
 export default defineConfig({
+  // Served from https://oriel9511.github.io/portfolio/
+  base: '/portfolio/',
   plugins: [
     react(),
     vitePrerenderPlugin({
