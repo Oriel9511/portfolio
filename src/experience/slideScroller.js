@@ -30,3 +30,32 @@ export function animateScrollTo(targetY, { duration = 1100, onDone } = {}) {
   };
   frame = window.requestAnimationFrame(step);
 }
+
+// Critically damped spring that starts with the finger's release velocity (px/s), so motion never stalls.
+export function springScrollTo(targetY, { velocity = 0, omega = 10, onDone } = {}) {
+  cancelScroll();
+  let position = window.scrollY;
+  let speed = Math.max(-7000, Math.min(7000, velocity));
+  let last = performance.now();
+
+  const step = (now) => {
+    // real elapsed time (capped at 100ms) with fixed 8ms sub-steps: stable on slow frames, never in slow motion
+    const dt = Math.min(0.1, (now - last) / 1000);
+    last = now;
+    const steps = Math.max(1, Math.ceil(dt / 0.008));
+    const h = dt / steps;
+    for (let i = 0; i < steps; i += 1) {
+      const accel = omega * omega * (targetY - position) - 2 * omega * speed;
+      speed += accel * h;
+      position += speed * h;
+    }
+    const settled = Math.abs(targetY - position) < 0.5 && Math.abs(speed) < 8;
+    window.scrollTo({ top: settled ? targetY : position, behavior: 'instant' });
+    if (settled) {
+      onDone?.();
+      return;
+    }
+    frame = window.requestAnimationFrame(step);
+  };
+  frame = window.requestAnimationFrame(step);
+}

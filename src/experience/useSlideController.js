@@ -1,15 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { animateScrollTo, cancelScroll } from './slideScroller';
+import { animateScrollTo, cancelScroll, springScrollTo } from './slideScroller';
 import { slideHeight, syncSlideHeight } from './viewport';
 
 const SLIDE_DURATION = 1100;
 const WHEEL_QUIET_MS = 90;
-const TOUCH_DURATION = 760;
-const SNAP_BACK_DURATION = 420;
 const DECIDE_PX = 8;
 const COMMIT_RATIO = 0.12;
 const FLICK_SPEED = 0.25;
-const FOLLOW_LIMIT = 0.42;
+const FOLLOW_LIMIT = 0.95;
 
 function readHashIndex(slides) {
   if (typeof window === 'undefined') return 0;
@@ -173,32 +171,34 @@ export function useSlideController(slides, { paused, reduceMotion }) {
       const fresh = last && performance.now() - last.t < 100;
       const speed = fresh && samples.length > 1 ? (first.y - last.y) / Math.max(1, last.t - first.t) : 0;
       const flick = Math.abs(speed) > FLICK_SPEED;
+      const velocity = speed * 1000;
       const direction = flick ? Math.sign(speed) : Math.sign(offset);
       const commits = (flick || Math.abs(offset) > height * COMMIT_RATIO) && direction !== 0;
       const next = activeRef.current + direction;
-      lockedRef.current = false;
+      const finish = () => {
+        lockedRef.current = false;
+      };
+      lockedRef.current = true;
 
       if (commits && next >= 0 && next < slides.length) {
-        lockedRef.current = true;
         activeRef.current = next;
         setActiveIndex(next);
         window.history.replaceState(null, '', `#${slides[next]}`);
-        animateScrollTo(next * height, {
-          duration: reduceMotion ? 0 : TOUCH_DURATION,
-          onDone: () => {
-            lockedRef.current = false;
-          },
-        });
+        if (reduceMotion) {
+          window.scrollTo({ top: next * height, behavior: 'instant' });
+          finish();
+          return;
+        }
+        springScrollTo(next * height, { velocity, onDone: finish });
         return;
       }
 
-      lockedRef.current = true;
-      animateScrollTo(activeRef.current * height, {
-        duration: reduceMotion ? 0 : SNAP_BACK_DURATION,
-        onDone: () => {
-          lockedRef.current = false;
-        },
-      });
+      if (reduceMotion) {
+        window.scrollTo({ top: activeRef.current * height, behavior: 'instant' });
+        finish();
+        return;
+      }
+      springScrollTo(activeRef.current * height, { velocity, omega: 12, onDone: finish });
     };
 
     const finePointer = window.matchMedia('(pointer: fine)').matches;
