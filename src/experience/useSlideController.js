@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { animateScrollTo, cancelScroll } from './slideScroller';
+import { slideHeight, syncSlideHeight } from './viewport';
 
 const SLIDE_DURATION = 1100;
 const WHEEL_QUIET_MS = 90;
@@ -39,7 +40,7 @@ export function useSlideController(slides, { paused, reduceMotion }) {
     setActiveIndex(index);
     window.history.replaceState(null, '', `#${slides[index]}`);
 
-    animateScrollTo(index * window.innerHeight, {
+    animateScrollTo(index * slideHeight(), {
       duration: reduceMotion ? 0 : SLIDE_DURATION,
       onDone: () => {
         lockedRef.current = false;
@@ -53,7 +54,8 @@ export function useSlideController(slides, { paused, reduceMotion }) {
   }, [scrollToSlide]);
 
   useEffect(() => {
-    window.scrollTo({ top: activeRef.current * window.innerHeight, behavior: 'instant' });
+    syncSlideHeight();
+    window.scrollTo({ top: activeRef.current * slideHeight(), behavior: 'instant' });
     return cancelScroll;
   }, []);
 
@@ -84,12 +86,13 @@ export function useSlideController(slides, { paused, reduceMotion }) {
     };
 
     const onResize = () => {
-      window.scrollTo({ top: activeRef.current * window.innerHeight, behavior: 'instant' });
+      syncSlideHeight();
+      window.scrollTo({ top: activeRef.current * slideHeight(), behavior: 'instant' });
     };
 
     const onScroll = () => {
       if (lockedRef.current) return;
-      const next = Math.max(0, Math.min(slides.length - 1, Math.round(window.scrollY / window.innerHeight)));
+      const next = Math.max(0, Math.min(slides.length - 1, Math.round(window.scrollY / slideHeight())));
       if (next === activeRef.current) return;
       activeRef.current = next;
       setActiveIndex(next);
@@ -98,17 +101,27 @@ export function useSlideController(slides, { paused, reduceMotion }) {
 
     // Touch: one gesture moves exactly one slide. The page follows the finger with resistance,
     // then either commits to the next/previous slide or eases back; long swipes never skip slides.
-    const touch = { mode: 'idle', startX: 0, startY: 0, samples: [] };
+    const touch = { mode: 'idle', startX: 0, startY: 0, base: 0, samples: [] };
     const VELOCITY_WINDOW_MS = 120;
 
     const onTouchStart = (event) => {
       const inDialog = event.target instanceof Element && event.target.closest('[role="dialog"]');
-      if (event.touches.length !== 1 || inDialog || lockedRef.current) {
+      if (event.touches.length !== 1 || inDialog) {
         touch.mode = 'ignore';
         return;
       }
       const point = event.touches[0];
-      Object.assign(touch, { mode: 'pending', startX: point.clientX, startY: point.clientY, samples: [] });
+      // A new touch while a slide is still moving takes over from wherever it is on screen.
+      let base = 0;
+      if (lockedRef.current) {
+        cancelScroll();
+        lockedRef.current = false;
+        const nearest = Math.max(0, Math.min(slides.length - 1, Math.round(window.scrollY / slideHeight())));
+        activeRef.current = nearest;
+        setActiveIndex(nearest);
+        base = window.scrollY - nearest * slideHeight();
+      }
+      Object.assign(touch, { mode: 'pending', startX: point.clientX, startY: point.clientY, base, samples: [] });
     };
 
     const onTouchMove = (event) => {
@@ -128,11 +141,6 @@ export function useSlideController(slides, { paused, reduceMotion }) {
           touch.mode = 'native';
           return;
         }
-        if (lockedRef.current) {
-          touch.mode = 'ignore';
-          event.preventDefault();
-          return;
-        }
         cancelScroll();
         lockedRef.current = true;
         touch.mode = 'slide';
@@ -143,13 +151,13 @@ export function useSlideController(slides, { paused, reduceMotion }) {
       touch.samples.push({ t: now, y: point.clientY });
       while (touch.samples.length > 2 && now - touch.samples[0].t > VELOCITY_WINDOW_MS) touch.samples.shift();
 
-      const height = window.innerHeight;
+      const height = slideHeight();
       const limit = height * FOLLOW_LIMIT;
       const pull = -dy;
       const damped = Math.sign(pull) * limit * (1 - Math.exp(-Math.abs(pull) / limit));
-      const target = activeRef.current * height + damped;
+      const target = activeRef.current * height + touch.base + damped;
       const atEdge = (activeRef.current === 0 && damped < 0) || (activeRef.current === slides.length - 1 && damped > 0);
-      window.scrollTo({ top: atEdge ? activeRef.current * height + damped * 0.25 : target, behavior: 'instant' });
+      window.scrollTo({ top: atEdge ? activeRef.current * height + touch.base + damped * 0.25 : target, behavior: 'instant' });
     };
 
     const onTouchEnd = () => {
@@ -157,7 +165,7 @@ export function useSlideController(slides, { paused, reduceMotion }) {
       touch.mode = 'idle';
       if (mode !== 'slide') return;
 
-      const height = window.innerHeight;
+      const height = slideHeight();
       const offset = window.scrollY - activeRef.current * height;
       const { samples } = touch;
       const first = samples[0];

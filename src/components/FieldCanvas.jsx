@@ -4,6 +4,7 @@ import { FieldRenderer } from '../experience/field/FieldRenderer';
 import { subscribeFrame } from '../experience/frameLoop';
 import { createQualityController, detectQuality } from '../experience/quality';
 import { experience } from '../experience/store';
+import { slideHeight } from '../experience/viewport';
 
 const MAX_ZONES = 6;
 
@@ -47,7 +48,7 @@ function FieldCanvas({ visible }) {
     };
 
     const draw = () => {
-      experience.progress = Math.min(6, Math.max(0, window.scrollY / window.innerHeight));
+      experience.progress = Math.min(6, Math.max(0, window.scrollY / slideHeight()));
       collectZones();
       const anchor = experience.focus;
       if (anchor && Math.abs(experience.progress - anchor.slide) < 1) {

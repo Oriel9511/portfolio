@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { motion as Motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
-
-const viewportHeight = () => (typeof window === 'undefined' ? 900 : window.innerHeight);
+import { slideHeight as viewportHeight } from '../experience/viewport';
 
 // `index` places the section on the scroll timeline: rel -1 = arriving, 0 = current, 1 = covered.
 const StackedSection = ({ children, className = '', id = '', zIndex = 0, theme = 'dark', index = 0, tone = '', rule = false }) => {
@@ -24,7 +23,7 @@ const StackedSection = ({ children, className = '', id = '', zIndex = 0, theme =
             ref={ref}
             id={id}
             data-theme={theme}
-            className={`sticky h-screen min-h-screen max-h-screen w-full overflow-hidden ${bgColor} ${shadowClass}`}
+            className={`sticky h-[var(--slide-h)] min-h-[var(--slide-h)] max-h-[var(--slide-h)] w-full overflow-hidden ${bgColor} ${shadowClass}`}
             style={{ zIndex, top: 0, visibility: reduceMotion ? undefined : visibility }}
         >
             <Motion.div

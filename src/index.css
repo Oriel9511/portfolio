@@ -30,7 +30,13 @@ body {
 }
 
 html {
-    scroll-behavior: smooth;
+    --slide-h: 100vh;
+}
+
+@supports (height: 100dvh) {
+    html {
+        --slide-h: 100dvh;
+    }
 }
 
 #root {
@@ -152,10 +158,6 @@ body::-webkit-scrollbar,
 }
 
 @media (prefers-reduced-motion: reduce) {
-    html {
-        scroll-behavior: auto;
-    }
-
     *, *::before, *::after {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
